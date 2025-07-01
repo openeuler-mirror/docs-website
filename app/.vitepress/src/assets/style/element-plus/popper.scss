@@ -1,0 +1,8 @@
+.el-popper {
+  --el-bg-color-overlay: var(--o-color-fill2);
+  --el-border-color-light: var(--o-color-control1);
+  margin: -7px 0 0;
+  .el-popper__arrow {
+    display: none;
+  }
+}

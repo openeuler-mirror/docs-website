@@ -1,0 +1,23 @@
+.el-select {
+  .el-input {
+    &.is-focus {
+      .el-input__wrapper {
+        box-shadow: none !important;
+      }
+    }
+  }
+}
+
+.el-select-dropdown {
+  .el-select-dropdown__item {
+    color: var(--o-color-info2);
+    &:hover,
+    &.hover {
+      background-color: var(--o-color-control2-light) !important;
+    }
+    &.selected {
+      background-color: var(--o-color-control3-light) !important;
+      color: var(--o-color-info1);
+    }
+  }
+}

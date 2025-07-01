@@ -1,0 +1,119 @@
+@use '../mixin/font.scss' as *;
+#app .el-table {
+  --el-table-header-bg-color: var(--o-color-control3-light);
+  --el-table-border-color: var(--o-color-control4);
+  --el-table-tr-bg-color: var(--o-color-fill2);
+  --el-table-expanded-cell-bg-color: var(--o-color-fill2);
+  --el-table-bg-color: var(--o-color-fill2);
+  --el-table-row-hover-bg-color: var(--o-color-control2-light);
+  border-radius: 4px;
+  --el-table-border: 1px solid var(--o-color-control4);
+  border-spacing: 0;
+  color: var(--o-color-info1);
+  @include text1;
+  &.is-scrolling-right .el-table-fixed-column--left.is-last-column.el-table__cell,
+  &.is-scrolling-middle .el-table-fixed-column--left.is-last-column.el-table__cell {
+    border-right: 1px solid transparent !important;
+  }
+
+  .el-table__row {
+    &.hover-row {
+      .el-table-fixed-column--left,
+      .el-table-fixed-column--right {
+        background: var(--el-table-row-hover-bg-color);
+      }
+    }
+  }
+  .el-table__cell {
+    padding: 12px 0;
+    transition: none;
+    .cell {
+      padding: 0 20px;
+    }
+    &.el-table-fixed-column--left,
+    &.el-table-fixed-column--right {
+      background: var(--el-table-tr-bg-color);
+    }
+  }
+
+  thead {
+    tr {
+      &:first-child {
+        th {
+          &.el-table__cell {
+            &:first-child {
+              border-radius: 4px 0 0 0;
+            }
+            &:last-child {
+              border-radius: 0 4px 0 0;
+            }
+          }
+        }
+      }
+    }
+    th {
+      font-weight: 500;
+      color: var(--o-color-info1);
+      border-bottom: 0 none;
+      @include text1;
+      &.el-table__cell {
+        background: var(--el-table-header-bg-color);
+
+        &.el-table-fixed-column--left,
+        &.el-table-fixed-column--right {
+          background: var(--el-table-header-bg-color);
+        }
+      }
+    }
+  }
+  &.el-table--border {
+    &::after,
+    &::before {
+      display: none;
+    }
+  }
+  tr:last-child {
+    td {
+      border-bottom: 0;
+      &:first-child {
+        border-radius: 0 0 0 4px;
+      }
+      &:last-child {
+        border-radius: 0 0 4px 0;
+      }
+    }
+  }
+
+  td,
+  th:not([rowspan='1']) {
+    &:first-child {
+      .cell {
+        padding-left: 32px !important;
+      }
+    }
+    &:last-child {
+      .cell {
+        padding-right: 32px !important;
+      }
+    }
+  }
+
+  .el-table__expand-icon {
+    display: flex;
+    align-items: center;
+    > .el-icon {
+      font-size: 16px;
+      color: var(--o-color-info1);
+    }
+  }
+  .el-table__placeholder {
+    display: none;
+  }
+  .el-scrollbar__wrap {
+    padding: 1px 0;
+  }
+
+  .el-table__empty-block {
+    min-height: 250px;
+  }
+}
