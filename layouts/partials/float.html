@@ -1,0 +1,55 @@
+<div class="float-wrap">
+  <div class="bug-box">
+    <div class="bug-text">{{i18n "issue_title"}}</div>
+    <div class="icon-close">{{ partial "svg/icon-close.html" . }}</div>
+  </div>
+  <div class="nav-box1">
+    <div class="item-nav popup1">
+      <div class="icon-box">
+        <!-- Icon content here -->
+        {{ partial "svg/icon-smile.html" . }}
+      </div>
+      {{ partial "float-popup.html" . }}
+    </div>
+    <div class="item-nav">
+      <div class="icon-box">
+        {{ partial "svg/icon-headset.html" . }}
+        <!-- Icon content here -->
+      </div>
+      <div class="o-popup2">
+        <div class="pop-item">
+          <div class="o-icon">{{ partial "svg/icon-chat.html" . }}</div>
+          <div class="text">
+            <p class="text-name">
+              <a href="https://forum.openeuler.org/" target="_blank"
+                >社区论坛
+              </a>
+            </p>
+            <p class="text-tip">发帖互助解决各类问题</p>
+          </div>
+        </div>
+        <div class="pop-item">
+          <div class="icon-dark o-icon">
+            {{ partial "svg/icon-quickissue_dark.html" . }}
+          </div>
+          <div class="icon-light o-icon">
+            {{ partial "svg/icon-quickissue_light.html" . }}
+          </div>
+          <div class="text">
+            <p class="text-name">
+              <a
+                href="https://quickissue.openeuler.org/zh/issues/"
+                target="_blank"
+                >QuickIssue
+              </a>
+            </p>
+            <p class="text-tip">快捷提交/查询社区Issues</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="item-nav nav-box2">
+    <div class="icon-box">{{ partial "svg/icon-top.html" . }}</div>
+  </div>
+</div>

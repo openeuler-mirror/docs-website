@@ -1,0 +1,12 @@
+<div id="version-option">
+  <div class="long-time">
+    <p class="long-title">{{i18n "lts_version"}}</p>
+    <ul class="version-list"></ul>
+  </div>
+  {{ if .Site.Params.showInnovation }}
+  <div class="innovate">
+    <p class="innovate-title">{{i18n "innovation_version"}}</p>
+    <ul class="version-list"></ul>
+  </div>
+  {{ end }}
+</div>

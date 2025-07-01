@@ -1,0 +1,21 @@
+<nav id="docsMenu">
+{{ if .Site.Params.BookMenuBundle }}
+<div id="docstreeview">
+  {{ partial "docs/menu-bundle" . }}
+</div>
+{{ else }}
+    {{ partial "docs/menu-filetree" . }}
+{{ end }}
+
+</nav>
+
+<!-- Restore menu position as soon as possible to avoid flickering -->
+<script>
+(function() {
+  var menu = document.querySelector("#docsMenu");
+  addEventListener("beforeunload", function(event) {
+    localStorage.setItem("menu.scrollTop", menu.scrollTop);
+  });
+  menu.scrollTop = localStorage.getItem("menu.scrollTop");
+})();
+</script>

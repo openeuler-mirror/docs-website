@@ -1,0 +1,305 @@
+@charset "UTF-8";
+.markdown {
+  max-width: 1174px;
+  padding: 0 0 40px 0;
+  margin: 0 auto;
+  --e-color-table: var(--e-color-border2);
+}
+#markdown blockquote {
+  border-radius: 6px;
+  background-color: rgba(203, 217, 255, 0.2);
+  border-left: 6px solid #002fa7;
+  padding: 20px;
+}
+#markdown blockquote img {
+  vertical-align: top;
+}
+.markdown > *:first-child {
+  margin-top: 0 !important;
+}
+@media (max-width: 1439px) {
+  .markdown {
+    width: calc(100% - 48px);
+  }
+}
+@media (max-width: 1100px) {
+  .markdown {
+    width: 100%;
+  }
+}
+@media (max-width: 768px) {
+  .markdown {
+    width: 100%;
+    padding: var(--o-spacing-h5);
+    margin-bottom: var(--o-spacing-h2);
+    background-color: var(--e-color-bg2);
+    box-shadow: var(--e-shadow-sl1);
+    margin-top: 16px;
+  }
+}
+.markdown ol,
+.markdown ul {
+  list-style: inherit;
+}
+#markdown ol {
+  list-style: decimal;
+}
+.markdown a {
+  word-break: break-all;
+}
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.markdown h4,
+.markdown h5,
+.markdown h6 {
+  color: var(--e-color-text1);
+  font-weight: normal;
+}
+.markdown h1 a,
+.markdown h2 a,
+.markdown h3 a,
+.markdown h4 a,
+.markdown h5 a,
+.markdown h6 a {
+  display: none;
+}
+.markdown hr {
+  margin: var(--o-spacing-h1) 0;
+  border: none;
+  height: 1px;
+  background-color: var(--e-color-division1);
+}
+@media screen and (max-width: 768px) {
+  .markdown hr {
+    margin: var(--o-spacing-h4) 0;
+  }
+}
+.markdown h1 {
+  margin-top: var(--o-spacing-h1);
+  margin-bottom: var(--o-spacing-h2);
+  font-size: var(--o-font-size-h3);
+  line-height: var(--o-line-height-h3);
+  font-weight: 300;
+}
+@media screen and (max-width: 768px) {
+  .markdown h1 {
+    margin: var(--o-spacing-h3) 0 var(--o-spacing-h4);
+    font-size: var(--o-font-size-h7);
+    line-height: var(--o-line-height-h7);
+  }
+}
+.markdown h2 {
+  margin-bottom: var(--o-spacing-h3);
+  font-size: var(--o-font-size-h5);
+  line-height: var(--o-line-height-h5);
+  padding-top: 0;
+}
+.markdown h1::before{
+  content: "";
+  display: block;
+  width: 100%;
+  height: 60px;
+  margin-top: -60px;
+  overflow: hidden;
+}
+.markdown h2::before,.markdown h3::before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 60px;
+  overflow: hidden;
+}
+.markdown h2::before{
+  margin-top: -40px;
+}
+.markdown h3::before{
+  margin-top: -28px;
+}
+@media screen and (max-width: 768px) {
+  .markdown h2 {
+    margin: 0 0 var(--o-spacing-h5);
+    font-size: var(--o-font-size-h8);
+    line-height: var(--o-line-height-h8);
+    padding-top: 0;
+  }
+  .markdown h1::before{
+    height: 92px;
+    margin-top: -92px;
+  }
+  .markdown h2::before{
+    height: 92px;
+    margin-top: -72px;
+  }
+  .markdown h3::before{
+    height: 92px;
+    margin-top: -76px;
+  }
+}
+.markdown h3 {
+  padding-top: 0;
+  font-size: var(--o-font-size-h7);
+  line-height: var(--o-line-height-h8);
+}
+@media screen and (max-width: 768px) {
+  .markdown h3 {
+    padding-top: 0;
+    font-size: var(--o-font-size-text);
+    line-height: var(--o-line-height-text);
+  }
+}
+.markdown h4 {
+  margin-top: var(--o-spacing-h4);
+  font-size: var(--o-font-size-h8);
+  line-height: var(--o-font-size-h8);
+}
+@media screen and (max-width: 768px) {
+  .markdown h4 {
+    margin-top: var(--o-spacing-h6);
+    font-size: var(--o-font-size-tip);
+    line-height: var(--o-line-height-tip);
+  }
+}
+.markdown h5 {
+  margin-top: var(--o-spacing-h5);
+  font-size: var(--o-font-size-text);
+  line-height: var(--o-font-size-text);
+}
+.markdown h6 {
+  margin-top: var(--o-spacing-h5);
+  font-size: var(--o-font-size-text);
+  line-height: var(--o-font-size-text);
+}
+.markdown p,
+.markdown ul,
+.markdown ol {
+  margin-top: var(--o-spacing-h8);
+  margin-bottom: var(--o-spacing-h8);
+  font-size: var(--o-font-size-text);
+  font-weight: normal;
+  color: var(--e-color-text4);
+  line-height: var(--o-line-height-text);
+  word-break: break-word;
+}
+@media screen and (max-width: 768px) {
+  .markdown p,
+  .markdown ul,
+  .markdown ol {
+    font-size: var(--o-font-size-tip);
+    overflow: scroll;
+  }
+  .markdown table p {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  .markdown table tr td p,
+  .markdown table tr th p {
+    padding: 8px 0;
+  }
+}
+.markdown ul,
+.markdown ol {
+  padding-left: 1.5em;
+}
+.markdown ul li::marker,
+.markdown ol li::marker {
+  color: var(--e-color-text1);
+}
+
+.markdown table {
+  width: 100%;
+  font-size: var(--o-font-size-text);
+  table-layout: fixed;
+  word-break: break-word;
+  border-collapse: collapse;
+  padding: 0;
+  line-height: var(--o-line-height-text);
+}
+.markdown table tr {
+  height: 54px;
+  color: var(--e-color-text4);
+  border-bottom: 1px solid var(--e-color-table);
+}
+.markdown table tr th {
+  padding-left: var(--o-spacing-h3);
+  text-align: left;
+  font-weight: 500;
+  font-size: var(--o-font-size-h8);
+  line-height: var(--o-line-height-h8);
+  background-color: var(--e-color-bg4);
+  color: var(--e-color-text1);
+}
+@media screen and (max-width: 768px) {
+  .markdown table tr th {
+    font-size: var(--o-font-size-text);
+    padding-left: var(--o-spacing-h5);
+  }
+  .markdown table tr th:nth-of-type(1) {
+    width: 30vw !important;
+  }
+}
+.markdown table tr td {
+  padding-left: var(--o-spacing-h3);
+  line-height: var(--o-line-height-text);
+}
+.markdown table tr pre {
+  white-space: pre-wrap;
+}
+.markdown table tr pre .btn_pre_copy{
+  display: none;
+}
+.markdown table tr td p,
+.markdown table tr th p {
+  padding: 16px 0;
+  min-height: 54px;
+  line-height: 22px;
+}
+@media screen and (max-width: 768px) {
+  .markdown table tr td {
+    padding-left: var(--o-spacing-h6);
+    font-size: var(--o-font-size-tip);
+  }
+}
+.markdown strong {
+  font-weight: bold;
+}
+.markdown img {
+  max-width: 100%;
+}
+.markdown div[class*="language-"] {
+  position: relative;
+  margin: 8px 0;
+  background-color: var(--e-color-bg1);
+  box-shadow: var(--e-shadow-sl1);
+  overflow-x: auto;
+}
+.markdown [class*="language-"] code,
+.markdown [class*="language-"] pre {
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+  tab-size: 4;
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+.markdown [class*="language-"] pre {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding: 24px 64px;
+  background: 0 0;
+  overflow-x: auto;
+}
+.markdown [class*="language-"] code {
+  padding: 0;
+  line-height: var(--o-line-height-text);
+  font-size: var(--o-font-size-text);
+  color: #eee;
+}
+

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode }}">
+
+{{ partial "head.html" . }}
+
+<body>
+    <div id="app">
+
+        <div class="not-found container">
+            <img src="{{ .Site.Params.resourceURL }}img/404-banner.png" alt="404 not found" />
+            <span>{{ .Site.Params.notFound }}</span>
+        </div>
+    </div>
+
+</body>
+
+</html>
