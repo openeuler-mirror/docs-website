@@ -1,0 +1,400 @@
+#list page
+[lts_version]
+other = "长期支持版本"
+
+[innovation_version]
+other = "社区创新版本"
+
+[archive_version]
+other = "归档版本（停止维护）"
+
+[document_home]
+other = "文档首页"
+
+[version_text]
+other = "版本"
+
+[current_lang]
+other = "中文"
+
+[search]
+other = "搜索"
+
+[search_placeholder]
+other = "请输入搜索内容"
+
+[search_no_data_tip]
+other = "未搜索到内容"
+
+[document_link]
+other = "Documentation"
+
+[openeuler_document]
+other = "openEuler Documentation"
+
+[login_text]
+other = "登录"
+
+[logout_text]
+other = "退出登录"
+
+[zone_text]
+other = "个人中心"
+
+[catalog_text]
+other = "目录"
+
+
+[other_text]
+other = "友好社区"
+
+[know_88_1]
+other = "/zh/docs/23.03/docs/Releasenotes/%E6%B3%95%E5%BE%8B%E5%A3%B0%E6%98%8E.html"
+[know_89_1]
+other = "/zh/docs/22.03_LTS_SP1/docs/Releasenotes/%E6%B3%95%E5%BE%8B%E5%A3%B0%E6%98%8E.html"
+[know_90_1]
+other = "/zh/docs/22.09/docs/Releasenotes/%E6%B3%95%E5%BE%8B%E5%A3%B0%E6%98%8E.html"
+[know_91_1]
+other = "/zh/docs/22.03_LTS/docs/Releasenotes/%E6%B3%95%E5%BE%8B%E5%A3%B0%E6%98%8E.html"
+[know_92_1]
+other = "/zh/docs/20.03_LTS_SP3/docs/Releasenotes/%E6%B3%95%E5%BE%8B%E5%A3%B0%E6%98%8E.html"
+[know_93_1]
+other = "/zh/docs/21.09/docs/Releasenotes/%E6%B3%95%E5%BE%8B%E5%A3%B0%E6%98%8E.html"
+[know_94_1]
+other = "/zh/docs/20.03_LTS_SP2/docs/Releasenotes/%E6%B3%95%E5%BE%8B%E5%A3%B0%E6%98%8E.html"
+[know_95_1]
+other = "/zh/docs/21.03/docs/Releasenotes/%E6%B3%95%E5%BE%8B%E5%A3%B0%E6%98%8E.html"
+[know_96_1]
+other = "/zh/docs/20.03_LTS_SP1/docs/Releasenotes/%E6%B3%95%E5%BE%8B%E5%A3%B0%E6%98%8E.html"
+[know_97_1]
+other = "/zh/docs/20.09/docs/Releasenotes/%E6%B3%95%E5%BE%8B%E5%A3%B0%E6%98%8E.html"
+[know_98_1]
+other = "/zh/docs/20.03_LTS/docs/Releasenotes/%E6%B3%95%E5%BE%8B%E5%A3%B0%E6%98%8E.html"
+[version_88]
+other = "23.03"
+[version_89]
+other = "22.03 LTS SP1"
+[version_90]
+other = "22.09"
+[version_91]
+other = "22.03 LTS"
+[version_92]
+other = "20.03 LTS SP3"
+[version_93]
+other = "21.09"
+[version_94]
+other= "20.03 LTS SP2"
+[version_95]
+other = "21.03"
+[version_96]
+other = "20.03 LTS SP1"
+[version_97]
+other= "20.09"
+[version_98]
+other = "20.03 LTS"
+
+
+[hot_document]
+other = "热门文档"
+
+[container_header]
+other = "安装指南"
+
+[container_link]
+other = "/zh/docs/22.03_LTS_SP2/docs/Installation/installation.html"
+
+[secGear_header]
+other = "管理员指南"
+
+[secGear_link]
+other = "/zh/docs/22.03_LTS_SP2/docs/Administration/administration.html"
+
+[StratoVirt_header]
+other = "容器用户指南"
+
+[StratoVirt_link]
+other = "/zh/docs/22.03_LTS_SP2/docs/Container/container.html"
+
+[A-Tune_header]
+other = "A-Tune 用户指南"
+
+[A-Tune_link]
+other = "/zh/docs/22.03_LTS_SP2/docs/A-Tune/A-Tune.html"
+
+[A-Ops_header]
+other = "A-Ops 用户指南"
+
+[A-Ops_link]
+other = "/zh/docs/22.03_LTS_SP2/docs/A-Ops/overview.html"
+
+[Security_header]
+other = "安全加固指南"
+
+[Security_link]
+other = "/zh/docs/22.03_LTS_SP2/docs/SecHarden/secHarden.html"
+
+
+[document]
+other = "文档"
+
+[version_selection]
+other = "版本选择"
+
+[quick_links]
+other = "快速链接"
+
+[kunpeng_community]
+other = "鲲鹏社区"
+
+[atom]
+other = "openEuler 是由开放原子开源基金会（OpenAtom Foundation）孵化及运营的开源项目"
+
+[copy_right]
+other = "版权所有 © 2025 openEuler 保留一切权利"
+
+[licensed_1]
+other = "遵循"
+
+[licensed_2]
+other = "木兰宽松许可证第2版（MulanPSL2）"
+
+[attention]
+other = "扫码关注公众号"
+
+[source_code]
+other = "在Gitee上查看源文件"
+
+[feedbook]
+other = "反馈问题"
+
+[previous]
+other = "上一篇"
+
+[next]
+other = "下一篇"
+
+[evaluate]
+other = "评价"
+
+#bug start
+
+[issue_detail]
+other = "查看详情"
+
+[issue_1]
+other = "规范和低错类"
+
+[issue_1_1]
+other = "错别字或拼写错误；标点符号使用错误；"
+
+[issue_1_2]
+other = "链接错误、空单元格、格式错误；"
+
+[issue_1_3]
+other = "英文中包含中文字符；"
+
+[issue_1_4]
+other = "界面和描述不一致，但不影响操作；"
+
+[issue_1_5]
+other = "表述不通顺，但不影响理解；"
+
+[issue_1_6]
+other = "版本号不匹配：如软件包名称、界面版本号；"
+
+[issue_2]
+other = "易用性"
+
+[issue_2_1]
+other = "关键步骤错误或缺失，无法指导用户完成任务；"
+
+[issue_2_2]
+other = "缺少必要的前提条件、注意事项等；"
+
+[issue_2_3]
+other = "图形、表格、文字等晦涩难懂；"
+
+[issue_2_4]
+other = "逻辑不清晰，该分类、分项、分步骤的没有给出；"
+
+[issue_3]
+other = "正确性"
+
+[issue_3_1]
+other = "技术原理、功能、规格等描述和软件不一致，存在错误；"
+
+[issue_3_2]
+other = "原理图、架构图等存在错误；"
+
+[issue_3_3]
+other = "命令、命令参数等错误；"
+
+[issue_3_4]
+other = "代码片段错误；"
+
+[issue_3_5]
+other = "命令无法完成对应功能；"
+
+[issue_3_6]
+other = "界面错误，无法指导操作；"
+
+[issue_4]
+other = "风险提示"
+
+[issue_4_1]
+other = "对重要数据或系统存在风险的操作，缺少安全提示；"
+
+[issue_5]
+other = "内容合规"
+
+[issue_5_1]
+other = "违反法律法规，涉及政治、领土主权等敏感词；"
+
+[issue_5_2]
+other = "内容侵权；"
+
+[issue_title]
+other = "文档捉虫"
+
+[issue_participantion]
+other = "点击参与文档捉虫"
+
+[issue_part]
+other = "“有虫”文档片段"
+
+[issue_part_placeholder]
+other = "点击输入将“有虫”文档复制，粘贴到此处。"
+
+[issue_reason]
+other = "问题描述"
+
+[issue_reason_placeholder]
+other = "点击输入详细问题描述，以帮助我们快速定位问题。"
+
+[issue_submit_type]
+other = "提交类型"
+
+[issue_submit_type1]
+other = "issue"
+
+[issue_submit_type2]
+other = "PR"
+
+[issue_tip1]
+other = "有点复杂..."
+
+[issue_tip2]
+other = "找人问问吧。"
+
+[PR_tip1]
+other = "小问题，全程线上修改..."
+
+[PR_tip2]
+other = "一键搞定！"
+
+[issue_type]
+other = "问题类型"
+
+[satisfaction]
+other = "您对文档的总体满意度"
+
+[low_score]
+other = "非常不满意"
+
+[high_score]
+other = "非常满意"
+
+[join_reason]
+other = "请问是什么原因让您参与到这个问题中"
+
+[own_job]
+other = "本职工作"
+
+[job_wanted]
+other = "求职"
+
+[technology]
+other = "技术兴趣"
+
+[study]
+other = "学习"
+
+[email]
+other = "您的邮箱"
+
+[text_email]
+other = "我们可能针对您提出的问题，向您发送邮件反馈进行方案。如有获奖信息，也会通过此方式通知您。"
+
+[email_placeholder]
+other = "点击输入您的邮箱"
+
+[login_tip]
+other = "封印500报错，需保持gitee在登录状态"
+
+[submit_tip]
+other = "根据您的反馈，会自动生成issue模板。您只需点击按钮，创建issue即可。"
+
+[privacy_text]
+other = "您理解并同意，您填写并提交的内容，即视为您已充分阅读并同意openEuler的"
+
+[privacy_link]
+other = "《隐私政策》"
+
+[btn_submit]
+other = "提交"
+
+[back]
+other = "返回顶部"
+
+[questionnaire]
+other = "文档捉虫"
+
+#bug end
+
+#search page
+
+[result_1]
+other = "一共有"
+
+[result_2]
+other = "个关于"
+
+[result_3]
+other = "的结果"
+
+[hot_docs_version]
+other = "20.03 LTS"
+
+[relative]
+other = "关于openEuler"
+
+[website]
+other = "openEuler官网"
+
+[other_link]
+other = "友情链接"
+
+[cancel]
+other = "取消"
+
+[atom-text]
+other = "openEuler 是由开放原子开源基金会（OpenAtom Foundation）孵化及运营的开源项目"
+[brand]
+other = "品牌"
+[privacy]
+other = "隐私政策"
+[legal]
+other = "法律声明"
+[cookies]
+other = "关于cookies"
+[lang]
+other = "zh"
+[openEuler]
+other = "https://www.openeuler.org/zh/"
+[version_tip]
+other = "不同版本内容存在差异，请选择对应版本文档。"
+
+[approval1]
+other = "京ICP备2020036654号-1"
+[approval2]
+other = "京公网安备 11030102011597 号"

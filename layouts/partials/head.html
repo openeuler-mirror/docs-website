@@ -1,0 +1,63 @@
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="all,follow">
+    <meta name="googlebot" content="index,follow,snippet,archive">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {{ $versionArr := split $.File.Path "docs/" }}
+    {{ $version := index $versionArr 1}}
+    {{ $version := split $version "/" }}
+    {{ $version := index $version 0}}
+    {{ $title := "" }}
+    {{ if .Title }}
+        {{ $title = .Title }}
+    {{ else if and .IsSection .File }}
+        {{ $sections := split (trim .File.Dir "/") "/" }}
+        {{ $title = index ($sections | last 1) 0 | title }}
+    {{ else if and .IsPage .File }}
+        {{ $title = .File.BaseFileName }}
+    {{ end }}
+    {{ $path := "" }}
+    {{ with .File }}
+        {{ $path = .Path }}
+    {{ else }}
+        {{ $path = .Path }}
+    {{ end }}
+    {{ $suffix := "" }}
+    {{ if $path }}
+    {{   $suffix = site.Params.suffix }}
+    {{ else }}
+    {{   $suffix = site.Params.rootSuffix }}
+    {{ end }}
+    {{ if $version}}
+    <title>{{ $title }} | {{ $suffix }} | v{{ $version }}</title>
+    {{ else }}
+    <title>{{ $title }} | {{ $suffix }} </title>
+    {{ end }}
+    {{ if default .Summary .Description }}
+    <meta name="description" content="{{ default .Summary .Description }}">
+    {{ else if .Site.Params.DefaultDescription }}
+    <meta name="description" content="{{ .Site.Params.DefaultDescription }}">
+    {{ end }}
+    <meta name="author" content="{{ .Site.Params.author }}" >
+    <link rel="shortcut icon" href="{{ .Site.Params.resourceURL }}favicon.ico" type="image/x-icon">
+    <link href="{{ .Site.Params.resourceURL }}css/theme.css?t={{ mul 1000 (time now).Unix }}" rel="stylesheet" type="text/css">
+    <link href="{{ .Site.Params.resourceURL }}css/h5_footer.css?t={{ mul 1000 (time now).Unix }}" rel="stylesheet" type="text/css">
+    <link href="{{ .Site.Params.resourceURL }}css/common.css?t={{ mul 1000 (time now).Unix }}" rel="stylesheet" type="text/css">
+    <link href="{{ .Site.Params.resourceURL }}css/pagination.css?t={{ mul 1000 (time now).Unix }}" rel="stylesheet" type="text/css">
+    <link href="{{ .Site.Params.resourceURL }}css/reset.css?t={{ mul 1000 (time now).Unix }}" rel="stylesheet" type="text/css">
+    <link href="{{ .Site.Params.resourceURL }}css/revision_new.css?t={{ mul 1000 (time now).Unix }}" rel="stylesheet" type="text/css">
+    <link href="{{ .Site.Params.resourceURL }}css/login.css?t={{ mul 1000 (time now).Unix }}" rel="stylesheet" type="text/css">
+    <link href="{{ .Site.Params.resourceURL }}css/doc_map.css?t={{ mul 1000 (time now).Unix }}" rel="stylesheet" type="text/css">
+    <link href="{{ .Site.Params.resourceURL }}css/float.css?t={{ mul 1000 (time now).Unix }}"  rel="stylesheet" type="text/css">
+    <link href="{{ .Site.Params.resourceURL }}css/o_theme_light.css?t={{ mul 1000 (time now).Unix }}"  rel="stylesheet" type="text/css">
+    <link href="{{ .Site.Params.resourceURL }}css/o_theme_dark.css?t={{ mul 1000 (time now).Unix }}"  rel="stylesheet" type="text/css">
+    <link href="{{ .Site.Params.resourceURL }}css/cookie.css?t={{ mul 1000 (time now).Unix }}"  rel="stylesheet" type="text/css">
+    {{ if ne .Site.LanguageCode "ru"}}
+    <script src="{{ .Site.Params.resourceURL }}js/analytics.js?t={{ mul 1000 (time now).Unix }}"></script>
+    {{ end }}
+    <script src="{{ .Site.Params.resourceURL }}js/highlight.min.js?t={{ mul 1000 (time now).Unix }}"></script>
+    <link href="{{ .Site.Params.resourceURL }}css/highlightjs-theme.css?t={{ mul 1000 (time now).Unix }}" rel="stylesheet" type="text/css">
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="{{ .Site.Params.resourceURL }}js/init-theme.js?t={{ mul 1000 (time now).Unix }}"></script>
+</head>

@@ -1,0 +1,141 @@
+.doc-map {
+  padding: 0 120px;
+  padding-bottom: 64px;
+  margin-top: 32px;
+}
+.line-title {
+  margin-top: 24px;
+  padding: 16px 24px;
+  font-size: 24px;
+  line-height: 36px;
+  font-weight: 500;
+  color: var(--e-color-white);
+  background-size: 100% 100%;
+}
+.line-title:nth-of-type(1) {
+  margin-top: 0;
+}
+
+.secondary-title {
+  margin: 12px 0 16px;
+  color: var(--e-color-text1);
+  line-height: 28px;
+  font-size: 20px;
+}
+.secondary-title:first-child {
+  margin-top: 0;
+}
+.bg-1 {
+  background-image: url(../img/doc-map/bg-1.png);
+}
+.line-main {
+  margin-top: 16px;
+  padding: 24px;
+  background-color: var(--e-color-bg2);
+}
+.link-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 80px;
+  font-size: 18px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--e-color-border2);
+}
+.no-border {
+  padding-bottom: 0;
+  border: none;
+}
+.tool-left {
+  display: flex;
+  align-items: center;
+}
+.tool-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 28px 0;
+  border-top: 1px solid var(--e-color-border2);
+  font-size: 16px;
+  color: var(--e-color-text4);
+  border-bottom: none;
+}
+.tool-item:last-child {
+  padding-bottom: 0;
+}
+.tool-item .tool-right {
+  display: flex;
+  gap: 24px;
+}
+.download-btn {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 4px 16px;
+  border: 1px solid var(--e-color-border3);
+  font-size: 14px;
+  color: var(--e-color-brand1);
+}
+
+.download-btn svg {
+  transition: all 0.3s;
+  margin-left: 8px;
+  width: 12px;
+}
+.hover-transform:hover svg {
+  transform: translateX(4px);
+}
+.software-download svg {
+  transform: rotate(90deg);
+}
+@media screen and (max-width: 1620px) {
+  .doc-map {
+    margin-right: 0;
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  .doc-map {
+    margin-top: 40px;
+    padding: 0 16px;
+    transform: none;
+  }
+  .map-title {
+    font-size: 16px;
+    text-align: center;
+    line-height: normal;
+  }
+  .line-title {
+    margin-top: 16px;
+    padding: 12px;
+    font-size: 14px;
+    line-height: normal;
+  }
+  .line-title:first-child {
+    margin-top: 24px;
+  }
+  .line-main {
+    margin-top: 8px;
+    padding: 12px;
+  }
+  .line-main .link-list {
+    font-size: 12px;
+    gap: 8px 16px;
+  }
+  .secondary-title {
+    margin-bottom: 8px;
+    font-size: 12px;
+    line-height: normal;
+  }
+  .download-btn {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+  .download-btn:hover svg {
+    transform: none;
+  }
+  .line-main .tool-item {
+    padding: 8px 0;
+  }
+  .line-main .tool-item:last-child {
+    padding-bottom: 0;
+  }
+}

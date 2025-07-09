@@ -1,0 +1,10 @@
+{{ define "main" }}
+<article class="markdown" id="markdown">
+  {{ $pt := replaceRE "href=\"([^http].*\\.md)\"" "href=\"${1}.html\"" .Content }}
+  {{ $pt1 := (replace $pt ".md.html" ".html") }}
+  {{ $pt2 := (replace $pt1 ".md#" ".html#") }}
+  {{ $st := (replace $pt2 "&lsquo;" "'") }}
+  {{ $ot := (replace $st "&rsquo;" "'") }}
+  {{- $ot | safeHTML -}}
+</article>
+{{ end }}

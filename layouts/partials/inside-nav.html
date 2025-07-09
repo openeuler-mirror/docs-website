@@ -1,0 +1,90 @@
+<div id="title-evaluate">
+    <div class="alert">
+        <form action="">
+            <div class="icon-close"></div>
+            <h2 class="title-h2">{{ i18n "issue_title" }}</h2>
+            <h3 class="title-h3">{{ i18n "issue_part" }}</h3>
+            <div class="textarea-box">
+                <textarea class="main-input first-input" maxlength="500" placeholder="{{ i18n "issue_part_placeholder" }}"></textarea>
+            </div>
+            <h3 class="title-h3">{{ i18n "issue_reason" }}</h3>
+            <div class="submit-type">
+                <span class="type-title">{{ i18n "issue_submit_type" }}</span>
+                <span class="type-issue" attr_type="issue">
+                    <span>{{ i18n "issue_submit_type1" }}</span>
+                    <div class="issue-tip"><p>{{ i18n "issue_tip1" }}</p><p>{{ i18n "issue_tip2" }}</p></div>
+                </span>
+                <span class="type-PR active-submit" attr_type="PR">
+                    <span>{{ i18n "issue_submit_type2" }}</span>
+                    <div class="PR-tip"><p>{{ i18n "PR_tip1" }}</p><p>{{ i18n "PR_tip2" }}</p></div>
+                </span>
+            </div>
+            <div class="evaluates {{ i18n "lang" }}">
+                <div class="issue-title">{{ i18n "issue_type" }}</div>
+                <div class="issue" key="1">
+                    <span>{{ i18n "issue_1" }}</span>
+                    <div class="issue-detail">
+                        <p>● {{ i18n "issue_1_1" }}</p>
+                        <p>● {{ i18n "issue_1_2" }}</p>
+                        <p>● {{ i18n "issue_1_3" }}</p>
+                        <p>● {{ i18n "issue_1_4" }}</p>
+                        <p>● {{ i18n "issue_1_5" }}</p>
+                        <p>● {{ i18n "issue_1_6" }}</p>
+                    </div>
+                </div>
+                <div class="issue" key="2">
+                    <span>{{ i18n "issue_2" }}</span>
+                    <div class="issue-detail">
+                        <p>● {{ i18n "issue_2_1" }}</p>
+                        <p>● {{ i18n "issue_2_2" }}</p>
+                        <p>● {{ i18n "issue_2_3" }}</p>
+                        <p>● {{ i18n "issue_2_4" }}</p>
+                    </div>
+                </div>
+                <div class="issue" key="3">
+                    <span>{{ i18n "issue_3" }}</span>
+                    <div class="issue-detail">
+                        <p>● {{ i18n "issue_3_1" }}</p>
+                        <p>● {{ i18n "issue_3_2" }}</p>
+                        <p>● {{ i18n "issue_3_3" }}</p>
+                        <p>● {{ i18n "issue_3_4" }}</p>
+                        <p>● {{ i18n "issue_3_5" }}</p>
+                        <p>● {{ i18n "issue_3_6" }}</p>
+                    </div>
+                </div>
+                <div class="issue" key="4">
+                    <span>{{ i18n "issue_4" }}</span>
+                    <div class="issue-detail">
+                        <p>● {{ i18n "issue_4_1" }}</p>
+                    </div>
+                </div>
+                <div class="issue" key="5">
+                    <span>{{ i18n "issue_5" }}</span>
+                    <div class="issue-detail">
+                        <p>● {{ i18n "issue_5_1" }}</p>
+                        <p>● {{ i18n "issue_5_2" }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="textarea-box">
+                <textarea class="issue-reason main-input" maxlength="500" placeholder="{{ i18n "issue_reason_placeholder" }}"></textarea>
+                <!-- <p><span id="text-count-tow">0</span>/500</p> -->
+            </div>
+            <h3 class="title-h3">{{ i18n "satisfaction" }}</h3>
+            <div class="satisfaction">
+                <div class="low-score">{{ i18n "low_score" }}</div>
+                <div class="score-box">
+                </div>
+                <div class="high-score">{{ i18n "high_score" }}</div>
+            </div>
+            <div class="btn-submit"><span>{{ i18n "btn_submit" }}</span>
+                <div class="submit-tip issue-submit-tip">
+                    {{ i18n "submit_tip" }}
+                </div>
+                <div class="submit-tip pr-submit-tip">
+                </div>
+            </div>
+        </form>
+    </div>
+    {{ partial "float.html" . }}
+</div>

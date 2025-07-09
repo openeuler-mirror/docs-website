@@ -1,0 +1,290 @@
+/* // 颜色 */
+:root {
+  /**
+   * 基础色盘
+   */
+
+  /* // 克莱因蓝 */
+  --e-color-kleinblue1: #000412;
+  --e-color-kleinblue2: #000827;
+  --e-color-kleinblue3: #0c2360;
+  --e-color-kleinblue4: #00288d;
+  --e-color-kleinblue5: #002fa7;
+  --e-color-kleinblue6: #0d3cb4;
+  --e-color-kleinblue7: #2555cd;
+  --e-color-kleinblue8: #406fe7;
+  --e-color-kleinblue9: #5988ff;
+  --e-color-kleinblue10: #b2c0e4;
+
+  /* // 中性色 */
+  --e-color-neutral1: #121212;
+  --e-color-neutral2: #151515;
+  --e-color-neutral3: #2d2d2d;
+  --e-color-neutral4: #3f3f3f;
+  --e-color-neutral5: #555555;
+  --e-color-neutral6: #707070;
+  --e-color-neutral7: #848484;
+  --e-color-neutral8: #999999;
+  --e-color-neutral9: #b2b2b2;
+  --e-color-neutral10: #cccccc;
+  --e-color-neutral11: #e5e5e5;
+
+  /* // 红色 */
+  --e-color-red1: #850d09;
+  --e-color-red2: #b4110c;
+  --e-color-red3: #e4160f;
+  --e-color-red4: #f13b35;
+  --e-color-red5: #f3524d;
+  --e-color-red6: #ff5f5a;
+  --e-color-red7: #ff7873;
+  --e-color-red8: #ff928d;
+  --e-color-red9: #ffaba6;
+  --e-color-red10: #ffd2af;
+
+  /* // 黄色 */
+  --e-color-yellow1: #754c01;
+  --e-color-yellow2: #a86d01;
+  --e-color-yellow3: #dabe01;
+  --e-color-yellow4: #feaa11;
+  --e-color-yellow5: #feb32a;
+  --e-color-yellow6: #ffc037;
+  --e-color-yellow7: #ffd950;
+  --e-color-yellow8: #fff36a;
+  --e-color-yellow9: #ffff83;
+  --e-color-yellow10: #ffe1aa;
+
+  /* // 绿色 */
+  --e-color-green1: #1f370f;
+  --e-color-green2: #355f1a;
+  --e-color-green3: #4b8725;
+  --e-color-green4: #62af30;
+  --e-color-green5: #6dc335;
+  --e-color-green6: #7ad042;
+  --e-color-green7: #93e95b;
+  --e-color-green8: #adff75;
+  --e-color-green9: #c6ff8e;
+  --e-color-green10: #c5e7ae;
+
+  /* // 橙色 */
+  --e-color-orange1: #9b370e;
+  --e-color-orange2: #b54f00;
+  --e-color-orange3: #e86600;
+  --e-color-orange4: #ff801c;
+  --e-color-orange5: #ff8e36;
+  --e-color-orange6: #ff9b43;
+  --e-color-orange7: #ffb45c;
+  --e-color-orange8: #ffce76;
+  --e-color-orange9: #ffcf8f;
+  --e-color-orange10: #ffd2af;
+
+  /* // 灰蓝色 */
+  --e-color-greyblue1: #e5e8f0;
+  --e-color-greyblue2: #f7f8fa;
+  --e-color-greyblue3: #f5f6f8;
+
+  /* // 灰黑色 */
+  --e-color-greyblack1: #1e1e1e;
+  --e-color-greyblack2: #242424;
+  --e-color-greyblack3: #2e2e2e;
+  --e-color-greyblack4: #383838;
+
+  /* // 白色 */
+  --e-color-white: #ffffff;
+
+  /* // 黑色 */
+  --e-color-black: #000000;
+
+  /* // 透明 */
+  --e-color-transparent: transparent;
+
+  /**
+   * 状态颜色 && 功能颜色
+   */
+
+  /* // 成功色 */
+  --e-color-success1: var(--e-color-green5);
+  --e-color-success2: var(--e-color-green7);
+  --e-color-success3: var(--e-color-green10);
+
+  /* // 告警色 */
+  --e-color-warning1: var(--e-color-orange5);
+  --e-color-warning2: var(--e-color-orange7);
+  --e-color-warning3: var(--e-color-orange10);
+
+  /* // 错误色 */
+  --e-color-error1: var(--e-color-red5);
+  --e-color-error2: var(--e-color-red7);
+  --e-color-error3: var(--e-color-red10);
+
+  /* // 品牌色 */
+  --e-color-brand1: var(--e-color-kleinblue5);
+  --e-color-brand2: var(--e-color-kleinblue8);
+  --e-color-brand3: var(--e-color-kleinblue4);
+  --e-color-brand4: var(--e-color-kleinblue6);
+  --e-color-brand5: var(--e-color-kleinblue10);
+  --e-color-brand6: var(--e-color-kleinblue10);
+
+  /* // 文字颜色 */
+  --e-color-text1: var(--e-color-black);
+  --e-color-text2: var(--e-color-white);
+  --e-color-text3: var(--e-color-neutral4);
+  --e-color-text4: var(--e-color-neutral6);
+  --e-color-text5: var(--e-color-neutral11);
+
+  /* // 背景色 */
+  --e-color-bg1: var(--e-color-greyblue3);
+  --e-color-bg2: var(--e-color-white);
+  --e-color-bg3: var(--e-color-greyblue2);
+  --e-color-bg4: var(--e-color-greyblue1);
+  --e-color-bg5: var(--e-color-white);
+  --e-color-bg6: rgba(0, 0, 0, 0.5);
+  --e-color-bg-secondary: var(--e-color-neutral11);
+
+  /* // 链接色 */
+  --e-color-link1: var(--e-color-kleinblue5);
+  --e-color-link2: var(--e-color-kleinblue8);
+  --e-color-link3: var(--e-color-kleinblue4);
+  --e-color-link4: var(--e-color-kleinblue6);
+  --e-color-link5: var(--e-color-kleinblue10);
+  --e-color-link6: var(--e-color-kleinblue10);
+
+  /* // 边框颜色 */
+  --e-color-border1: var(--e-color-neutral6);
+  --e-color-border2: var(--e-color-neutral11);
+  --e-color-border3: var(--e-color-kleinblue5);
+
+  /* // 分割线颜色 */
+  --e-color-division1: var(--e-color-neutral11);
+
+  /* // 填充色，用于阴影容器背景 */
+  --e-color-fill1: var(--e-color-white);
+  --e-color-fill2: var(--e-color-white);
+  --e-color-fill2_hover: var(--e-color-white);
+  --e-color-fill3: var(--e-color-white);
+  --e-color-fill4: var(--e-color-white);
+  --e-color-fill5: var(--e-color-white);
+
+  --e-shadow-l1: 0 1px 5px rgba(45, 47, 51, 0.1);
+  --e-shadow-l2: 0 1px 5px rgba(45, 47, 51, 0.1);
+  --e-shadow-l2_hover: 0 6px 18px rgba(0, 47, 167, 0.14);
+  --e-shadow-l3: 0 6px 18px rgba(45, 47, 51, 0.14);
+  --e-shadow-l4: 0 10px 32px rgba(45, 47, 51, 0.18);
+  --e-shadow-l5: 0 12px 42px rgba(45, 47, 51, 0.24);
+  --e-icon-bg:var(--e-color-black);
+
+   /* 字体font-size */
+  --o-font-size-h1: 64px;
+  --o-font-size-h2: 54px;
+  --o-font-size-h3: 36px;
+  --o-font-size-h4: 28px;
+  --o-font-size-h5: 24px;
+  --o-font-size-h6: 20px;
+  --o-font-size-h7: 18px;
+  --o-font-size-h8: 16px;
+  --o-font-size-text: 14px;
+  --o-font-size-tip: 12px;
+
+  /* 字体line-height */
+  --o-line-height-h1: 84px;
+  --o-line-height-h2: 76px;
+  --o-line-height-h3: 48px;
+  --o-line-height-h4: 36px;
+  --o-line-height-h5: 32px;
+  --o-line-height-h6: 28px;
+  --o-line-height-h7: 26px;
+  --o-line-height-h8: 24px;
+  --o-line-height-text: 22px;
+  --o-line-height-tip: 18px;
+  
+  /* 间距 */
+  --o-spacing-h1: 64px;
+  --o-spacing-h2: 40px;
+  --o-spacing-h3: 32px;
+  --o-spacing-h4: 24px;
+  --o-spacing-h5: 16px;
+  --o-spacing-h6: 12px;
+  --o-spacing-h7: 10px;
+  --o-spacing-h8: 8px;
+  --o-spacing-h9: 6px;
+  --o-spacing-h10: 4px;
+
+  /* 分页器颜色 */
+  --o-pagination-bg-color:var(--e-color-text5);
+}
+.dark {
+  /* // 成功色 */
+  --e-color-success1: var(--e-color-yellowgreen5);
+  --e-color-success2: var(--e-color-yellowgreen7);
+  --e-color-success3: var(--e-color-yellowgreen2);
+
+  /* // 告警色 */
+  --e-color-warning1: var(--e-color-orange5);
+  --e-color-warning2: var(--e-color-orange7);
+  --e-color-warning3: var(--e-color-orange1);
+
+  /* // 错误色 */
+  --e-color-error1: var(--e-color-red5);
+  --e-color-error2: var(--e-color-red7);
+  --e-color-error3: var(--e-color-red1);
+
+  /* // 品牌色 */
+  --e-color-brand1: var(--e-color-kleinblue8);
+  --e-color-brand2: var(--e-color-kleinblue9);
+  --e-color-brand3: var(--e-color-kleinblue5);
+  --e-color-brand4: var(--e-color-kleinblue7);
+  --e-color-brand5: var(--e-color-kleinblue3);
+  --e-color-brand6: var(--e-color-kleinblue3);
+
+  /* // 文字颜色 */
+  --e-color-text1: var(--e-color-white);
+  --e-color-text2: var(--e-color-black);
+  --e-color-text3: var(--e-color-neutral11);
+  --e-color-text4: var(--e-color-neutral9);
+  --e-color-text5: var(--e-color-neutral5);
+
+  /* // 背景色 */
+  --e-color-bg1: var(--e-color-neutral1);
+  --e-color-bg2: var(--e-color-greyblack1);
+  --e-color-bg3: var(--e-color-greyblack2);
+  --e-color-bg4: var(--e-color-greyblack3);
+  --e-color-bg5: var(--e-color-greyblack3);
+  --e-color-bg6: rgba(0, 0, 0, 0.5);
+  --e-color-bg-secondary: var(--e-color-neutral5);
+
+  /* // 链接色 */
+  --e-color-link1: var(--e-color-kleinblue8);
+  --e-color-link2: var(--e-color-kleinblue9);
+  --e-color-link3: var(--e-color-kleinblue5);
+  --e-color-link4: var(--e-color-kleinblue7);
+  --e-color-link5: var(--e-color-kleinblue3);
+  --e-color-link6: var(--e-color-kleinblue3);
+
+  /* // 边框颜色 */
+  --e-color-border1: var(--e-color-neutral9);
+
+  /* // 分割线颜色 */
+  --e-color-division1: var(--e-color-neutral3);
+
+  /* // 填充色，用于阴影容器背景 */
+  --e-color-fill1: var(--e-color-greyblack1);
+  --e-color-fill2: var(--e-color-greyblack1);
+  --e-color-fill2_hover: var(--e-color-greyblack2);
+  --e-color-fill3: var(--e-color-greyblack2);
+  --e-color-fill4: var(--e-color-greyblack3);
+  --e-color-fill5: var(--e-color-greyblack4);
+
+  /**
+   * 阴影
+   */
+  --e-shadow-l1: 0 1px 7px rgba(0, 0, 0, 0.3);
+  --e-shadow-l2: 0 1px 7px rgba(0, 0, 0, 0.3);
+  --e-shadow-l2_hover: 0 6px 18px rgba(0, 0, 0, 0.42);
+  --e-shadow-l3: 0 6px 18px rgba(0, 0, 0, 0.42);
+  --e-shadow-l4: 0 10px 32px rgba(0, 0, 0, 0.54);
+  --e-shadow-l5: 0 12px 42px rgba(0, 0, 0, 0.72);
+
+  --e-icon-bg:var(--e-color-white);
+
+  /* 分页器颜色 */
+  --o-pagination-bg-color:var(--e-color-text5);
+}

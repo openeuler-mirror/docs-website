@@ -1,0 +1,388 @@
+#list page
+[lts_version]
+other = "Long-Term Supported Versions"
+
+[innovation_version]
+other = "Innovation Versions"
+
+[archive_version]
+other = "Archived Versions (No Longer Maintained)"
+
+[document_home]
+other = "Documentation"
+
+[hot_document]
+other = "Hot documents"
+
+[login_text]
+other = "Login"
+
+[logout_text]
+other = "Logout"
+
+[zone_text]
+other = "User Center"
+
+[container_header]
+other = "Installation Guide"
+
+[container_link]
+other = "/en/docs/22.03_LTS_SP2/docs/Installation/Installation.html"
+
+[secGear_header]
+other = "Administrator Guide"
+
+[secGear_link]
+other = "/en/docs/22.03_LTS_SP2/docs/Administration/administration.html"
+
+[StratoVirt_header]
+other = "Container User Guide"
+
+[StratoVirt_link]
+other = "/en/docs/22.03_LTS_SP2/docs/Container/container.html"
+
+[A-Tune_header]
+other = "A-Tune User Guide"
+
+[A-Tune_link]
+other = "/en/docs/22.03_LTS_SP2/docs/A-Tune/A-Tune.html"
+
+[A-Ops_header]
+other = "A-Ops User Guide"
+
+[A-Ops_link]
+other = "/en/docs/22.03_LTS_SP2/docs/A-Ops/overview.html"
+
+[Security_header]
+other = "Security Hardening Guide"
+
+[Security_link]
+other = "/en/docs/22.03_LTS_SP2/docs/SecHarden/secHarden.html"
+
+
+[document]
+other = "Document"
+
+[version_selection]
+other = "Version selection"
+
+[version_text]
+other = "Version"
+
+[current_lang]
+other = "English"
+
+[search]
+other = "search"
+
+[search_placeholder]
+other = "Input content"
+
+[search_no_data_tip]
+other = "No content found."
+
+[quick_links]
+other = "Quick links"
+
+[kunpeng_community]
+other = "Kunpeng community"
+
+[document_link]
+other = "Documentation"
+
+[openeuler_document]
+other = "openEuler Documentation"
+
+[catalog_text]
+other = "Content"
+
+[other_text]
+other = "Reference Links"
+
+[know_88_1]
+other = "/en/docs/23.03/docs/Releasenotes/terms-of-use.html"
+[know_89_1]
+other = "/en/docs/22.03_LTS_SP1/docs/Releasenotes/terms-of-use.html"
+[know_90_1]
+other = "/en/docs/22.09/docs/Releasenotes/terms-of-use.html"
+[know_91_1]
+other = "/en/docs/22.03_LTS/docs/Releasenotes/terms-of-use.html"
+[know_92_1]
+other = "/en/docs/20.03_LTS_SP3/docs/Releasenotes/terms-of-use.html"
+[know_93_1]
+other = "/en/docs/21.09/docs/Releasenotes/terms-of-use.html"
+[know_94_1]
+other = "/en/docs/20.03_LTS_SP2/docs/Releasenotes/terms-of-use.html"
+[know_95_1]
+other = "/en/docs/21.03/docs/Releasenotes/terms-of-use.html"
+[know_96_1]
+other = "/en/docs/20.03_LTS_SP1/docs/Releasenotes/terms-of-use.html"
+[know_97_1]
+other = "/en/docs/20.09/docs/Releasenotes/terms-of-use.html"
+[know_98_1]
+other = "/en/docs/20.03_LTS/docs/Releasenotes/terms-of-use.html"
+[version_88]
+other = "23.03"
+[version_89]
+other = "22.03 LTS SP1"
+[version_90]
+other = "22.09"
+[version_91]
+other = "22.03 LTS"
+[version_92]
+other = "20.03 LTS SP3"
+[version_93]
+other = "21.09"
+[version_94]
+other= "20.03 LTS SP2"
+[version_95]
+other = "21.03"
+[version_96]
+other = "20.03 LTS SP1"
+[version_97]
+other= "20.09"
+[version_98]
+other = "20.03 LTS"
+[atom]
+other = "openEuler is an open source project incubated and operated by the OpenAtom Foundation."
+
+[copy_right]
+other = "Copyright © 2025 openEuler. All rights reserved."
+
+[attention]
+other = "WeChat Subscription"
+
+[source_code]
+other = "View source on Gitee"
+
+[feedbook]
+other = "Feedback"
+
+[previous]
+other = "Previous"
+
+[next]
+other = "Next"
+
+[evaluate]
+other = "Rating"
+
+#bug start
+
+[issue_detail]
+other = "View Details"
+
+[issue_1]
+other = "Specifications and Common Mistakes"
+
+[issue_1_1]
+other = "Misspellings or punctuation mistakes;"
+
+[issue_1_2]
+other = "Incorrect links, empty cells, or wrong formats;"
+
+[issue_1_3]
+other = "Chinese characters in English context;"
+
+[issue_1_4]
+other = "Minor inconsistencies between the UI and descriptions;"
+
+[issue_1_5]
+other = "Low writing fluency that does not affect understanding;"
+
+[issue_1_6]
+other = "Incorrect version numbers, including software package names and version numbers on the UI."
+
+[issue_2]
+other = "Usability"
+
+[issue_2_1]
+other = "Incorrect or missing key steps;"
+
+[issue_2_2]
+other = "Missing prerequisites or precautions;"
+
+[issue_2_3]
+other = "Ambiguous figures, tables, or texts;"
+
+[issue_2_4]
+other = "Unclear logic, such as missing classifications, items, and steps."
+
+[issue_3]
+other = "Correctness"
+
+[issue_3_1]
+other = "Technical principles, function descriptions, or specifications inconsistent with those of the software;"
+
+[issue_3_2]
+other = "Incorrect schematic or architecture diagrams;"
+
+[issue_3_3]
+other = "Incorrect commands or command parameters;"
+
+[issue_3_4]
+other = "Incorrect code;"
+
+[issue_3_5]
+other = "Commands inconsistent with the functions;"
+
+[issue_3_6]
+other = "Wrong screenshots."
+
+[issue_4]
+other = "Risk Warnings"
+
+[issue_4_1]
+other = "Lack of risk warnings for operations that may damage the system or important data."
+
+[issue_5]
+other = "Content Compliance"
+
+[issue_5_1]
+other = "Contents that may violate applicable laws and regulations or geo-cultural context-sensitive words and expressions;"
+
+[issue_5_2]
+other = "Copyright infringement."
+
+[issue_title]
+other = "Bug Catching"
+
+[issue_participantion]
+other = "Click to submit bugs"
+
+[issue_part]
+other = "Buggy Content"
+
+[issue_part_placeholder]
+other = "Copy and paste the buggy document content here."
+
+[issue_reason]
+other = "Bug Description"
+
+[issue_reason_placeholder]
+other = "Describe the bug so that we can quickly locate the problem."
+
+[issue_submit_type]
+other = "Submit As"
+
+[issue_submit_type1]
+other = "Issue"
+
+[issue_submit_type2]
+other = "PR"
+
+[issue_tip1]
+other = "It's a little complicated...."
+
+[issue_tip2]
+other = "I'd like to ask someone."
+
+[PR_tip1]
+other = "Just a small problem."
+
+[PR_tip2]
+other = "I can fix it online!"
+
+[issue_type]
+other = "Bug Type"
+
+[satisfaction]
+other = "How satisfied are you with this document"
+
+[low_score]
+other = "Not satisfied at all"
+
+[high_score]
+other = "Very satisfied"
+
+[join_reason]
+other = "请问是什么原因让您参与到这个问题中"
+
+[own_job]
+other = "本职工作"
+
+[job_wanted]
+other = "求职"
+
+[technology]
+other = "技术兴趣"
+
+[study]
+other = "学习"
+
+[email]
+other = "Your email address"
+
+[text_email]
+other = "We may contact you through email in regard to the bug fixing solution. You will also be notified through email if you win any prize during the activity."
+
+[email_placeholder]
+other = "Your email address"
+
+[login_tip]
+other = "Error 500 reported.Log in to Gitee first."
+
+[submit_tip]
+other = "Click to create an issue. An issue template will be automatically generated based on your feedback."
+
+[privacy_text]
+other = "By submitting the contents, you fully understand and agree to the terms of the openEuler "
+
+[privacy_link]
+other = "Privacy Policy."
+
+[btn_submit]
+other = "Submit"
+
+[licensed_1]
+other = "Licensed under"
+
+[licensed_2]
+other = "the MulanPSL2"
+
+[back]
+other = "Back to Top"
+
+[questionnaire]
+other = "Bug Catching"
+
+#bug end
+
+#search page
+
+[result_1]
+other = " "
+
+[result_2]
+other = " search results about "
+
+[result_3]
+other = " are found"
+
+[hot_docs_version]
+other = "20.03 LTS"
+
+[cancel]
+other = "cancel"
+
+[atom-text]
+other = "openEuler is an open source project incubated and operated by the OpenAtom Foundation."
+[brand]
+other = "Trademark"
+[privacy]
+other = "Privacy Policy"
+[legal]
+other = "Legal Notice"
+[cookies]
+other = "About Cookies"
+[lang]
+other = "en"
+[openEuler]
+other = "https://www.openeuler.org/en/"
+[version_tip]
+other = "Documents vary with versions, Select one as required."
+
+[approval1]
+other = "J. ICP B. No. 2020036654-1"
+[approval2]
+other = "J.G.W.A.B. No. 11030102011597"
