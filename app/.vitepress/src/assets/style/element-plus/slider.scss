@@ -1,0 +1,65 @@
+@use '@/assets/style/mixin/screen.scss' as *;
+@use '@/assets/style/mixin/font.scss' as *;
+
+.el-slider {
+  --el-slider-height: 6px;
+  --el-slider-border-radius: 4px;
+  --el-slider-button-wrapper-size: 14px;
+  --el-slider-button-wrapper-offset: -4px;
+  --el-slider-button-size: 14px;
+  --el-slider-runway-bg-color: var(--o-color-fill1);
+  height: 14px;
+
+  .el-slider__bar {
+    --el-slider-height: 8px;
+    background: linear-gradient(90deg, #07caff 0%, #5882ff 100%);
+    top: -1px;
+    left: -4px !important;
+  }
+
+  .el-slider__stop {
+    width: 2px;
+    height: 2px;
+    top: 50%;
+    margin-top: -1px;
+    background-color: var(--o-color-info4);
+  }
+
+  .el-slider__marks-stop {
+    background-color: var(--o-color-info4-inverse);
+
+    &:last-child {
+      transform: translate(-3px, -1px);
+      background-color: var(--o-color-info4);
+    }
+  }
+
+  .el-slider__runway {
+    background-color: transparent;
+    &::before {
+      content: '';
+      position: absolute;
+      width: calc(100% + 3px);
+      inset: 0;
+      right: 4px;
+      background-color: var(--o-color-fill3);
+      border-top-right-radius: 3px;
+      border-bottom-right-radius: 3px;
+    }
+  }
+
+  .el-slider__button {
+    border: solid 5px var(--o-color-fill2);
+    box-shadow: var(--o-shadow-1);
+    background: linear-gradient(90deg, #07caff 0%, #5882ff 100%);
+  }
+
+  .el-slider__button-wrapper {
+    display: flex;
+  }
+
+  .el-slider__marks {
+    width: 2px;
+    height: 2px;
+  }
+}
