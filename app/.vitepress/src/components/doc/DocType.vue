@@ -148,6 +148,10 @@ const reportDocTypeClick = () => {
   }
 }
 
+.icon {
+  font-size: 24px;
+}
+
 .doc-type {
   max-width: 240px;
   margin-right: 8px;

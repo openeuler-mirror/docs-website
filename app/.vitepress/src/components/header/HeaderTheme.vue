@@ -84,11 +84,14 @@ watch(
 .theme-box-pc {
   display: flex;
   align-items: center;
+  height: 100%;
   cursor: pointer;
   color: var(--o-color-info1);
-  .icon svg {
-    width: var(--o-icon_size-s);
-    height: var(--o-icon_size-s);
+  .icon {
+    font-size: var(--o-icon_size-m);
+    @include hover {
+      color: var(--o-color-primary1);
+    }
   }
   @include respond-to('<=pad_v') {
     display: none;

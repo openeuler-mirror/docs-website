@@ -70,7 +70,7 @@ function replaceOrgDomain(targetPath) {
       return;
     }
 
-    if (!name.endsWith('js') && !name.endsWith('html') && !name.endsWith('toml')) {
+    if (!name.endsWith('js') && !name.endsWith('html') && !name.endsWith('toml') && !name.endsWith('md')) {
       return;
     }
 
@@ -334,6 +334,7 @@ const normalizeContentWithHugo = async (branch, source) => {
     replaceOrgDomain(path.join(BUILD_DIR, 'i18n'));
     replaceOrgDomain(path.join(BUILD_DIR, 'layouts'));
     replaceOrgDomain(path.join(BUILD_DIR, 'static'));
+    replaceOrgDomain(path.join(BUILD_DIR, 'content'));
   }
 };
 

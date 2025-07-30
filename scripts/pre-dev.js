@@ -38,6 +38,7 @@ function gitCloneAndCheckout(url, branch) {
 
   console.log(`[pre-dev]: 本地存在分支 ${branch}，开始切换分支`);
   try {
+    execSync(`cd ${repoDir} && git checkout HEAD -- . && git clean -fd`, { stdio: 'inherit' });
     execSync(`cd ${repoDir} && git checkout ${branch}`, { stdio: 'inherit' });
     console.log(`[pre-dev]: 切换分支成功，开始拉取远程更新内容`);
     execSync(`cd ${repoDir} && git pull origin ${branch}`, { stdio: 'inherit' });
@@ -124,7 +125,7 @@ function copyDslContent() {
 /**
  * 复制 sig 仓库内容到指定位置
  */
-const copySigRepo = async (upstream, dir, storagePath) => {
+function copySigRepo(upstream, dir, storagePath) {
   const { url, repo, branch, locations } = getGitUrlInfo(upstream);
   gitCloneAndCheckout(url, branch);
   const cachePath = path.join(CACHE_DIR, repo);
@@ -175,15 +176,22 @@ function scanYamlToCloneSigRepo(targetPath) {
   }
 }
 
-const syncDocs = async (branch) => {
+/**
+ * 同步文档内容到对应的目录
+ * @param {string} branch 分支名
+ */
+function syncDocs(branch) {
   const branchName = getBranchName(branch);
-  // 复制文档内容
   gitCloneAndCheckout('https://gitee.com/openeuler/docs.git', branch);
   copyDocsContent(branchName);
   scanYamlToCloneSigRepo(`${__dirname}/app/zh/docs/${branchName}`);
   scanYamlToCloneSigRepo(`${__dirname}/app/en/docs/${branchName}`);
+};
 
-  // 复制 dsl 内容
+/**
+ * 同步 dsl 内容
+ */
+function syncDsl() { 
   gitCloneAndCheckout('https://gitee.com/openeuler/docs.git', 'stable-common');
   copyDslContent();
 };
@@ -192,6 +200,9 @@ const args = process.argv.slice(2);
 if (args.length === 0) {
   console.error('请提供分支名称');
   process.exit(1);
-} else {
-  syncDocs(args[0]);
+}
+
+syncDsl();
+for (const branch of args) {
+  syncDocs(branch);
 }

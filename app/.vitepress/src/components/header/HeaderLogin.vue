@@ -60,16 +60,16 @@ onMounted(async () => {
       </div>
       <template #dropdown>
         <ODropdownItem>
-          <div class="header-user-menu-item" @click="jumpToUserZone">{{ t('header.USER_CENTER') }}</div>
+          <div class="header-user-menu-item" :class="{ 'item-en': locale === 'en' }" @click="jumpToUserZone">{{ t('header.USER_CENTER') }}</div>
         </ODropdownItem>
         <ODropdownItem>
-          <div class="header-user-menu-item" @click="jumpToMsgCenter">
+          <div class="header-user-menu-item" :class="{ 'item-en': locale === 'en' }" @click="jumpToMsgCenter">
             <OBadge v-if="unreadMsgCount" :value="unreadMsgCount" color="danger">{{ t('header.MESSAGE_CENTER') }}</OBadge>
             <span v-else>{{ t('header.MESSAGE_CENTER') }}</span>
           </div>
         </ODropdownItem>
         <ODropdownItem>
-          <div class="header-user-menu-item" @click="logout">{{ t('header.LOGOUT') }}</div>
+          <div class="header-user-menu-item" :class="{ 'item-en': locale === 'en' }" @click="logout">{{ t('header.LOGOUT') }}</div>
         </ODropdownItem>
       </template>
     </ODropdown>
@@ -120,6 +120,10 @@ onMounted(async () => {
   text-align: center;
 }
 
+.header-user-menu-item.item-en {
+  min-width: 188px;
+}
+
 .user-dropdown {
   .o-dropdown-item {
     --dropdown-item-padding: 8px 0;
@@ -128,10 +132,11 @@ onMounted(async () => {
 
 .login-btn {
   color: var(--o-color-info1);
+  font-size: var(--o-icon_size-m);
   cursor: pointer;
-  svg {
-    width: var(--o-icon_size-s);
-    height: var(--o-icon_size-s);
+
+  @include hover {
+    color: var(--o-color-primary1);
   }
 }
 </style>

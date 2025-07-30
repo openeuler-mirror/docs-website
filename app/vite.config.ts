@@ -3,7 +3,8 @@ import { fileURLToPath, URL } from 'node:url';
 import { defineConfig } from 'vitepress';
 import Icons from 'unplugin-icons/vite';
 import { FileSystemIconLoader } from 'unplugin-icons/loaders';
-import basicSsl from '@vitejs/plugin-basic-ssl';
+
+import replaceUrlPlugin from './.vitepress/plugins/replace-url-plugin';
 
 export default defineConfig({
   plugins: [
@@ -16,7 +17,7 @@ export default defineConfig({
         feedback: FileSystemIconLoader(fileURLToPath(new URL('./.vitepress/src/assets/category/feedback/svg-icons', import.meta.url))),
       },
     }),
-    // basicSsl(),
+    replaceUrlPlugin(),
   ],
   assetsInclude: ['**/*.PNG'],
   build: {

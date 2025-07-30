@@ -401,9 +401,7 @@ const closeSearch = () => {
       color: var(--o-color-info1);
       padding-top: var(--o-gap-1);
       cursor: pointer;
-      svg {
-        width: var(--o-icon_size-s);
-      }
+      font-size: var(--o-icon_size-s);
     }
   }
 }

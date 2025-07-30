@@ -38,10 +38,7 @@ const itemChange = (data: any) => {
 
 <style lang="scss" scoped>
 .icon {
-  svg {
-    width: 16px;
-    height: 16px;
-  }
+  font-size: 16px;
   margin-left: var(--o-gap-1);
 }
 
@@ -56,6 +53,10 @@ const itemChange = (data: any) => {
     align-items: center;
     cursor: pointer;
     color: var(--o-color-info1);
+
+    &:hover {
+      color: var(--o-color-primary1);
+    }
 
     .title {
       display: flex;

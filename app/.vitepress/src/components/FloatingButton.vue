@@ -93,7 +93,7 @@ onMounted(() => {
       :visible="dialogVisible"
       :phone-half-full="true"
       :style="{ '--dlg-head-padding': '16px 24px 0', '--dlg-body-padding': '24px 24px 16px', '--dlg-padding-body-top': '12px', '--dlg-radius': '4px 4px 0 0' }"
-      class="feedback-mb-dialog"
+      :scroller="false"
       @change="change"
     >
       <FeedbackSlider :show="isShow" @close="change" />

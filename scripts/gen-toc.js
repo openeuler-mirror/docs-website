@@ -9,6 +9,7 @@ import yaml from 'js-yaml';
 import { slugify } from '@mdit-vue/shared';
 
 import { getGitUrlInfo } from './utils/git.js';
+import { getBranchName } from './utils/common.js';
 
 const __dirname = path.resolve(); // 获取当前文件夹路径
 const recordIds = new Set(); // 已处理过的 id
@@ -393,7 +394,8 @@ async function processTocFile() {
   const outputZhPath = path.join(__dirname, './app/.vitepress/public/toc/toc.json');
   const outputEnPath = path.join(__dirname, './app/.vitepress/public/toc/toc-en.json');
 
-  for (const version of versions) {
+  for (const item of versions) {
+    const version = getBranchName(item);
     console.log(`正在构建 ${version} toc 文件...`);
     if (version === 'common') {
       // common 分支处理

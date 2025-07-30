@@ -443,6 +443,9 @@ const submitArticleFeedback = () => {
 }
 </style>
 <style lang="scss" scoped>
+.o-icon {
+  font-size: 24px;
+}
 .feedback {
   position: fixed;
   bottom: 200px;
@@ -557,6 +560,7 @@ const submitArticleFeedback = () => {
       right: 12px;
       color: var(--o-color-info2);
       cursor: pointer;
+      font-size: 24px;
 
       @include h4;
       transition: all var(--o-duration-m1) var(--o-easing-standard-in);

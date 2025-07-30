@@ -55,8 +55,8 @@ const onClickNavLink = (item?: any) => {
         @link-click="linkClick"
       >
         {{ subItem.NAME }}
-        <OIcon v-if="subItem.ICON">
-          <component :is="subItem.ICON" class="icon" />
+        <OIcon v-if="subItem.ICON" class="icon">
+          <component :is="subItem.ICON" />
         </OIcon>
         <OTag
           v-if="subItem.TAG"
@@ -78,8 +78,8 @@ const onClickNavLink = (item?: any) => {
           @link-click="linkClick"
         >
           {{ system.NAME }}
-          <OIcon v-if="system.ICON">
-            <component :is="system.ICON" class="icon" />
+          <OIcon v-if="system.ICON" class="icon">
+            <component :is="system.ICON" />
           </OIcon>
         </NavLink>
       </div>
@@ -101,8 +101,8 @@ const onClickNavLink = (item?: any) => {
           @link-click="linkClick"
         >
           {{ subItem.NAME }}
-          <OIcon v-if="subItem.ICON">
-            <component :is="subItem.ICON" class="icon" />
+          <OIcon v-if="subItem.ICON" class="icon">
+            <component :is="subItem.ICON" />
           </OIcon>
           <OTag
             v-if="subItem.TAG"
@@ -133,8 +133,8 @@ const onClickNavLink = (item?: any) => {
           @link-click="linkClick"
         >
           {{ system.NAME }}
-          <OIcon v-if="system.ICON">
-            <component :is="system.ICON" class="icon" />
+          <OIcon v-if="system.ICON" class="icon">
+            <component :is="system.ICON" />
           </OIcon>
         </NavLink>
       </div>
@@ -153,7 +153,7 @@ const onClickNavLink = (item?: any) => {
 }
 
 .icon {
-  width: var(--o-icon_size-xs);
+  font-size: var(--o-icon_size-xs);
   margin-left: var(--o-gap-2);
 }
 

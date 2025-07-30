@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useRoute } from 'vitepress';
 import { OIcon, ODropdown, ODropdownItem, OScroller, OTag, useMessage } from '@opensig/opendesign';
 
 import IconChevronDown from '~icons/app/icon-chevron-down.svg';
@@ -31,7 +30,7 @@ const changeVersion = async (item: { value: string; href?: string }) => {
     return;
   }
 
-  const arr = nodeStore.moduleNode.href!!.split('/');
+  const arr = nodeStore.moduleNode.href!.split('/');
   arr[3] = item.value;
 
   if (await isPageExist(arr.join('/'))) {
@@ -69,6 +68,10 @@ const changeVersion = async (item: { value: string; href?: string }) => {
 </template>
 
 <style lang="scss" scoped>
+.icon {
+  font-size: 24px;
+}
+
 .version-wrap {
   height: 100%;
   display: flex;
