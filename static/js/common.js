@@ -238,5 +238,7 @@ $(function ($) {
     $(".nav-box .docs-a .home-bread,.h5-docs-a .home-bread").click(() => {
       window.open(`/${lang}/`, "_self");
     });
+    // 设置语言图标
+    $(".locale-tag").text(window.location.href.indexOf('/zh/') > -1 ? "中" : "EN");
   });
 });
