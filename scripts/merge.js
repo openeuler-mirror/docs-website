@@ -65,7 +65,7 @@ function replaceOrgDomain(targetPath) {
 }
 
 // 增加旧版本转发
-function replaceCommonNginxRedirect(branchName) {
+function replaceCommonNginxRedirect(buildPath, branchName) {
   try {
     const rewrites = [];
     const lines = fs.readFileSync(`${REPO_DOCS_DIR}/_redirect.yaml`, 'utf8').split('\n');
@@ -184,8 +184,8 @@ const copyContentToDir = (originDir, destDir) => {
 const normalizeContent = async (buildPath, branch) => {
   const branchName = getBranchName(branch);
 
-  // 复制website-v2内容到build目录
-  await copyContentToDir(path.join(REPO_DIR, 'website-v2'), buildPath);
+  // 复制website-vitepress内容到build目录
+  await copyContentToDir(path.join(REPO_DIR, 'website-vitepress'), buildPath);
 
   if (branchName == `common`) {
     // 如果是公共分支，删掉nginx.conf并将nginx.portal.conf重命名为nginx.conf
@@ -267,7 +267,7 @@ const normalizeContent = async (buildPath, branch) => {
 
   // 增加重定向
   if (fs.existsSync(`${REPO_DOCS_DIR}/_redirect.yaml`)) {
-    replaceCommonNginxRedirect(branchName);
+    replaceCommonNginxRedirect(buildPath, branchName);
   }
 };
 
@@ -280,8 +280,8 @@ const normalizeContent = async (buildPath, branch) => {
 const normalizeContentWithHugo = async (buildPath, branch, source) => {
   const branchName = getBranchName(branch);
 
-  // 复制website内容到build目录
-  await copyContentToDir(path.join(REPO_DIR, 'website'), buildPath);
+  // 复制website-hugo内容到build目录
+  await copyContentToDir(path.join(REPO_DIR, 'website-hugo'), buildPath);
 
   let hugoConf = fs.readFileSync(`${buildPath}/config.toml`, 'utf8');
 
