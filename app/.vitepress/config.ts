@@ -58,6 +58,28 @@ export default {
       dark: 'dark-plus',
     },
     config: (md: Markdown) => {
+      // 处理须知/说明/警告/注意
+      md.core.ruler.before('normalize', 'replace-old-alerts', (state) => {
+        const src = state.src
+          .replace(/> *!\[\]\(.*?\/icon-note\.gif\) *\**([^\*\n\r]+)\**/g, (_, $1) => {
+            return `> [!NOTE]${$1}`;
+          })
+          .replace(/> *!\[\]\(.*?\/icon-notice\.gif\) *\**([^\*\n\r]+)\**/g, (_, $1) => {
+            return `> [!TIP]${$1}`;
+          })
+          .replace(/> *!\[\]\(.*?\/icon-warning\.gif\) *\**([^\*\n\r]+)\**/g, (_, $1) => {
+            return `> [!WARNING]${$1}`;
+          })
+          .replace(/> *!\[\]\(.*?\/icon-caution\.gif\) *\**([^\*\n\r]+)\**/g, (_, $1) => {
+            return `> [!CAUTION]${$1}`;
+          });
+
+        state.src = src;
+        if (state.env.content) {
+          state.env.content = src;
+        }
+      });
+      
       md.renderer.rules.code_inline = (tokens, idx) => {
         const content = tokens[idx].content;
         // 转义

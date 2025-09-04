@@ -169,6 +169,7 @@ const config = computed(() => {
 
 .pre-text,
 .next-text {
+  white-space: nowrap;
   @include respond-to('phone') {
     padding: 0;
   }

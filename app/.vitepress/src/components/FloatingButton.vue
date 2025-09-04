@@ -72,7 +72,7 @@ onMounted(() => {
   <div v-if="gtPhone" class="feedback-home">
     <div class="feedback-wrap">
       <FloatingButtonHome />
-      <div v-if="showBackTop" class="nav-box2" :class="[isDark ? 'dark-nav' : '']" @click="scrollToTop(0)">
+      <div v-if="showBackTop" class="container back-top" :class="[isDark ? 'dark-nav' : '']" @click="scrollToTop(0)">
         <OIcon class="icon-top"><IconTop /> </OIcon>
       </div>
     </div>
@@ -199,5 +199,24 @@ onMounted(() => {
       color: var(--o-color-primary1);
     }
   }
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  background-color: var(--o-color-fill2);
+  border-radius: var(--o-radius-xs);
+  box-shadow: var(--o-shadow-2);
+}
+
+.back-top {
+  margin-top: 12px;
+  color: var(--o-color-info1);
+  cursor: pointer;
+}
+
+.icon-top {
+  font-size: var(--o-font_size-h2);
 }
 </style>

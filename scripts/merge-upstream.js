@@ -6,7 +6,6 @@ import { getGitUrlInfo, isGitRepo, checkoutBranch } from './utils/git.js';
 import { copyDirectorySync } from './utils/file.js';
 
 const REPO_DIR = path.join(process.cwd(), '../../');
-const BUILD_DIR = path.join(process.cwd(), '../../../build');
 
 const copyRepoFromDiskCache = async (upstream, dir, storagePath) => {
   const { repo, branch, locations } = getGitUrlInfo(upstream);
@@ -53,9 +52,11 @@ const mergeUpstream = async (targetPath) => {
   }
 };
 
-const merge = async () => {
-  await mergeUpstream(`${BUILD_DIR}/app/zh/`);
-  await mergeUpstream(`${BUILD_DIR}/app/en/`);
+const merge = async (branch) => {
+  const buildPath = path.join(process.cwd(), `../../../build/${branch}`);
+
+  await mergeUpstream(`${buildPath}/app/zh/`);
+  await mergeUpstream(`${buildPath}/app/en/`);
 };
 
 const args = process.argv.slice(2);

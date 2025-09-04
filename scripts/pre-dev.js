@@ -127,12 +127,16 @@ function copyDslContent() {
  */
 function copySigRepo(upstream, dir, storagePath) {
   const { url, repo, branch, locations } = getGitUrlInfo(upstream);
-  gitCloneAndCheckout(url, branch);
-  const cachePath = path.join(CACHE_DIR, repo);
-  const sourceDir = path.join(cachePath, ...locations.slice(0, -1));
-  const destDir = storagePath ? path.join(dir, storagePath) : path.join(dir, repo, ...locations.slice(2, -1));
-  copyDirectorySync(sourceDir, destDir);
-  console.log(`[pre-dev]: 复制 ${sourceDir} 到 ${destDir}`);
+  try {
+    gitCloneAndCheckout(url, branch);
+    const cachePath = path.join(CACHE_DIR, repo);
+    const sourceDir = path.join(cachePath, ...locations.slice(0, -1));
+    const destDir = storagePath ? path.join(dir, storagePath) : path.join(dir, repo, ...locations.slice(2, -1));
+    copyDirectorySync(sourceDir, destDir);
+    console.log(`[pre-dev]: 复制 ${sourceDir} 到 ${destDir}`);
+  } catch (err) {
+    console.log(`[pre-dev]: 错误：${err?.message}，远程地址：${upstream}`);
+  }
 };
 
 /**

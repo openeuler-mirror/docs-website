@@ -160,6 +160,7 @@ const floatData = ref([
   cursor: default;
 
   .o-popup-wrap {
+    width: 360px;
     box-shadow: none;
   }
 
