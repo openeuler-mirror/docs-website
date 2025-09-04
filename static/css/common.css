@@ -281,6 +281,32 @@ i {
   background-image: url("../img/common/icon-down-dark.svg");
 }
 
+.icon-locale {
+  display: block;
+  width: 26px;
+  height: 26px;
+  background-image: url("../img/common/icon-locale-light.svg");
+}
+.light .icon-locale {
+  background-image: url("../img/common/icon-locale-light.svg");
+}
+.dark .icon-locale {
+  background-image: url("../img/common/icon-locale-dark.svg");
+}
+
+.locale-tag {
+  position: absolute;
+  font-size: 10px;
+  height: 12px;
+  width: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  left: 12px;
+  top: 28px;
+  background: var(--e-color-bg1);
+}
+
 .web-lang {
   margin-left: 20px;
 }

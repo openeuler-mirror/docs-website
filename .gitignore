@@ -10,3 +10,4 @@ layouts/partials/docs/test-list.html
 layouts/partials/docs/test-list2.html
 node_modules
 app/**
+.cache

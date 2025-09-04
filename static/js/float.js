@@ -459,7 +459,7 @@ $(document).ready(() => {
                   );
                 } else {
                   openUrl(
-                    `https://gitee.com/-/ide/project/openeuler/docs/edit/stable2-${version}/-/docs/${lang}/docs/${path}?search=${first}&title=文档捉虫-openEuler ${version}-${title}&description=${feedback}&message=${feedback}&label_names=文档捉虫`
+                    `https://gitee.com/-/ide/project/openeuler/docs-centralized/edit/stable2-${version}/-/docs/${lang}/docs/${path}?search=${first}&title=文档捉虫-openEuler ${version}-${title}&description=${feedback}&message=${feedback}&label_names=文档捉虫`
                   );
                 }
               } else {
