@@ -13,7 +13,7 @@ export default {
   recommendTip1: '请输入您不太推荐的原因',
   recommendTip2: '改进哪些方面会让您更愿意推荐？',
   recommendTip3: '请输入您推荐的原因',
-  submitBusy: '您的提交过于频繁，请稍后再试',
+  submitBusy: '提交过于频繁，请稍后再试',
   feedbackFailed: '反馈失败',
   issueBack: '问题反馈',
   issueBackDecs: '获得技术团队的快速支持',

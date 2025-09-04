@@ -159,6 +159,7 @@ const onClickItem = async (href: string) => {
 
 .icon {
   margin-left: 8px;
+  font-size: 24px;
 }
 
 .doc-type-small-title-mb {

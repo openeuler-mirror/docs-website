@@ -127,6 +127,9 @@ const floatData = ref([
 </template>
 
 <style lang="scss" scoped>
+.o-icon {
+  font-size: 24px;
+}
 .nav-box {
   display: flex;
   flex-direction: column;
@@ -157,6 +160,7 @@ const floatData = ref([
   cursor: default;
 
   .o-popup-wrap {
+    width: 360px;
     box-shadow: none;
   }
 

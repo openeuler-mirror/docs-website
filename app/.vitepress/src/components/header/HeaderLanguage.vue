@@ -3,7 +3,7 @@ import { ref, type Ref, watch } from 'vue';
 import { useRouter, useData } from 'vitepress';
 import { OIcon, ODropdown, ODropdownItem } from '@opensig/opendesign';
 
-import IconChevronDown from '~icons/app/icon-chevron-down.svg';
+import IconLocale from '~icons/app/icon-locale.svg';
 import { useLangStore } from '@/stores/common';
 
 import { useScreen } from '@/composables/useScreen';
@@ -74,21 +74,25 @@ watch(
   { immediate: true }
 );
 
-const getLang = (lang: string) => {
-  return lang === 'zh' ? '中文' : 'EN';
+const getLang = (lang: String, simple?: boolean) => {
+  return lePadV.value ? 
+  lang === 'zh' ? '中文' : 'EN'
+  : lang === 'zh' ? simple ? '中' : '简体中文' : simple ? 'EN' : 'English';
 };
 </script>
 
 <template>
   <div v-if="!lePadV" :class="langList.length <= 1 ? 'hide-lang' : 'header-lang'">
     <ODropdown trigger="hover" optionPosition="bottom" option-wrap-class="dropdown">
-      <div class="info-wrap hover-icon-rotate">
-        <span class="title">{{ getLang(lang) }}</span>
-        <OIcon class="icon"><IconChevronDown /></OIcon>
+      <div class="info-wrap">
+        <OIcon class="icon">
+          <IconLocale />
+          <div :class="['locale-tag', { 'is-en': lang === 'en' }]">{{ getLang(lang, true) }}</div>
+        </OIcon>
       </div>
 
       <template #dropdown>
-        <ODropdownItem v-for="item in langList" @click="changeLanguage(item.id)" :key="item.id" class="list">
+        <ODropdownItem v-for="item in langList" @click="changeLanguage(item.id)" :key="item.id" :class="['list', { 'is-active': lang === item.id }]">
           {{ getLang(item.id) }}
         </ODropdownItem>
       </template>
@@ -103,14 +107,6 @@ const getLang = (lang: string) => {
 </template>
 
 <style lang="scss" scoped>
-.icon {
-  svg {
-    width: 16px;
-    height: 16px;
-  }
-  margin-left: var(--o-gap-1);
-}
-
 .hide-lang {
   display: none;
 }
@@ -125,14 +121,32 @@ const getLang = (lang: string) => {
     display: flex;
     align-items: center;
     cursor: pointer;
-    color: var(--o-color-info1);
 
-    .title {
+    .icon {
+      font-size: var(--o-icon_size_control-m);
+      position: relative;
+      color: var(--o-color-info1);
+
+      &:hover {
+        color: var(--o-color-primary1);
+      }
+    }
+    .locale-tag {
+      position: absolute;
+      font-size: 10px;
+      height: 12px;
+      width: 12px;
+      background-color: var(--o-color-fill2);
+
       display: flex;
+      justify-content: center;
       align-items: center;
-      cursor: pointer;
-      height: 100%;
-      @include tip1;
+      left: 12px;
+      top: 11px;
+
+      &.is-en {
+        width: 16px;
+      }
     }
   }
   .list {
@@ -145,17 +159,6 @@ const getLang = (lang: string) => {
   }
 }
 
-.hover-icon-rotate {
-  .o-icon {
-    transition: all var(--o-duration-m1) var(--o-easing-standard-in);
-  }
-
-  @include hover {
-    .o-icon {
-      transform: rotate(-180deg);
-    }
-  }
-}
 .o-dropdown {
   height: 100%;
 }
@@ -166,10 +169,16 @@ const getLang = (lang: string) => {
   padding: var(--o-gap-1);
   min-width: 144px;
   height: 40px;
+  color: var(--o-color-info1);
 
   @include hover {
-    color: var(--o-color-primary1);
     background: var(--o-color-control2-light);
+  }
+
+  &.is-active {
+    color: var(--o-color-primary1);
+    background: var(--o-color-control3-light);
+    font-weight: 500;
   }
 }
 .dropdown {

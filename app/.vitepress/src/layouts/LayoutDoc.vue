@@ -78,7 +78,6 @@ const updateExpandedKeys = () => {
 };
 
 watch(lang, () => {
-  console.log(lang.value);
   setTimeout(updateExpandedKeys, 300);
 })
 
@@ -413,7 +412,7 @@ onUnmounted(() => {
       <div v-if="isPhone" class="doc-sidebar-mb">
         <div class="sidebar-top">
           <div class="menu-opener-mb" :class="{ 'menu-opener-mb-active': !isSidebarHidden }">
-            <OIcon @click="switchMenu"><IconExpand /></OIcon>
+            <OIcon class="icon-expand" @click="switchMenu"><IconExpand /></OIcon>
             <DocTypeMobile :version="version" @refresh="onPageChange" />
           </div>
           <DocVersionMobile v-if="!viewStore.isCommonView" :version="version" />
@@ -623,8 +622,8 @@ onUnmounted(() => {
   align-items: center;
   color: var(--o-color-info1);
 
-  .o-icon svg {
-    width: var(--o-icon_size-m);
+  .icon-expand {
+    font-size: 24px;
   }
 }
 .menu-opener-mb-active {

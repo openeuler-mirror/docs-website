@@ -1,3 +1,7 @@
 .o-dropdown-list {
   --dropdown-list-radius: 4px;
 }
+
+.o-dropdown-item {
+  --dropdown-item-color-hover: var(--dropdown-item-color);
+}

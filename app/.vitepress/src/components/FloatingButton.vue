@@ -72,7 +72,7 @@ onMounted(() => {
   <div v-if="gtPhone" class="feedback-home">
     <div class="feedback-wrap">
       <FloatingButtonHome />
-      <div v-if="showBackTop" class="nav-box2" :class="[isDark ? 'dark-nav' : '']" @click="scrollToTop(0)">
+      <div v-if="showBackTop" class="container back-top" :class="[isDark ? 'dark-nav' : '']" @click="scrollToTop(0)">
         <OIcon class="icon-top"><IconTop /> </OIcon>
       </div>
     </div>
@@ -93,7 +93,7 @@ onMounted(() => {
       :visible="dialogVisible"
       :phone-half-full="true"
       :style="{ '--dlg-head-padding': '16px 24px 0', '--dlg-body-padding': '24px 24px 16px', '--dlg-padding-body-top': '12px', '--dlg-radius': '4px 4px 0 0' }"
-      class="feedback-mb-dialog"
+      :scroller="false"
       @change="change"
     >
       <FeedbackSlider :show="isShow" @close="change" />
@@ -199,5 +199,24 @@ onMounted(() => {
       color: var(--o-color-primary1);
     }
   }
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  background-color: var(--o-color-fill2);
+  border-radius: var(--o-radius-xs);
+  box-shadow: var(--o-shadow-2);
+}
+
+.back-top {
+  margin-top: 12px;
+  color: var(--o-color-info1);
+  cursor: pointer;
+}
+
+.icon-top {
+  font-size: var(--o-font_size-h2);
 }
 </style>

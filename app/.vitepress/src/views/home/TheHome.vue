@@ -189,7 +189,7 @@ const getBannerCardBg = (item: HomeBannerItemT) => {
           class="search"
         >
           <template #prefix>
-            <OIcon><IconSearch /></OIcon>
+            <OIcon class="icon-search"><IconSearch /></OIcon>
           </template>
         </OInput>
 
@@ -278,6 +278,9 @@ const getBannerCardBg = (item: HomeBannerItemT) => {
 }
 .banner-search {
   margin-top: 16px;
+}
+.icon-search {
+  font-size: 24px;
 }
 .search {
   width: 660px;

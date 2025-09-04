@@ -6,6 +6,7 @@
     "pre-dev": "node scripts/pre-dev.js",
     "gen-toc": "node scripts/gen-toc.js",
     "dev": "vitepress dev app",
+    "dev2": "node scripts/dev.js",
     "build": "node scripts/gen-toc.js $VERSION && vitepress build app",
     "preview": "vitepress preview app",
     "format": "prettier --write app/.vitepress/src/",

@@ -60,7 +60,7 @@ const expanded = useVModel(props, 'expanded', emits);
     <OScroller id="menuScrollDom" show-type="hover" size="small" disabled-x>
       <RecursionMenu v-if="recursion" v-model="menuValue" v-model:expanded="expanded" :default-expanded="defaultExpanded">
         <template v-if="items.length > 0">
-          <OMenuItem class="menu-title">{{ items[0].label }}</OMenuItem>
+          <div class="menu-title">{{ items[0].label }}</div>
           <!-- 手册只有一篇文章且和手册名相同 -->
           <template v-if="items[0].children.length === 1 && items[0].children[0].label === items[0].label">
             <RecursionMenuItem
@@ -143,6 +143,7 @@ const expanded = useVModel(props, 'expanded', emits);
     font-weight: 500;
     margin-bottom: 16px;
     cursor: auto;
+    @include text-truncate(1);
     @include text2;
 
     @include hover {

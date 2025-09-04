@@ -136,20 +136,23 @@ const onCloseZoom = () => {
 }
 
 .close-btn {
+  z-index: 2;
   position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 32px;
   height: 32px;
   background-color: rgba(var(--o-black), 0.4);
   border: 1px solid rgba(var(--o-black), 0.1);
   border-radius: var(--o-radius-xs);
-  z-index: 2;
-  top: 12px;
-  right: 12px;
   cursor: pointer;
+  
   .icon {
     color: var(--o-color-white);
-    margin-top: 3px;
-    margin-left: 3px;
+    font-size: 24px;
   }
 
   @include respond-to('phone') {

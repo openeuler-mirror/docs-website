@@ -88,6 +88,10 @@ const submitFeedback = () => {
         message.success({
           content: t('feedback.feedbackSuccess'),
         });
+      } else if (res.code === 429) {
+        message.danger({
+          content: t('feedback.submitBusy'),
+        });
       } else {
         message.danger({
           content: t('feedback.feedbackSubmitFailed'),
@@ -144,7 +148,7 @@ const RATE_INDEX = Array(RATE_MAX_MB + 1)
         <span>{{ t('feedback.moreInfo3') }}</span>
       </p>
       <div v-if="gtPhone" class="submit-btn">
-        <OButton color="primary" size="medium" class="submit" :disabled="!inputText" @click="submitFeedback">
+        <OButton color="primary" size="medium" variant="solid" class="submit" :disabled="!inputText" @click="submitFeedback">
           {{ t('feedback.submit') }}
         </OButton>
       </div>
@@ -188,9 +192,10 @@ const RATE_INDEX = Array(RATE_MAX_MB + 1)
 
   .slider-tip {
     width: 28px;
-    height: auto;
+    height: 20px;
     text-align: center;
     font-size: var(--o-font_size-tip1);
+    line-height: var(--o-line_height-tip2);
     color: var(--o-color-info1);
     background-color: var(--o-color-fill2);
     border-radius: var(--o-radius-xs);
@@ -198,9 +203,10 @@ const RATE_INDEX = Array(RATE_MAX_MB + 1)
     backdrop-filter: blur(5px);
     border: 1px solid var(--o-color-control4-light);
     position: absolute;
-    top: -16px;
+    top: -4px;
     left: v-bind(scorePosition);
     transform: translateX(-50%);
+    
 
     &::after {
       content: '';
@@ -214,6 +220,7 @@ const RATE_INDEX = Array(RATE_MAX_MB + 1)
       position: absolute;
       bottom: -4px;
       right: 9px;
+      z-index: -1;
     }
   }
 
@@ -308,9 +315,24 @@ const RATE_INDEX = Array(RATE_MAX_MB + 1)
 
   .o-textarea {
     --textarea-radius-pill: 8px;
+    --textarea-bd-color-hover: var(--o-color-primary1);
 
     width: 100%;
     height: 88px;
+    @include tip2;
+
+    :deep(.o_textarea) {
+      height: 100%;
+    }
+
+    :deep(.o_textarea-wrap) {
+      height: 100%;
+    }
+
+    :deep(.o_textarea-count) {
+      right: 8px;
+      bottom: 8px;
+    }
   }
 
   .more-info {
@@ -325,25 +347,16 @@ const RATE_INDEX = Array(RATE_MAX_MB + 1)
     text-align: center;
     margin-top: 16px;
 
-    :deep(.o-btn) {
+    :deep(.o-button) {
       padding: 6px 26px;
+      font-size: var(--o-font_size-tip1);
+      border-radius: var(--o-radius-l);
       border-color: var(--o-color-primary1);
       color: var(--o-color-primary1);
 
       @include hover {
-        border-color: var(--o-color-primary1);
-        background-color: var(--o-color-primary1);
-        color: var(--o-color-white);
-      }
-
-      &.o-btn-disabled {
-        border-color: var(--o-color-primary4);
-        color: var(--o-color-primary4);
-        @include hover {
-          border-color: var(--o-color-primary4);
-          background-color: transparent;
-          color: var(--o-color-primary4);
-        }
+        border-color: var(--o-color-primary2);
+        color: var(--o-color-primary2);
       }
     }
 

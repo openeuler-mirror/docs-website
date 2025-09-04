@@ -98,6 +98,10 @@ const resetVersion = () => {
 </template>
 
 <style lang="scss" scoped>
+.icon {
+  font-size: 24px;
+}
+
 .version-wrap {
   height: 100%;
   display: flex;

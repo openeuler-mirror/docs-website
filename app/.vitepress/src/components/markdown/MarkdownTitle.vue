@@ -69,21 +69,23 @@ const onClickCopyLink = (e: MouseEvent) => {
 
 <template>
   <span class="title-wrap">
-    <span @mouseenter="onMouseEnter" @mouseleave="onMouseLeave" @click="onClickAnchor">
+    <span class="title" @mouseenter="onMouseEnter" @mouseleave="onMouseLeave" @click="onClickAnchor">
       <transition name="fade">
         <OIcon class="pin" :class="{ 'pin-show': showPin }"> <IconPin /> </OIcon>
       </transition>
       <slot></slot>
     </span>
-    <OPopover position="right" trigger="hover" wrap-class="popover-copy">
-      <template #target>
-        <a class="link copy-link" @click="onClickCopyLink">
-          <OIcon> <IconLink /> </OIcon>
-        </a>
-      </template>
+    <span class="copy-link-wrap">
+      <OPopover position="right" trigger="hover" wrap-class="popover-copy">
+        <template #target>
+          <a class="copy-link" @click="onClickCopyLink">
+            <OIcon> <IconLink /> </OIcon>
+          </a>
+        </template>
 
-      Copy link
-    </OPopover>
+        Copy link
+      </OPopover>
+    </span>
   </span>
 </template>
 
@@ -91,61 +93,50 @@ const onClickCopyLink = (e: MouseEvent) => {
 .title-wrap {
   position: relative;
   display: inline-flex;
-  align-items: center;
   cursor: pointer;
+
+  .title {
+    flex: 1;
+    display: inline;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: normal;
+  }
 
   span {
     display: inline-flex;
   }
 
-  .o-icon {
-    @include h2;
-
-    svg {
-      width: 24px;
-      height: 24px;
-
-      @include respond-to('laptop') {
-        width: 20px;
-        height: 20px;
-      }
-      @include respond-to('pad_h') {
-        width: 18px;
-        height: 18px;
-      }
-      @include respond-to('pad_v') {
-        width: 18px;
-        height: 18px;
-      }
-      @include respond-to('phone') {
-        width: 16px;
-        height: 16px;
-      }
-    }
-  }
-
-  .link {
-    display: inline-flex;
-    align-items: center;
-
-    @include hover {
-      color: var(--o-color-primary1);
-    }
-  }
-
+  .pin,
   .copy-link {
+    @include h2;
+  }
+
+  .copy-link-wrap {
+    position: relative;
+    width: 1em;
+    height: 1em;
     margin-left: 6px;
+    clear: both;
 
     @include respond-to('<=laptop') {
       margin-left: 4px;
     }
   }
 
+  .copy-link {
+    position: absolute;
+    top: 2px;
+
+    @include hover {
+      color: var(--o-color-primary1);
+    }
+  }
+
   .pin {
     position: absolute;
     left: -28px;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 4px;
     padding-right: 4px;
     transition: opacity var(--o-duration-l) var(--o-easing-standard-in);
     opacity: 0;

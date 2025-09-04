@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { OCard } from '@opensig/opendesign';
+import { onMounted, ref } from 'vue';
+import { OIcon, OCard } from '@opensig/opendesign';
+import { request } from '@/shared/axios';
 
-defineProps({
+const props = defineProps({
   title: {
     type: String,
     default: '',
@@ -23,6 +25,23 @@ defineProps({
     default: '',
   },
 });
+
+const svg = ref('');
+
+const getSvg = async () => {
+  try {
+    const res = await request.get(props.icon);
+    svg.value = res.data;
+  } catch {
+    // nothing
+  }
+};
+
+onMounted(() => {
+  if (props.icon) {
+    getSvg();
+  }
+});
 </script>
 
 <template>
@@ -37,7 +56,7 @@ defineProps({
     rel="noopener noreferrer"
   >
     <template #header>
-      <img v-if="icon" class="section-icon" :src="icon" />
+      <OIcon v-if="svg" class="section-icon" v-dompurify-html="svg" />
       <div class="section-title" :class="{ 'section-no-icon': !icon }">{{ title }}</div>
     </template>
 
@@ -70,10 +89,10 @@ defineProps({
 }
 
 .section-icon {
-  width: 40px;
+  font-size: 40px;
 
   @include respond-to('<=laptop') {
-    width: 32px;
+    font-size: 32px;
   }
 }
 

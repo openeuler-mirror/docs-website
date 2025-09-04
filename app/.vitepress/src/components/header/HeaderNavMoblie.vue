@@ -319,8 +319,7 @@ const linkClick = () => {
         margin: var(--o-gap-4) 0;
 
         .icon {
-          height: 16px;
-          width: 16px;
+          font-size: 16px;
           margin-left: var(--o-gap-2);
         }
       }
@@ -337,7 +336,7 @@ const linkClick = () => {
       }
 
       .icon {
-        width: 16px;
+        font-size: 16px;
         margin-left: var(--o-gap-2);
       }
     }

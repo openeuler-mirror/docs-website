@@ -442,8 +442,7 @@ const reportNavClick = (path: string[]) => {
       }
 
       .icon {
-        height: 16px;
-        width: 16px;
+        font-size: 16px;
         padding-left: 6px;
       }
     }
