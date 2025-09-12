@@ -13,6 +13,7 @@ const emits = defineEmits<{
   (evt: 'update-menu-expaned'): void;
   (evt: 'change-anchor', value: string): void;
   (evt: 'page-change', type: 'prev' | 'next'): void;
+  (evt: 'click-hash-link'): void;
 }>();
 
 const viewStore = useViewStore();
@@ -68,7 +69,7 @@ const onScrollUpdateAnchor = () => {
 
     const [_, hash] = item.href.split('#');
     const id = decodeURIComponent(hash);
-    const target = contentDom.querySelector<HTMLElement>(`#${id}`);
+    const target = contentDom.querySelector<HTMLElement>(`#user-content-${id}`);
     if (!target) {
       continue;
     }
@@ -123,6 +124,9 @@ const onClickContent = (evt: PointerEvent) => {
   if (evt.target && (evt.target as HTMLLinkElement)?.tagName === 'A') {
     setTimeout(() => {
       emits('update-menu-expaned');
+      if ((evt.target as HTMLLinkElement).href?.includes('#')) {
+        emits('click-hash-link');
+      }
     }, 200);
   }
 };

@@ -1,4 +1,5 @@
 import type Markdown from 'markdown-it';
+import { getDomId } from './src/utils/common';
 
 export default {
   base: '/',
@@ -56,6 +57,9 @@ export default {
     theme: {
       light: 'light-plus',
       dark: 'dark-plus',
+    },
+    anchor: {
+      slugify: (s: string) => `user-content-${getDomId(s)}`
     },
     config: (md: Markdown) => {
       // 处理须知/说明/警告/注意
