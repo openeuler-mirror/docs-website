@@ -182,7 +182,7 @@ const copyContentToDir = (originDir, destDir) => {
  * @param {string} branch 分支
  */
 const normalizeContent = async (buildPath, branch) => {
-  const branchName = getBranchName(branch);
+  const branchName = NEW_VERSONS[branch] || getBranchName(branch);
 
   // 复制website-vitepress内容到build目录
   await copyContentToDir(path.join(REPO_DIR, 'website-vitepress'), buildPath);
@@ -334,7 +334,7 @@ const merge = async (branch, source) => {
 
   // 处理内容
   try {
-    if (NEW_VERSONS.includes(branch)) {
+    if (Object.keys(NEW_VERSONS).includes(branch)) {
       await checkGitRepo(REPO_DOCS_DIR);
       await normalizeContent(buildPath, branch);
     } else {

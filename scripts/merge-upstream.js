@@ -8,17 +8,22 @@ import { copyDirectorySync } from './utils/file.js';
 const REPO_DIR = path.join(process.cwd(), '../../');
 
 const copyRepoFromDiskCache = async (upstream, dir, storagePath) => {
-  const { repo, branch, locations } = getGitUrlInfo(upstream);
-  const cachePath = path.join(REPO_DIR, repo);
-  if (!isGitRepo(cachePath)) {
-    console.log(`不存在 ${repo} 仓库缓存，跳过~`);
-  }
+  try {
+    const { repo, branch, locations } = getGitUrlInfo(upstream);
+    const cachePath = path.join(REPO_DIR, repo);
+    if (!isGitRepo(cachePath)) {
+      console.log(`不存在 ${repo} 仓库缓存，跳过~`);
+    }
 
-  await checkoutBranch(cachePath, branch);
-  const sourceDir = path.join(cachePath, ...locations.slice(0, -1));
-  const destDir = storagePath ? path.join(dir, storagePath) : path.join(dir, repo, ...locations.slice(2, -1));
-  copyDirectorySync(sourceDir, destDir);
-  console.log('复制完成');
+    await checkoutBranch(cachePath, branch);
+    const sourceDir = path.join(cachePath, ...locations.slice(0, -1));
+    const destDir = storagePath ? path.join(dir, storagePath) : path.join(dir, repo, ...locations.slice(2, -1));
+    copyDirectorySync(sourceDir, destDir);
+    console.log('复制完成');
+  } catch (err) {
+    console.error(`copyRepoFromDiskCache error: ${err?.message}, upstream: ${upstream}`);
+    process.exit(1);
+  }
 };
 
 const scanYaml = async (yamlPath, dir) => {
@@ -64,7 +69,7 @@ if (args.length === 0) {
   console.error('请提供分支名称');
   process.exit(1);
 } else {
-  if (NEW_VERSONS.includes(args[0])) {
+  if (Object.keys(NEW_VERSONS).includes(args[0])) {
     merge(args[0]);
   } else {
     console.error('非新版本内容，跳过处理~');
