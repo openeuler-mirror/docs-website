@@ -226,7 +226,7 @@ const normalizeContent = async (buildPath, branch) => {
   let packageJson = fs.readFileSync(`${buildPath}/package.json`, 'utf8');
 
   if (packageJson) {
-    packageJson = packageJson.replace('$VERSION', branchName);
+    packageJson = packageJson.replaceAll('$VERSION', branchName);
     fs.writeFileSync(`${buildPath}/package.json`, packageJson, 'utf8');
   }
 
@@ -250,6 +250,17 @@ const normalizeContent = async (buildPath, branch) => {
     await copyContentToDir(`${REPO_DOCS_DIR}/docs/en/`, `${buildPath}/app/en/docs/${branchName}/`);
   }
 
+  // 复制 redirect.yaml
+  if (fs.existsSync(`${REPO_DOCS_DIR}/_redirect.yaml`) && branchName !== 'common') {
+    if (!fs.existsSync(`${buildPath}/.cache/`)) {
+      fs.mkdirSync(`${buildPath}/.cache/`, {
+        recursive: true,
+      });
+    }
+
+    fs.copyFileSync(`${REPO_DOCS_DIR}/_redirect.yaml`, `${buildPath}/.cache/_redirect-${branchName}.yaml`);
+  }
+
   // 复制配置
   if (branchName !== 'common') {
     await checkoutBranch(REPO_DOCS_DIR, 'stable-common');
@@ -263,11 +274,6 @@ const normalizeContent = async (buildPath, branch) => {
 
     await copyContentToDir(`${REPO_DOCS_DIR}/dsl/`, `${buildPath}/app/.vitepress/public/dsl/`);
     console.log(`已将 dsl 复制到 public 目录下`);
-  }
-
-  // 增加重定向
-  if (fs.existsSync(`${REPO_DOCS_DIR}/_redirect.yaml`)) {
-    replaceCommonNginxRedirect(buildPath, branchName);
   }
 };
 

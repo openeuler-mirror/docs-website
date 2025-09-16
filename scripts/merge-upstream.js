@@ -1,11 +1,12 @@
 import fs from 'fs';
 import path from 'path';
 
-import NEW_VERSONS from './config/new-version.js'
+import NEW_VERSONS from './config/new-version.js';
 import { getGitUrlInfo, isGitRepo, checkoutBranch } from './utils/git.js';
 import { copyDirectorySync } from './utils/file.js';
 
 const REPO_DIR = path.join(process.cwd(), '../../');
+const relativeRepo = new Set();
 
 const copyRepoFromDiskCache = async (upstream, dir, storagePath) => {
   try {
@@ -15,6 +16,7 @@ const copyRepoFromDiskCache = async (upstream, dir, storagePath) => {
       console.log(`不存在 ${repo} 仓库缓存，跳过~`);
     }
 
+    relativeRepo.add(cachePath.replace(/\\/g, '/'));
     await checkoutBranch(cachePath, branch);
     const sourceDir = path.join(cachePath, ...locations.slice(0, -1));
     const destDir = storagePath ? path.join(dir, storagePath) : path.join(dir, repo, ...locations.slice(2, -1));
@@ -57,11 +59,32 @@ const mergeUpstream = async (targetPath) => {
   }
 };
 
+const copyRedirectYaml = async (buildPath) => {
+  for (const repoPath of relativeRepo) {
+    if (!fs.existsSync(`${repoPath}/docs/_redirect.yaml`) && !fs.existsSync(`${repoPath}/doc/_redirect.yaml`)) {
+      continue;
+    }
+
+    if (!fs.existsSync(`${buildPath}/.cache/`)) {
+      fs.mkdirSync(`${buildPath}/.cache/`, {
+        recursive: true,
+      });
+    }
+
+    if (fs.existsSync(`${repoPath}/docs/_redirect.yaml`)) {
+      fs.copyFileSync(`${repoPath}/docs/_redirect.yaml`, `${buildPath}/.cache/_redirect-${repoPath.split('/').pop()}.yaml`);
+    } else {
+      fs.copyFileSync(`${repoPath}/doc/_redirect.yaml`, `${buildPath}/.cache/_redirect-${repoPath.split('/').pop()}.yaml`);
+    }
+  }
+};
+
 const merge = async (branch) => {
   const buildPath = path.join(process.cwd(), `../../../build/${branch}`);
 
   await mergeUpstream(`${buildPath}/app/zh/`);
   await mergeUpstream(`${buildPath}/app/en/`);
+  copyRedirectYaml(buildPath);
 };
 
 const args = process.argv.slice(2);
