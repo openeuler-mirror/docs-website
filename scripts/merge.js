@@ -180,8 +180,9 @@ const copyContentToDir = (originDir, destDir) => {
  * 按新版本方式处理
  * @param {string} buildPath build 目录
  * @param {string} branch 分支
+ * @param {string} source 启动来源
  */
-const normalizeContent = async (buildPath, branch) => {
+const normalizeContent = async (buildPath, branch, source) => {
   const branchName = NEW_VERSONS[branch] || getBranchName(branch);
 
   // 复制website-vitepress内容到build目录
@@ -251,7 +252,7 @@ const normalizeContent = async (buildPath, branch) => {
   }
 
   // 复制 redirect.yaml
-  if (fs.existsSync(`${REPO_DOCS_DIR}/_redirect.yaml`) && branchName !== 'common') {
+  if (fs.existsSync(`${REPO_DOCS_DIR}/_redirect.yaml`)) {
     if (!fs.existsSync(`${buildPath}/.cache/`)) {
       fs.mkdirSync(`${buildPath}/.cache/`, {
         recursive: true,
@@ -273,6 +274,13 @@ const normalizeContent = async (buildPath, branch) => {
     });
 
     await copyContentToDir(`${REPO_DOCS_DIR}/dsl/`, `${buildPath}/app/.vitepress/public/dsl/`);
+    if (source === 'test') {
+      fs.rmSync(`${buildPath}/app/.vitepress/public/dsl/zh/home.json`);
+      fs.rmSync(`${buildPath}/app/.vitepress/public/dsl/en/home.json`);
+      fs.renameSync(`${buildPath}/app/.vitepress/public/dsl/zh/home_test.json`, `${buildPath}/app/.vitepress/public/dsl/zh/home.json`);
+      fs.renameSync(`${buildPath}/app/.vitepress/public/dsl/en/home_test.json`, `${buildPath}/app/.vitepress/public/dsl/en/home.json`);
+    }
+
     console.log(`已将 dsl 复制到 public 目录下`);
   }
 };
@@ -342,7 +350,7 @@ const merge = async (branch, source) => {
   try {
     if (Object.keys(NEW_VERSONS).includes(branch)) {
       await checkGitRepo(REPO_DOCS_DIR);
-      await normalizeContent(buildPath, branch);
+      await normalizeContent(buildPath, branch, source);
     } else {
       await checkGitRepo(REPO_DOCS_CENTRALIZED_DIR);
       await normalizeContentWithHugo(buildPath, branch, source);

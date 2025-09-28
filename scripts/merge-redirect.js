@@ -58,8 +58,8 @@ function processSelfRedirect() {
           return;
         }
 
-        const [_, oldLang, ...oldPath] = key.trim().split('/');
-        const [__, newLang, ...newPath] = obj[key].trim().split('/');
+        const [_1, _2, oldLang, ...oldPath] = key.trim().split('/');
+        const [_3, _4, newLang, ...newPath] = obj[key].trim().split('/');
         const oldHref = `/${oldLang}/docs/${branchName}/${oldPath.join('/')}`.replace('.md', '.html');
         const newHref = `/${newLang}/docs/${branchName}/${newPath.join('/')}`.replace('.md', '.html');
         outputRedirectMap[oldHref] = newHref;

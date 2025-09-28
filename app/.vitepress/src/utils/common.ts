@@ -125,10 +125,11 @@ export function getGiteeUrl(node: DocMenuNodeT | null) {
   const [_, lang, __, branch, ...others] = pathname.split('/');
   const map: Record<string, string> = {
     common: 'stable-common',
-    '25.09': 'master',
+    '25.09': 'stable-25.09',
     '25.03': 'stable-25.03',
     '24.03_LTS_SP1': 'stable-24.03_LTS_SP1',
     '24.03_LTS_SP2': 'stable-24.03_LTS_SP2',
+    '22.03_LTS_SP4': 'stable-22.03_LTS_SP4',
   };
 
   return `https://gitee.com/openeuler/docs/blob/${map[branch]}/docs/${lang}/${others.join('/')}`;
