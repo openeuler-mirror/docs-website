@@ -8,15 +8,18 @@ import { type DocMenuNodeT } from '@/utils/tree';
 import { getOffsetTop, getScrollRemainingBottom } from '@/utils/element';
 import { useViewStore } from '@/stores/view';
 import { useNodeStore } from '@/stores/node';
+import { useRouter } from 'vitepress';
 
 const emits = defineEmits<{
   (evt: 'update-menu-expaned'): void;
   (evt: 'change-anchor', value: string): void;
   (evt: 'page-change', type: 'prev' | 'next'): void;
+  (evt: 'click-hash-link'): void;
 }>();
 
 const viewStore = useViewStore();
 const nodeStore = useNodeStore();
+const router = useRouter();
 
 // -------------------- 菜单更新锚点选中 --------------------
 const onScrollUpdateAnchor = () => {
@@ -68,7 +71,7 @@ const onScrollUpdateAnchor = () => {
 
     const [_, hash] = item.href.split('#');
     const id = decodeURIComponent(hash);
-    const target = contentDom.querySelector<HTMLElement>(`#${id}`);
+    const target = contentDom.querySelector<HTMLElement>(`#user-content-${id}`);
     if (!target) {
       continue;
     }
@@ -123,8 +126,22 @@ const onClickContent = (evt: PointerEvent) => {
   if (evt.target && (evt.target as HTMLLinkElement)?.tagName === 'A') {
     setTimeout(() => {
       emits('update-menu-expaned');
+      if ((evt.target as HTMLLinkElement).href?.includes('#')) {
+        emits('click-hash-link');
+      }
     }, 200);
   }
+};
+
+// -------------------- 处理跨语言、跨指南跳转 --------------------
+router.onBeforeRouteChange = (to) => {
+  const [_1, _2, _3, maybeLange, ...paths] = to.split('/');
+  if (maybeLange === 'zh' || maybeLange === 'en') {
+    const [_4, _5, _6, version] = window.location.pathname.split('/');
+    router.go(`/${maybeLange}/docs/${version}/${paths.join('/')}`);
+    return false;
+  }
+  return true;
 };
 </script>
 

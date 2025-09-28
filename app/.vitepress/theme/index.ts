@@ -3,7 +3,6 @@ import { createPinia } from 'pinia';
 
 import Layout from '@/App.vue';
 import NotFound from '@/NotFound.vue';
-import directives from '@/directives';
 
 import '@/assets/style/base.scss';
 import 'element-plus/theme-chalk/src/index.scss';
@@ -31,10 +30,7 @@ export default {
         ADD_ATTR: ['target'],
       },
     });
-    // 指令
-    Object.keys(directives).forEach((directive) => {
-      app.directive(directive, directives[directive]);
-    });
+
     // 注册组件
     app.component('MarkdownTitle', MarkdownTitle);
     app.component('MarkdownImage', MarkdownImage);

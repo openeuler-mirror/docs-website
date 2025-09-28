@@ -1,6 +1,10 @@
 export const versions = {
   zh: [
     {
+      label: '25.09',
+      value: '25.09',
+    },
+    {
       label: '24.03 LTS SP2',
       value: '24.03_LTS_SP2', 
     },
@@ -15,7 +19,6 @@ export const versions = {
     {
       label: '22.03 LTS SP4',
       value: '22.03_LTS_SP4',
-      href: '/zh/docs/22.03_LTS_SP4/docs/Releasenotes/%E6%B3%95%E5%BE%8B%E5%A3%B0%E6%98%8E.html',
     },
     {
       label: '24.03 LTS',
@@ -117,6 +120,10 @@ export const versions = {
   ],
   en: [
     {
+      label: '25.09',
+      value: '25.09',
+    },
+    {
       label: '24.03 LTS SP2',
       value: '24.03_LTS_SP2', 
     },
@@ -131,7 +138,6 @@ export const versions = {
     {
       label: '22.03 LTS SP4',
       value: '22.03_LTS_SP4',
-      href: '/en/docs/22.03_LTS_SP4/docs/Releasenotes/terms-of-use.html',
     },
     {
       label: '24.03 LTS',

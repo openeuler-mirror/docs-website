@@ -38,25 +38,25 @@ const onMouseLeave = () => {
 };
 
 const onClickAnchor = () => {
-  if (`#${props.titleId}` === decodeURIComponent(hash.value)) {
+  if (`#${props.titleId.replace('user-content-', '')}` === decodeURIComponent(hash.value)) {
     const contentDom = document.querySelector('.ly-doc');
     if (contentDom) {
       const hash = decodeURIComponent(window.location.hash);
-      const target = contentDom.querySelector<HTMLElement>(hash) || contentDom.querySelector<HTMLElement>(`[name='${hash.slice(1)}']`);
+      const target = contentDom.querySelector<HTMLElement>(`#${props.titleId}`) || contentDom.querySelector<HTMLElement>(hash) || contentDom.querySelector<HTMLElement>(`[name='${hash.slice(1)}']`);
       const scrollContainer = document.querySelector<HTMLElement>('#app > .o-scroller > .o-scroller-container');
       if (target && scrollContainer) {
         scrollIntoView(target, scrollContainer);
       }
     }
   } else {
-    window.history.replaceState({}, '', `#${props.titleId}`);
+    window.history.replaceState({}, '', `#${props.titleId.replace('user-content-', '')}`);
     window.dispatchEvent(new HashChangeEvent('hashchange'));
   }
 };
 
 const onClickCopyLink = (e: MouseEvent) => {
   useClipboard({
-    text: `${window.location.origin}${window.location.pathname}#${props.titleId}`,
+    text: `${window.location.origin}${window.location.pathname}#${props.titleId.replace('user-content-', '')}`,
     target: e,
     success: () => {
       message.success({

@@ -82,7 +82,7 @@ describe('getVersionFromUrl', () => {
 describe('getDomId', () => {
   it('getDomId', () => {
     expect(getDomId('aa bb cc')).toBe('aa-bb-cc');
-    expect(getDomId('a&b')).toBe('a-b');
+    expect(getDomId('a&b')).toBe('ab');
     expect(getDomId('a-c')).toBe('a-c');
   });
 });

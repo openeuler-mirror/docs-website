@@ -149,7 +149,7 @@ const scrollIntoTitle = async () => {
     const contentDom = document.querySelector('.ly-doc');
     if (contentDom) {
       const hash = decodeURIComponent(window.location.hash);
-      const target = contentDom.querySelector<HTMLElement>(hash) || contentDom.querySelector<HTMLElement>(`[name='${hash.slice(1)}']`);
+      const target = contentDom.querySelector<HTMLElement>(`#user-content-${hash.slice(1)}`) || contentDom.querySelector<HTMLElement>(hash) ||  contentDom.querySelector<HTMLElement>(`[name='${hash.slice(1)}']`);
       const scrollContainer = document.querySelector<HTMLElement>('#app > .o-scroller > .o-scroller-container');
       if (target && scrollContainer) {
         await scrollIntoView(target, scrollContainer);
@@ -445,6 +445,7 @@ onUnmounted(() => {
           @change-anchor="onChangeAnchor"
           @page-change="onPageChange"
           @update-menu-expaned="updateExpandedKeys"
+          @click-hash-link="scrollIntoTitle"
         />
         <!-- 搜索结果 -->
         <TheSearchResult v-else :node="docsMenu" />

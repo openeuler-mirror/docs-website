@@ -24,7 +24,7 @@ function execCommand(command) {
 (async () => {
   let versions = process.argv.slice(2);
   if (versions.length === 0) {
-    versions = NEW_VERSONS;
+    versions = Object.keys(NEW_VERSONS);
   }
 
   await execCommand(`pnpm pre-dev ${versions.join(' ')}`);
