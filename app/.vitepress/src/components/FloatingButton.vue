@@ -122,37 +122,6 @@ onMounted(() => {
   position: relative;
 }
 
-.bug-box {
-  width: 100%;
-  height: 104px;
-  background-image: url(@/assets/category/float/bug-bg.png);
-  background-size: 100%;
-  margin-bottom: 12px;
-  box-shadow: var(--e-shadow-l2);
-  user-select: none;
-  border-radius: 4px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  letter-spacing: 4px;
-  cursor: pointer;
-}
-.bug-box:hover {
-  background-image: url(@/assets/category/float/bug-bg-hover.png);
-}
-.bug-text {
-  color: white;
-  font-size: 14px;
-  writing-mode: vertical-rl;
-}
-
-[lang='en'] {
-  .bug-text {
-    writing-mode: inherit;
-    white-space: pre;
-  }
-}
-
 .feedback-mb {
   position: sticky;
   bottom: 16px;
