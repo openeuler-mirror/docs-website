@@ -1,6 +1,8 @@
 import { markRaw } from 'vue';
 
-import Summit from '@/assets/category/header/summit.png';
+import Summit from '@/assets/category/header/summit.jpg';
+import SummitDark from '@/assets/category/header/summit-dark.jpg';
+
 import Odd from '@/assets/category/header/odd.png';
 
 import IconOutLink from '~icons/app/icon-out-link.svg';
@@ -10,7 +12,7 @@ const TAG_TYPE = {
   NEW: 'NEW',
 };
 
-const OutLink = markRaw(IconOutLink as Object);
+const OutLink = markRaw(IconOutLink);
 
 export default {
   NAV_ROUTER: [
@@ -548,7 +550,7 @@ export default {
             {
               NAME: '峰会',
               DESCRIPTION: '查看openEuler年度大会详情',
-              URL: '/interaction/summit-list/devday2025/',
+              URL: '/interaction/summit-list/summit2025/',
             },
             {
               NAME: 'openEuler Call for X计划',
@@ -580,21 +582,22 @@ export default {
       ],
       SHORTCUT: [
         {
+          NAME: '操作系统大会 & openEuler Summit 2025',
+          PICTURE: Summit,
+          PICTURE_PARK: SummitDark,
+          DESCRIPTION:
+            '随着AI技术从技术探索迈向场景深耕，操作系统作为AI核心生产力的使能平台，承担着释放大规模AI算力的重要责任。openEuler 开源六年，在商业、技术及生态上全面发展，覆盖服务器、云原生、边缘计算和嵌入式等全场景，服务全球多个国家和地区，在关键行业实现规模化应用，引领基础软件根技术持续创新。',
+          REMARK: '时间：2025/11/14 - 2025/11/15 | 北京',
+          TYPE: 'PICTURE',
+          URL: '/interaction/summit-list/summit2025/',
+        },
+        {
           NAME: 'openEuler Developer Day 2025',
           PICTURE: Odd,
           DESCRIPTION: 'openEuler Developer Day 2025 （简称 ODD 2025）是开放原子开源基金会孵化及运营的 openEuler 社区发起的开发者大会。',
           REMARK: '时间：2025/04/11 | 杭州',
           TYPE: 'PICTURE',
           URL: '/interaction/summit-list/devday2025/',
-        },
-        {
-          NAME: '操作系统大会 & openEuler Summit 2024',
-          PICTURE: Summit,
-          DESCRIPTION:
-            '操作系统是产业数字化、智能化发展的坚实底座。openEuler作为数智基础设施的开源操作系统，开源5年，产业共建、生态繁荣；openEuler系市场份额屡攀新高；技术不断创新，使能AI，加速OS智能化，让数智无所不能；源于中国，贡献全球，已成长为企业级全球开源操作系统社区的重要一员。',
-          REMARK: '时间：2024/11/15 - 2024/11/16 | 北京',
-          TYPE: 'PICTURE',
-          URL: '/interaction/summit-list/summit2024/',
         },
       ],
     },
