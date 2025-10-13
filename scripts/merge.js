@@ -274,7 +274,7 @@ const normalizeContent = async (buildPath, branch, source) => {
     });
 
     await copyContentToDir(`${REPO_DOCS_DIR}/dsl/`, `${buildPath}/app/.vitepress/public/dsl/`);
-    if (source === 'test') {
+    if (source === 'test' && fs.existsSync(`${buildPath}/app/.vitepress/public/dsl/zh/home_test.json`) && fs.existsSync(`${buildPath}/app/.vitepress/public/dsl/en/home_test.json`)) {
       fs.rmSync(`${buildPath}/app/.vitepress/public/dsl/zh/home.json`);
       fs.rmSync(`${buildPath}/app/.vitepress/public/dsl/en/home.json`);
       fs.renameSync(`${buildPath}/app/.vitepress/public/dsl/zh/home_test.json`, `${buildPath}/app/.vitepress/public/dsl/zh/home.json`);

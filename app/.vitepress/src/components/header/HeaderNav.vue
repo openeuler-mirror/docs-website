@@ -29,6 +29,10 @@ defineProps({
   },
 });
 
+const isDark = computed(() => {
+  return appearanceStore.theme === 'dark' ? true : false;
+});
+
 // 导航数据
 const navData = computed(() => {
   return i18n.global.messages.value[locale.value].header.NAV_ROUTER;
@@ -178,7 +182,7 @@ const reportNavClick = (path: string[]) => {
                             @click="reportNavClick(shortcut.NAV_PATH)"
                           >
                             <img
-                              :src="shortcut.PICTURE"
+                              :src="(isDark && shortcut?.PICTURE_PARK) ? shortcut.PICTURE_PARK : shortcut.PICTURE"
                               class="review-picture"
                             />
                             <div class="review-content">
@@ -547,6 +551,7 @@ const reportNavClick = (path: string[]) => {
           height: auto;
           display: block;
           object-fit: contain;
+          border-radius: 6px;
 
           @include respond-to('<=laptop') {
             display: none;
