@@ -3,6 +3,7 @@ import { COOKIE_KEY, disableHM, disableOA, enableHM, enableOA, isCookieAgreed } 
 // 监听cookie set
 if (typeof window !== 'undefined') {
   if (isCookieAgreed()) {
+    enableHM();
     enableOA();
   }
   const origDesc = Object.getOwnPropertyDescriptor(Document.prototype, 'cookie')!;
