@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, reactive, onMounted, onUnmounted, type CSSProperties, watch } from 'vue';
+import { ref, computed, reactive, onMounted, onUnmounted, type CSSProperties, watch, markRaw } from 'vue';
 import { OIcon, OPopup, OLink, ODialog, ODivider, OButton, useMessage } from '@opensig/opendesign';
 import { ElSlider } from 'element-plus';
 
@@ -134,9 +134,7 @@ const issuebackRef = ref();
 
 const floatData = reactive([
   {
-    img: computed(() => {
-      return IconChat;
-    }),
+    img: markRaw(IconChat as any),
     id: 'forum',
     text: computed(() => t('feedback.forum')),
     textMb: computed(() => t('feedback.forumHelp')),
@@ -155,9 +153,7 @@ const floatData = reactive([
     link: `${import.meta.env.VITE_SERVICE_QUICKISSUE_URL}/zh/issues/`,
   },
   {
-    img: computed(() => {
-      return IconFAQ;
-    }),
+    img: markRaw(IconFAQ as any),
     id: '',
     text: 'FAQs',
     textMb: 'FAQs',
@@ -187,13 +183,37 @@ const marks_mb: Marks = Array(RATE_MAX_MB + 1)
 
 const floatDataMb = reactive([
   {
-    img: computed(() => {
-      return IconSmile;
-    }),
+    img: markRaw(IconSmile as any),
     id: 'score',
-    textMb: t('feedback.wantSubmitMark'),
+    textMb: computed(() => t('feedback.wantSubmitMark')),
   },
-  ...floatData,
+  {
+    img: markRaw(IconChat as any),
+    id: 'forum',
+    text: computed(() => t('feedback.forum')),
+    textMb: computed(() => t('feedback.forumHelp')),
+    tip: computed(() => t('feedback.forumTip')),
+    link: import.meta.env.VITE_SERVICE_FORUM_URL,
+  },
+  {
+    img: computed(() => {
+      return isDark.value ? IconQuickIssue_dark : IconQuickIssue_light;
+    }),
+    id: 'quickIssue',
+    text: 'QuickIssue',
+    text2: 'Issue',
+    textMb: 'QuickIssue',
+    tip: computed(() => t('feedback.quickIssueTip')),
+    link: `${import.meta.env.VITE_SERVICE_QUICKISSUE_URL}/zh/issues/`,
+  },
+  {
+    img: markRaw(IconFAQ as any),
+    id: '',
+    text: 'FAQs',
+    textMb: 'FAQs',
+    tip: '',
+    link: `/${locale.value}/docs/common/faq/general/general_faq.html`,
+  },
 ]);
 
 const openScoreDlg = (val: string) => {
@@ -297,28 +317,26 @@ const submitArticleFeedback = () => {
               <IconClose />
             </OIcon>
 
-            <div>
-              <div v-for="(item, i) in multiRate" :key="i" class="railway">
-                <p class="title">{{ item.name[locale] }}</p>
-                <ClientOnly>
-                  <el-slider
-                    v-model="item.value"
-                    size="small"
-                    :step="STEP"
-                    :min="0"
-                    :max="10"
-                    :marks="marks"
-                    show-stops
-                    :show-tooltip="true"
-                    tooltip-class="doc-item-tooltip"
-                    @input="updateItemScore"
-                    @change="updateItemScoreAfter(i)"
-                  />
-                </ClientOnly>
-              </div>
-              <div class="submit-btn">
-                <OLink color="primary" :disabled="multiRate.every((item) => !item.isChange)" @click="submitArticleFeedback">{{ t('feedback.submit') }}</OLink>
-              </div>
+            <div v-for="(item, i) in multiRate" :key="i" class="railway">
+              <p class="title">{{ item.name[locale] }}</p>
+              <ClientOnly>
+                <el-slider
+                  v-model="item.value"
+                  size="small"
+                  :step="STEP"
+                  :min="0"
+                  :max="10"
+                  :marks="marks"
+                  show-stops
+                  :show-tooltip="true"
+                  tooltip-class="doc-item-tooltip"
+                  @input="updateItemScore"
+                  @change="updateItemScoreAfter(i)"
+                />
+              </ClientOnly>
+            </div>
+            <div class="submit-btn">
+              <OLink color="primary" :disabled="multiRate.every((item) => !item.isChange)" @click="submitArticleFeedback">{{ t('feedback.submit') }}</OLink>
             </div>
           </OPopup>
         </div>
@@ -330,8 +348,22 @@ const submitArticleFeedback = () => {
             <component :is="IconHeadset"> </component>
           </OIcon>
 
-          <OPopup position="rb" :target="issuebackRef" wrapper="#issueback" body-class="popup-issueback" :offset="24" trigger="hover">
-            <OLink v-analytics="{ properties: { target: item.link, type: 'feedback' } }" v-for="item in floatData" :key="item.link" :href="item.link" target="_blank" class="popup-item">
+          <OPopup
+            position="rb"
+            :target="issuebackRef"
+            wrapper="#issueback"
+            :body-class="`popup-issueback ${locale === 'en' ? 'popup-issueback-en' : ''}`"
+            :offset="24"
+            trigger="hover"
+          >
+            <OLink
+              v-analytics="{ properties: { target: item.link, type: 'feedback' } }"
+              v-for="item in floatData"
+              :key="item.link"
+              :href="item.link"
+              target="_blank"
+              class="popup-item"
+            >
               <OIcon><component :is="item.img"></component> </OIcon>
 
               <div class="text">
@@ -356,7 +388,7 @@ const submitArticleFeedback = () => {
       <div ref="scoreMbRef" id="feedbackMb" class="tips">
         <OIcon><IconTips /></OIcon>
       </div>
-      <OPopup position="rt" :target="scoreMbRef" wrapper="#feedbackMb" body-class="popup-feedback-mb" :style="{ left: '-140px' }" :offset="24" trigger="click">
+      <OPopup position="rt" :target="scoreMbRef" wrapper="#feedbackMb" :body-class="`popup-feedback-mb ${locale === 'en' ? 'popup-feedback-mb-en' : ''}`" trigger="click">
         <OLink v-for="item in floatDataMb" :key="item.id" :href="item?.link" target="_blank" class="feedback-item-mb" @click="openScoreDlg(item.id)">
           <OIcon><component :is="item.img"></component> </OIcon>
           <p class="text-name">{{ item.textMb }}</p>
@@ -370,6 +402,7 @@ const submitArticleFeedback = () => {
     :phone-half-full="true"
     :style="{ '--dlg-head-padding': '16px 24px 0', '--dlg-body-padding': '24px 24px 16px', '--dlg-padding-body-top': '12px', '--dlg-radius': '4px 4px 0 0' }"
     class="docs-score-dialog"
+    main-class="disable-scroller"
     @change="change"
   >
     <template #header>
@@ -449,10 +482,14 @@ const submitArticleFeedback = () => {
 .feedback {
   position: fixed;
   bottom: 200px;
-  right: 64px;
+  right: max(calc(64px + (var(--vw100) - 1920px) / 2), 64px);
   z-index: 10;
   height: 280px;
   width: 48px;
+
+  @media (min-width: 1441px) and (max-width: 1919px) {
+    right: 64px;
+  }
 
   @include respond-to('<=laptop') {
     right: 40px;
@@ -584,17 +621,17 @@ const submitArticleFeedback = () => {
     background-color: var(--o-color-fill2);
     border-radius: var(--o-radius-s);
     box-shadow: var(--o-shadow-2);
-    --popup-min-width: 220px;
+    width: 224px;
     position: relative;
     display: flex;
     flex-direction: column;
 
     .popup-item {
-      width: 100%;
       padding: 0;
-      .o-link-label {
+
+      .o-link-main {
+        display: flex;
         align-items: flex-start;
-        flex-direction: row;
         color: var(--o-color-info1);
       }
 
@@ -630,6 +667,10 @@ const submitArticleFeedback = () => {
       }
     }
   }
+
+  .popup-issueback-en {
+    width: 332px;
+  }
 }
 
 .railway {
@@ -637,7 +678,7 @@ const submitArticleFeedback = () => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 16px;
+  margin-bottom: 16px;
 
   .title {
     color: var(--o-color-info1);
@@ -659,7 +700,6 @@ const submitArticleFeedback = () => {
 .submit-btn {
   display: flex;
   justify-content: center;
-  margin-top: 16px;
   .o-link {
     margin-top: 0;
   }
@@ -686,19 +726,26 @@ const submitArticleFeedback = () => {
 :deep(.o-popup) {
   --popup-bd: none;
   .popup-feedback-mb {
+    width: 136px;
     padding: 16px;
     background-color: var(--o-color-fill2);
     box-shadow: var(--o-shadow-2);
     border-radius: var(--o-radius-xs);
     position: relative;
   }
+
+  .popup-feedback-mb-en {
+    width: 220px;
+  }
 }
 .feedback-item-mb {
   display: flex;
   margin-top: 0;
   @include text2;
-  :deep(.o-link-label) {
-    flex-direction: row;
+  :deep(.o-link-main) {
+    display: flex;
+    align-items: flex-start;
+    color: var(--o-color-info1);
   }
   .text-name {
     color: var(--o-color-info1);

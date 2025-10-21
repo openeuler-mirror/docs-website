@@ -474,7 +474,7 @@ onUnmounted(() => {
   // 文档左间距
   --layout-doc-offset-left: calc(var(--layout-doc-menu-width) + var(--layout-doc-menu-offset-left) + var(--layout-doc-menu-gap));
   // 文档右间距
-  --layout-doc-offset-right: 140px;
+  --layout-doc-offset-right: max(calc(140px + (var(--vw100) - 1920px) / 2), 140px);
 
   @include respond-to('<=laptop') {
     --layout-doc-content-padding: 24px 40px;

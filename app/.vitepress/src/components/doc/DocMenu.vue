@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type PropType } from 'vue';
 import { useVModel } from '@vueuse/core';
-import { OScroller, OMenu, OMenuItem, isArray } from '@opensig/opendesign';
+import { OScroller, OMenu, isArray } from '@opensig/opendesign';
 
 import RecursionMenu from '@/components/menu/RecursionMenu.vue';
 import RecursionMenuItem from '@/components/menu/RecursionMenuItem.vue';
