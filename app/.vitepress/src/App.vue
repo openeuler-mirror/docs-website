@@ -18,7 +18,7 @@ const { isZh } = useLocale();
 const viewStore = useViewStore();
 
 const router = useRouter();
-router.onAfterRouteChanged = () => {
+router.onBeforePageLoad = () => {
   scrollToTop(0, false);
 };
 
