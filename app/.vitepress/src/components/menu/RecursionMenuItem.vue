@@ -111,8 +111,6 @@ onBeforeUnmount(() => {
       padding-left: 13px;
     }
 
-
-
     .o-sub-menu-title {
       margin-left: 4px;
     }

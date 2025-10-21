@@ -16,7 +16,7 @@ const props = defineProps({
   },
 });
 
-const message = useMessage();
+const message = useMessage(null);
 const { t } = useLocale();
 const { gtPhone, isPhone } = useScreen();
 

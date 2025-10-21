@@ -165,7 +165,7 @@ onMounted(() => {
 });
 
 watch(hash, () => {
-  setTimeout(scrollIntoTitle, 100); // 延迟执行，避免切换了scroller位置没有变动导致移动移除
+  setTimeout(scrollIntoTitle, 100); // 延迟执行，避免切换了scroller位置没有变动导致移动异常
 });
 
 const onChangeAnchor = (value: string) => {
@@ -221,7 +221,7 @@ const switchMenu = () => {
 
 // -------------------- 代码块复制 --------------------
 const { t } = useLocale();
-const message = useMessage();
+const message = useMessage(null);
 
 const popMessage = () => {
   message.success({ content: t('docs.copySuccess') });

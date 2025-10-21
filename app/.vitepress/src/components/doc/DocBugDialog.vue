@@ -28,7 +28,7 @@ import { useNodeStore } from '@/stores/node';
 import { useViewStore } from '@/stores/view';
 
 const VITE_MAIN_DOMAIN_URL = import.meta.env.VITE_MAIN_DOMAIN_URL;
-const message = useMessage();
+const message = useMessage(null);
 const { t, locale } = useLocale();
 const { page } = useData();
 const viewStore = useViewStore();

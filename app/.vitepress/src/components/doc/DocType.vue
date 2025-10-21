@@ -26,7 +26,7 @@ const emits = defineEmits<{
 
 const route = useRoute();
 const router = useRouter();
-const message = useMessage();
+const message = useMessage(null);
 const nodeStore = useNodeStore();
 const { locale } = useLocale();
 

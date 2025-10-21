@@ -28,7 +28,7 @@ import { vAnalytics } from '@/shared/analytics';
 
 const { t, locale } = useLocale();
 const { isPhone, gtPhone } = useScreen();
-const message = useMessage();
+const message = useMessage(null);
 
 const isDark = computed(() => {
   return useAppearance().theme === 'dark' ? true : false;

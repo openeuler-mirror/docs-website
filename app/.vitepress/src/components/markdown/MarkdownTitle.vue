@@ -23,7 +23,7 @@ defineEmits<{
   (e: 'scroll-into-title'): void;
 }>();
 
-const message = useMessage();
+const message = useMessage(null);
 const { isPhone } = useScreen();
 const { hash } = useData();
 const { t } = useLocale();
