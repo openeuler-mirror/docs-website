@@ -30,6 +30,7 @@ export const useSearchingStore = defineStore('isSearching', {
     return {
       isSearching: false,
       keyword: '',
+      lastSearchValue: '',
       isLoading: false,
       currentPage: 1,
       version: '25.09', // 文档当前版本
@@ -42,11 +43,19 @@ export const useSearchingStore = defineStore('isSearching', {
     setKeyword(value: string) {
       this.keyword = value;
     },
+    setLastSearchValue(value: string) {
+      this.lastSearchValue = value;
+    },
     setIsLoading(value: boolean) {
       this.isLoading = value;
     },
     setCurrentPage(value: number) {
       this.currentPage = value;
+    },
+    clearSearch() {
+      this.isLoading = false;
+      this.isSearching = false;
+      this.lastSearchValue = '';
     },
   },
 });

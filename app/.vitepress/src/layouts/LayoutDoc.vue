@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref, computed, watch, onUpdated, onUnmounted } from 'vue';
 import { useRouter, useData, inBrowser, useRoute } from 'vitepress';
-import { storeToRefs } from 'pinia';
 import { OIcon, useMessage } from '@opensig/opendesign';
 
 import DocFooter from '@/components/doc/DocFooter.vue';
@@ -30,7 +29,7 @@ import { useViewStore } from '@/stores/view';
 import { getNodeHrefSafely, type DocMenuNodeT } from '@/utils/tree';
 import { scrollIntoView } from '@/utils/scroll-to';
 import { isElementVisible } from '@/utils/element';
-import { getDomId } from '@/utils/common'; 
+import { getDomId } from '@/utils/common';
 import { oaReport } from '@/shared/analytics';
 import { vAnalytics } from '@/shared/analytics';
 import { nextTick } from 'vue';
@@ -41,6 +40,7 @@ const { lePad, isPhone, size } = useScreen();
 const router = useRouter();
 const route = useRoute();
 const viewStore = useViewStore();
+const searchStore = useSearchingStore();
 
 // -------------------- 菜单 --------------------
 const nodeStore = useNodeStore();
@@ -79,7 +79,7 @@ const updateExpandedKeys = () => {
 
 watch(lang, () => {
   setTimeout(updateExpandedKeys, 300);
-})
+});
 
 onMounted(() => {
   if (nodeStore.currentNode) {
@@ -107,6 +107,7 @@ const onClickMenuItem = (item: DocMenuNodeT, newOpener?: boolean) => {
       return;
     }
 
+    searchStore.clearSearch();
     const url = new URL(`${window.location.origin}${href}`);
     if (url.pathname === window.location.pathname && url.hash === window.location.hash) {
       scrollIntoTitle();
@@ -123,16 +124,14 @@ const onClickMenuItem = (item: DocMenuNodeT, newOpener?: boolean) => {
     if (size.width < 1200) {
       isSidebarHidden.value = true;
     }
-
-    useSearchingStore().isSearching = false;
   }
 };
 
 const onClickMenuTitle = (item: DocMenuNodeT) => {
-  const id = getDomId(item.label)
+  const id = getDomId(item.label);
   const dom = document.querySelector(`#${id}`);
   if (dom) {
-    useSearchingStore().isSearching = false;
+    searchStore.clearSearch();
     window.history.replaceState({}, '', `#${id}`);
     window.dispatchEvent(new HashChangeEvent('hashchange'));
   }
@@ -149,7 +148,10 @@ const scrollIntoTitle = async () => {
     const contentDom = document.querySelector('.ly-doc');
     if (contentDom) {
       const hash = decodeURIComponent(window.location.hash);
-      const target = contentDom.querySelector<HTMLElement>(`#user-content-${hash.slice(1)}`) || contentDom.querySelector<HTMLElement>(hash) ||  contentDom.querySelector<HTMLElement>(`[name='${hash.slice(1)}']`);
+      const target =
+        contentDom.querySelector<HTMLElement>(`#user-content-${hash.slice(1)}`) ||
+        contentDom.querySelector<HTMLElement>(hash) ||
+        contentDom.querySelector<HTMLElement>(`[name='${hash.slice(1)}']`);
       const scrollContainer = document.querySelector<HTMLElement>('#app > .o-scroller > .o-scroller-container');
       if (target && scrollContainer) {
         await scrollIntoView(target, scrollContainer);
@@ -189,9 +191,6 @@ const docsMenu = computed(() => {
 });
 
 // -------------------- 搜索 --------------------
-const searchStore = useSearchingStore();
-const { isSearching } = storeToRefs(searchStore);
-
 const version = ref('');
 const isSidebarHidden = ref(true);
 
@@ -264,16 +263,21 @@ const reportMenuClick = (item: DocMenuNodeT) => {
   if (!viewStore.isCommonView) {
     path.unshift(version.value);
   }
-  oaReport('click', {
-    type: 'menu',
-    ...path.reduce(
-      (acc, label, index) => {
-        acc[`level_${index + 1}`] = label;
-        return acc;
-      },
-      {} as Record<string, string>
-    ),
-  }, 'docs', { immediate: true });
+  oaReport(
+    'click',
+    {
+      type: 'menu',
+      ...path.reduce(
+        (acc, label, index) => {
+          acc[`level_${index + 1}`] = label;
+          return acc;
+        },
+        {} as Record<string, string>
+      ),
+    },
+    'docs',
+    { immediate: true }
+  );
 };
 
 const currentReadingSections = new Set<{ start: HTMLElement; end: HTMLElement | null; startTime: number | null }>();
@@ -336,12 +340,12 @@ const updateObserver = () => {
     obs!.observe(section.start);
     obs!.observe(section.end!);
   });
-}
+};
 
 watch(route, () => {
   nextTick(() => {
     updateObserver();
-  })
+  });
 });
 
 onMounted(() => {
@@ -438,10 +442,10 @@ onUnmounted(() => {
       <DocBreadCrumb v-if="!isPhone && nodeStore.currentNode" />
       <div class="doc-content">
         <!-- 文档模块总览 -->
-        <TheDocsNode v-if="!isSearching && viewStore.isOverview" @change-node-index="onChangeNodeIndex" />
+        <TheDocsNode v-if="!searchStore.isSearching && viewStore.isOverview" @change-node-index="onChangeNodeIndex" />
         <!-- 文档内容 -->
         <TheDocsArticle
-          v-else-if="!isSearching && !viewStore.isOverview"
+          v-else-if="!searchStore.isSearching && !viewStore.isOverview"
           @change-anchor="onChangeAnchor"
           @page-change="onPageChange"
           @update-menu-expaned="updateExpandedKeys"
