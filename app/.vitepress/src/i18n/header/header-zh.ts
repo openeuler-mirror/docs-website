@@ -6,6 +6,8 @@ import SummitDark from '@/assets/category/header/summit-dark.jpg';
 import Odd from '@/assets/category/header/odd.png';
 
 import IconOutLink from '~icons/app/icon-out-link.svg';
+import IconArrowRight from '~icons/app/icon-header-next.svg';
+import IconChevronRight from '~icons/app/icon-chevron-right.svg';
 
 const TAG_TYPE = {
   HOT: 'HOT',
@@ -13,6 +15,7 @@ const TAG_TYPE = {
 };
 
 const OutLink = markRaw(IconOutLink);
+const ArrowRight = markRaw(IconArrowRight);
 
 export default {
   NAV_ROUTER: [
@@ -228,19 +231,10 @@ export default {
               URL: '/nestos',
             },
             {
-              NAME: 'StratoVirt',
-              DESCRIPTION: '面向云数据中心的企业级虚拟化VMM',
-              URL: '/other/projects/stratovirt/',
-            },
-            {
-              NAME: 'BiSheng JDK',
-              DESCRIPTION: '一款高性能Java虚拟机',
-              URL: '/other/projects/bishengjdk/',
-            },
-            {
-              NAME: 'openEuler智能化解决方案',
-              DESCRIPTION: '搭载在openEuler上的大模型平台',
-              URL: '/projects/intelligence/',
+              NAME: '全部项目',
+              DESCRIPTION: '',
+              URL: '/projects',
+              ICON: IconChevronRight,
             },
           ],
         },
@@ -634,7 +628,7 @@ export default {
     },
     {
       NAME: 'LFS文件管理',
-      PATH: `${import.meta.env.VITE_SERVICE_ARTLFS_WEBSITE_URL}`,
+      PATH: import.meta.env.VITE_SERVICE_ARTLFS_WEBSITE_URL,
     },
   ],
 };

@@ -4,6 +4,8 @@ import Summit from '@/assets/category/header/summit.jpg';
 import SummitDark from '@/assets/category/header/summit-dark.jpg';
 
 import IconOutLink from '~icons/app/icon-out-link.svg';
+import IconArrowRight from '~icons/app/icon-header-next.svg';
+import IconChevronRight from '~icons/app/icon-chevron-right.svg';
 
 const TAG_TYPE = {
   HOT: 'HOT',
@@ -11,6 +13,7 @@ const TAG_TYPE = {
 };
 
 const OutLink = markRaw(IconOutLink);
+const ArrowRight = markRaw(IconArrowRight);
 
 export default {
   NAV_ROUTER: [
@@ -183,19 +186,10 @@ export default {
               URL: '/other/projects/secgear/',
             },
             {
-              NAME: 'StratoVirt',
-              DESCRIPTION: 'An enterprise-grade virtual machine monitor for cloud data centers.',
-              URL: '/other/projects/stratovirt/',
-            },
-            {
-              NAME: 'BiSheng JDK',
-              DESCRIPTION: 'A high-performance Java Virtual Machine.',
-              URL: '/other/projects/bishengjdk/',
-            },
-            {
-              NAME: 'openEuler Intelligence',
-              DESCRIPTION: 'Large language model platform powered by openEuler',
-              URL: '/projects/intelligence/',
+              NAME: 'All projects',
+              DESCRIPTION: '',
+              URL: '/projects',
+              ICON: IconChevronRight,
             },
           ],
         },
