@@ -6,7 +6,6 @@ import SummitDark from '@/assets/category/header/summit-dark.jpg';
 import Odd from '@/assets/category/header/odd.png';
 
 import IconOutLink from '~icons/app/icon-out-link.svg';
-import IconArrowRight from '~icons/app/icon-header-next.svg';
 import IconChevronRight from '~icons/app/icon-chevron-right.svg';
 
 const TAG_TYPE = {
@@ -15,7 +14,6 @@ const TAG_TYPE = {
 };
 
 const OutLink = markRaw(IconOutLink);
-const ArrowRight = markRaw(IconArrowRight);
 
 export default {
   NAV_ROUTER: [
