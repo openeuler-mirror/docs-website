@@ -1,37 +1,78 @@
-import { spawn } from 'child_process';
+/**
+ * 文档构建内容合并脚本
+ * ====================================================================================================
+ *
+ * 功能概述：
+ * - 根据传入分支，整合构建所需的 website 代码和文档内容到构建目录
+ *
+ * 使用方式：
+ *   在项目根目录下执行：
+ *   node scripts/merge.js <branch> [source]
+ *
+ * 参数说明：
+ *   branch               指定要处理的分支名称，必需
+ *   source               指定构建来源，可选
+ *
+ * 示例：
+ *   node scripts/merge.js stable-common
+ *
+ * 工作流程：
+ *   1. 解析命令行参数
+ *   2. 清理并重建目标构建目录
+ *   3. 根据分支名判断使用哪种文档系统处理方式：
+ *      a. 如果分支存在于 NEW_VERSIONS 配置中，使用 vitepress 文档处理方式
+ *      b. 否则使用 hugo 文档处理方式
+ *
+ * 目录结构：
+ *   合并后的文档将按照以下结构存放：
+ *   - Vitepress文档:
+ *     - 中文文档: app/zh/docs/[version]/
+ *     - 英文文档: app/en/docs/[version]/
+ *     - DSL文档: app/.vitepress/public/dsl/
+ *   - Hugo文档:
+ *     - 中文文档: content/zh/docs/[version]/
+ *     - 英文文档: content/en/docs/[version]/
+ * ====================================================================================================
+ */
+
 import * as fs from 'fs';
 import * as path from 'path';
 
 import NEW_VERSONS from './config/new-version.js';
 import { getBranchName } from './utils/common.js';
+import { checkoutBranch, isGitRepo, pullRemoteBranch } from './utils/git.js';
+import { copyDirectorySync, removeSync, renameSync, copyFileSync, ensureDirSync } from './utils/file.js';
 
-// 定义 repo 路径
-const REPO_DIR = path.join(process.cwd(), '../../');
+// ============================================ 脚本执行逻辑 ============================================
+const REPO_PATH = path.join(process.cwd(), '../../'); // repo 路径
+const DOCS_PATH = path.join(REPO_PATH, 'docs'); // docs 仓库路径 （vitepress 构建所需）
+const DOCS_CENTRALIZED_PATH = path.join(REPO_PATH, 'docs-centralized'); // docs-centralized 仓库路径 （hugo 构建所需）
 
-// 定义新版本 docs 仓库路径
-const REPO_DOCS_DIR = path.join(process.cwd(), '../../docs');
+(async () => {
+  const [branch, source] = process.argv.slice(2);
+  if (!branch) {
+    console.error('请提供分支名称');
+    process.exit(1);
+  }
 
-// 定义老版本 docs 仓库路径
-const REPO_DOCS_CENTRALIZED_DIR = path.join(process.cwd(), '../../docs-centralized');
+  // 重新创建 build 目录
+  const buildPath = path.join(process.cwd(), `../../../build/${branch}`);
+  removeSync(buildPath);
+  ensureDirSync(buildPath);
 
-// 检查是否是git仓库
-const checkGitRepo = (repoPath) => {
-  return new Promise((resolve, reject) => {
-    const child = spawn('git', ['-C', repoPath, 'rev-parse', '--is-inside-work-tree']);
-    child.on('close', (code) => {
-      if (code === 0) {
-        resolve();
-      } else {
-        reject(new Error(`${repoPath} 并非 Git 仓库，请重新选择。`));
-      }
-    });
-    child.on('error', (error) => {
-      reject(error);
-    });
-  });
-};
+  // 处理文档内容
+  if (Object.keys(NEW_VERSONS).includes(branch)) {
+    normalizeVitepressDocsContent(buildPath, branch, source);
+  } else {
+    normalizeHugoDocsContent(buildPath, branch, source);
+  }
+})();
 
-// openatom 替换域名
+// ============================================ 文档内容处理函数 ============================================
+/**
+ * openatom 替换域名
+ * @param {string} targetPath 开始扫描的目标路径
+ */
 function replaceOrgDomain(targetPath) {
   if (!fs.existsSync(targetPath)) {
     console.log(`路径 ${targetPath} 不存在`);
@@ -64,308 +105,135 @@ function replaceOrgDomain(targetPath) {
   });
 }
 
-// 增加旧版本转发
-function replaceCommonNginxRedirect(buildPath, branchName) {
-  try {
-    const rewrites = [];
-    const lines = fs.readFileSync(`${REPO_DOCS_DIR}/_redirect.yaml`, 'utf8').split('\n');
-    let i = 0;
-    while (i < lines.length) {
-      const line = lines[i].trim();
-      let oldUrl, newUrl;
-      if (line.endsWith('.html')) {
-        [oldUrl, newUrl] = line.split(': ');
-      } else {
-        [oldUrl] = line.split(': ');
-        newUrl = lines[++i];
-      }
-
-      oldUrl = oldUrl?.trim();
-      newUrl = newUrl?.trim();
-      if (oldUrl && newUrl && oldUrl !== newUrl && oldUrl.split('/')[3] === branchName) {
-        oldUrl = oldUrl.replace(/([.*+?^${}()|[\]\\])/g, '\\$1').replace(/ /g, '\\s');
-        rewrites.push(`rewrite ^${oldUrl}$ ${newUrl} permanent;\n      `);
-      }
-
-      i++;
-    }
-
-    const nginxContent = fs.readFileSync(path.join(buildPath, 'deploy/nginx/nginx.conf'), 'utf8');
-    fs.writeFileSync(path.join(buildPath, 'deploy/nginx/nginx.conf'), nginxContent.replace('#[rewrite_template]', rewrites.join('')), 'utf8');
-    console.log(`替换nginx转发成功`);
-  } catch (err) {
-    console.log(`替换nginx转发内容失败，错误原因：${err?.message}`);
-  }
-}
-
-// 检出分支
-const checkoutBranch = (repoPath, branchName) => {
-  return new Promise((resolve, reject) => {
-    const child = spawn('git', ['-C', repoPath, 'checkout', branchName]);
-    child.stdout.on('data', (data) => {
-      console.log(data.toString());
-    });
-    child.stderr.on('data', (data) => {
-      console.error(data.toString());
-    });
-    child.on('close', (code) => {
-      if (code === 0) {
-        console.log(`成功在 ${repoPath} 检出 ${branchName} 分支。`);
-        resolve();
-      } else {
-        reject(new Error(`在 ${repoPath} 检出 ${branchName} 分支时出现错误`));
-      }
-    });
-    child.on('error', (error) => {
-      reject(error);
-    });
-  });
-};
-
-// 拉取远程分支
-const pullRemoteBranch = (repoPath, branchName) => {
-  return new Promise((resolve, reject) => {
-    const child = spawn('git', ['-C', repoPath, 'pull', 'origin', branchName]);
-    child.stdout.on('data', (data) => {
-      console.log(data.toString());
-    });
-    child.stderr.on('data', (data) => {
-      console.error(data.toString());
-    });
-    child.on('close', (code) => {
-      if (code === 0) {
-        console.log(`成功拉取 ${repoPath} 远程 ${branchName} 分支。`);
-        resolve();
-      } else {
-        reject(new Error(`拉取 ${repoPath} 远程 ${branchName} 分支时出现错误`));
-      }
-    });
-    child.on('error', (error) => {
-      reject(error);
-    });
-  });
-};
-
-// 复制仓库内容到指定文件夹，忽略.gitignore中的文件
-const copyContentToDir = (originDir, destDir) => {
-  const gitignorePath = path.join(originDir, '.gitignore');
-  const hasGitignore = fs.existsSync(gitignorePath);
-  const args = ['-av', '--exclude=.git'];
-  if (hasGitignore) {
-    args.push('--exclude-from', gitignorePath);
-  }
-  args.push(`${originDir}/`, `${destDir}/`);
-
-  return new Promise((resolve, reject) => {
-    const child = spawn('rsync', args);
-    child.stdout.on('data', () => {});
-    child.stderr.on('data', (data) => {
-      console.error(data.toString());
-    });
-    child.on('close', (code) => {
-      if (code === 0) {
-        console.log(`成功将 ${originDir} 内容复制到 ${destDir} 文件夹。`);
-        resolve();
-      } else {
-        reject(new Error(`复制 ${originDir} 内容到 ${destDir} 文件夹时出现错误`));
-      }
-    });
-    child.on('error', (error) => {
-      reject(error);
-    });
-  });
-};
-
 /**
- * 按新版本方式处理
+ * 按 vitepress 文档方式处理
  * @param {string} buildPath build 目录
  * @param {string} branch 分支
  * @param {string} source 启动来源
  */
-const normalizeContent = async (buildPath, branch, source) => {
+function normalizeVitepressDocsContent(buildPath, branch, source) {
+  // 判断文档仓库是否存在
+  if (!isGitRepo(DOCS_PATH)) {
+    throw new Error(`docs 文档仓库不存在： ${DOCS_PATH}`);
+  }
+
   const branchName = NEW_VERSONS[branch] || getBranchName(branch);
 
   // 复制website-vitepress内容到build目录
-  await copyContentToDir(path.join(REPO_DIR, 'website-vitepress'), buildPath);
+  copyDirectorySync(path.join(REPO_PATH, 'website-vitepress'), buildPath);
 
+  const nginxPortalConfPath = path.join(buildPath, 'deploy/nginx/nginx.portal.conf');
   if (branchName == `common`) {
     // 如果是公共分支，删掉nginx.conf并将nginx.portal.conf重命名为nginx.conf
     const nginxConfPath = path.join(buildPath, 'deploy/nginx/nginx.conf');
-    const nginxPortalConfPath = path.join(buildPath, 'deploy/nginx/nginx.portal.conf');
-    if (fs.existsSync(nginxConfPath)) {
-      fs.rmSync(nginxConfPath);
-      console.log(`已删除 ${nginxConfPath}`);
-    }
-    if (fs.existsSync(nginxPortalConfPath)) {
-      fs.renameSync(nginxPortalConfPath, nginxConfPath);
-      console.log(`已将 ${nginxPortalConfPath} 重命名为 ${nginxConfPath}`);
-    }
+    removeSync(nginxConfPath);
+    renameSync(nginxPortalConfPath, nginxConfPath);
   } else {
     // 如果是非公共分支，删除对应的nginx.portal.conf与中英文目录
-    const nginxPortalConfPath = path.join(buildPath, 'deploy/nginx/nginx.portal.conf');
-    if (fs.existsSync(nginxPortalConfPath)) {
-      fs.rmSync(nginxPortalConfPath);
-      console.log(`已删除 ${nginxPortalConfPath}`);
-    }
-
-    if (fs.existsSync(`${buildPath}/app/zh/`)) {
-      fs.rmSync(`${buildPath}/app/zh/`, { recursive: true, force: true });
-    }
-
-    if (fs.existsSync(`${buildPath}/app/en/`)) {
-      fs.rmSync(`${buildPath}/app/en/`, { recursive: true, force: true });
-    }
+    removeSync(nginxPortalConfPath);
+    removeSync(`${buildPath}/app/zh/`);
+    removeSync(`${buildPath}/app/en/`);
   }
 
+  // 替换 vitepress 配置中的资源路径前缀
   let vpConf = fs.readFileSync(`${buildPath}/app/.vitepress/config.ts`, 'utf8');
-
   if (vpConf) {
     vpConf = vpConf.replace(/assetsDir:\s*'[^']*'/, `assetsDir: '/assets/${branchName}/'`);
     fs.writeFileSync(`${buildPath}/app/.vitepress/config.ts`, vpConf, 'utf8');
   }
 
+  // 替换 package.json 中的要构建的版本
   let packageJson = fs.readFileSync(`${buildPath}/package.json`, 'utf8');
-
   if (packageJson) {
     packageJson = packageJson.replaceAll('$VERSION', branchName);
     fs.writeFileSync(`${buildPath}/package.json`, packageJson, 'utf8');
   }
 
   // 检出文档内容分支
-  await checkoutBranch(REPO_DOCS_DIR, branch);
-  await pullRemoteBranch(REPO_DOCS_DIR, branch);
+  checkoutBranch(DOCS_PATH, branch);
+  pullRemoteBranch(DOCS_PATH, branch);
 
-  // 只有存在 zh 内容并且是新版本内容才进行复制
-  if (fs.existsSync(`${REPO_DOCS_DIR}/docs/zh/`) && (fs.existsSync(`${REPO_DOCS_DIR}/docs/zh/_toc.yaml`) || branchName === 'common')) {
-    fs.mkdirSync(`${buildPath}/app/zh/docs/${branchName}/`, {
-      recursive: true,
-    });
-    await copyContentToDir(`${REPO_DOCS_DIR}/docs/zh/`, `${buildPath}/app/zh/docs/${branchName}/`);
+  // 存在 zh 内容进行复制
+  if (fs.existsSync(`${DOCS_PATH}/docs/zh/`) && (fs.existsSync(`${DOCS_PATH}/docs/zh/_toc.yaml`) || branchName === 'common')) {
+    copyDirectorySync(`${DOCS_PATH}/docs/zh/`, `${buildPath}/app/zh/docs/${branchName}/`);
   }
 
-  // 只有存在 en 内容并且是新版本内容才进行复制
-  if (fs.existsSync(`${REPO_DOCS_DIR}/docs/en/`) && (fs.existsSync(`${REPO_DOCS_DIR}/docs/en/_toc.yaml`) || branchName === 'common')) {
-    fs.mkdirSync(`${buildPath}/app/en/docs/${branchName}/`, {
-      recursive: true,
-    });
-    await copyContentToDir(`${REPO_DOCS_DIR}/docs/en/`, `${buildPath}/app/en/docs/${branchName}/`);
+  // 存在 en 内容进行复制
+  if (fs.existsSync(`${DOCS_PATH}/docs/en/`) && (fs.existsSync(`${DOCS_PATH}/docs/en/_toc.yaml`) || branchName === 'common')) {
+    copyDirectorySync(`${DOCS_PATH}/docs/en/`, `${buildPath}/app/en/docs/${branchName}/`);
   }
 
   // 复制 redirect.yaml
-  if (fs.existsSync(`${REPO_DOCS_DIR}/_redirect.yaml`)) {
-    if (!fs.existsSync(`${buildPath}/.cache/`)) {
-      fs.mkdirSync(`${buildPath}/.cache/`, {
-        recursive: true,
-      });
-    }
-
-    fs.copyFileSync(`${REPO_DOCS_DIR}/_redirect.yaml`, `${buildPath}/.cache/_redirect-${branchName}.yaml`);
+  if (fs.existsSync(`${DOCS_PATH}/_redirect.yaml`)) {
+    copyFileSync(`${DOCS_PATH}/_redirect.yaml`, `${buildPath}/.cache/_redirect-${branchName}.yaml`);
   }
 
-  // 复制配置
+  // 复制 stable-common 分支下的 dsl
   if (branchName !== 'common') {
-    await checkoutBranch(REPO_DOCS_DIR, 'stable-common');
-    await pullRemoteBranch(REPO_DOCS_DIR, 'stable-common');
+    checkoutBranch(DOCS_PATH, 'stable-common');
+    pullRemoteBranch(DOCS_PATH, 'stable-common');
   }
 
-  if (fs.existsSync(`${REPO_DOCS_DIR}/dsl/`)) {
-    fs.mkdirSync(`${buildPath}/app/.vitepress/public/dsl/`, {
-      recursive: true,
-    });
-
-    await copyContentToDir(`${REPO_DOCS_DIR}/dsl/`, `${buildPath}/app/.vitepress/public/dsl/`);
-    if (source === 'test' && fs.existsSync(`${buildPath}/app/.vitepress/public/dsl/zh/home_test.json`) && fs.existsSync(`${buildPath}/app/.vitepress/public/dsl/en/home_test.json`)) {
-      fs.rmSync(`${buildPath}/app/.vitepress/public/dsl/zh/home.json`);
-      fs.rmSync(`${buildPath}/app/.vitepress/public/dsl/en/home.json`);
-      fs.renameSync(`${buildPath}/app/.vitepress/public/dsl/zh/home_test.json`, `${buildPath}/app/.vitepress/public/dsl/zh/home.json`);
-      fs.renameSync(`${buildPath}/app/.vitepress/public/dsl/en/home_test.json`, `${buildPath}/app/.vitepress/public/dsl/en/home.json`);
+  if (fs.existsSync(`${DOCS_PATH}/dsl/`)) {
+    copyDirectorySync(`${DOCS_PATH}/dsl/`, `${buildPath}/app/.vitepress/public/dsl/`);
+    if (
+      source === 'test' &&
+      fs.existsSync(`${buildPath}/app/.vitepress/public/dsl/zh/home_test.json`) &&
+      fs.existsSync(`${buildPath}/app/.vitepress/public/dsl/en/home_test.json`)
+    ) {
+      removeSync(`${buildPath}/app/.vitepress/public/dsl/zh/home.json`);
+      removeSync(`${buildPath}/app/.vitepress/public/dsl/en/home.json`);
+      renameSync(`${buildPath}/app/.vitepress/public/dsl/zh/home_test.json`, `${buildPath}/app/.vitepress/public/dsl/zh/home.json`);
+      renameSync(`${buildPath}/app/.vitepress/public/dsl/en/home_test.json`, `${buildPath}/app/.vitepress/public/dsl/en/home.json`);
     }
 
     console.log(`已将 dsl 复制到 public 目录下`);
   }
-};
+}
 
 /**
- * 按旧版本方式处理
+ * 按 hugo 文档方式处理
  * @param {string} buildPath build 目录
  * @param {string} branch 分支
  * @param {string} source 启动来源
  */
-const normalizeContentWithHugo = async (buildPath, branch, source) => {
+function normalizeHugoDocsContent(buildPath, branch, source) {
+  // 判断文档仓库是否存在
+  if (!isGitRepo(DOCS_CENTRALIZED_PATH)) {
+    throw new Error(`docs-centralized 文档仓库不存在：${DOCS_CENTRALIZED_PATH}`);
+  }
+
   const branchName = getBranchName(branch);
 
   // 复制website-hugo内容到build目录
-  await copyContentToDir(path.join(REPO_DIR, 'website-hugo'), buildPath);
+  copyDirectorySync(path.join(REPO_PATH, 'website-hugo'), buildPath);
 
+  // 替换 config.toml 中的资源路径前缀
   let hugoConf = fs.readFileSync(`${buildPath}/config.toml`, 'utf8');
-
   if (hugoConf) {
     hugoConf = hugoConf.replace(/resourceURL\s*=\s*(["'])(.*?)\1/, `resourceURL = "/docs/${branchName}/"`);
     fs.writeFileSync(`${buildPath}/config.toml`, hugoConf, 'utf8');
   }
 
   // 检出文档内容分支
-  await checkoutBranch(REPO_DOCS_CENTRALIZED_DIR, branch);
-  await pullRemoteBranch(REPO_DOCS_CENTRALIZED_DIR, branch);
+  checkoutBranch(DOCS_CENTRALIZED_PATH, branch);
+  pullRemoteBranch(DOCS_CENTRALIZED_PATH, branch);
 
-  if (fs.existsSync(`${REPO_DOCS_CENTRALIZED_DIR}/docs/zh/`)) {
-    fs.mkdirSync(`${buildPath}/content/zh/docs/${branchName}/`, {
-      recursive: true,
-    });
-    await copyContentToDir(`${REPO_DOCS_CENTRALIZED_DIR}/docs/zh/`, `${buildPath}/content/zh/docs/${branchName}/`);
+  // 存在 zh 内容进行复制
+  if (fs.existsSync(`${DOCS_CENTRALIZED_PATH}/docs/zh/`)) {
+    copyDirectorySync(`${DOCS_CENTRALIZED_PATH}/docs/zh/`, `${buildPath}/content/zh/docs/${branchName}/`);
   }
 
-  if (fs.existsSync(`${REPO_DOCS_CENTRALIZED_DIR}/docs/en/`)) {
-    fs.mkdirSync(`${buildPath}/content/en/docs/${branchName}/`, {
-      recursive: true,
-    });
-    await copyContentToDir(`${REPO_DOCS_CENTRALIZED_DIR}/docs/en/`, `${buildPath}/content/en/docs/${branchName}/`);
+  // 存在 en 内容进行复制
+  if (fs.existsSync(`${DOCS_CENTRALIZED_PATH}/docs/en/`)) {
+    copyDirectorySync(`${DOCS_CENTRALIZED_PATH}/docs/en/`, `${buildPath}/content/en/docs/${branchName}/`);
   }
 
+  // 构建来源是 openatom 进行域名替换
   if (source === 'openatom') {
     replaceOrgDomain(path.join(buildPath, 'i18n'));
     replaceOrgDomain(path.join(buildPath, 'layouts'));
     replaceOrgDomain(path.join(buildPath, 'static'));
     replaceOrgDomain(path.join(buildPath, 'content'));
   }
-};
-
-/**
- * 合并处理内容
- * @param {string} branch 构建分支
- * @param {string} source 启动来源
- */
-const merge = async (branch, source) => {
-  const buildPath = path.join(process.cwd(), `../../../build/${branch}`);
-
-  // 删除 build 目录
-  if (fs.existsSync(buildPath)) {
-    fs.rmSync(buildPath, { recursive: true, force: true });
-  }
-
-  // 创建 build 目录
-  fs.mkdirSync(buildPath, { recursive: true });
-
-  // 处理内容
-  try {
-    if (Object.keys(NEW_VERSONS).includes(branch)) {
-      await checkGitRepo(REPO_DOCS_DIR);
-      await normalizeContent(buildPath, branch, source);
-    } else {
-      await checkGitRepo(REPO_DOCS_CENTRALIZED_DIR);
-      await normalizeContentWithHugo(buildPath, branch, source);
-    }
-  } catch (error) {
-    console.error(error.message);
-    process.exit(1);
-  }
-};
-
-/*---------- 执行脚本 ----------*/
-const args = process.argv.slice(2);
-if (args.length === 0) {
-  console.error('请提供分支名称');
-  process.exit(1);
-} else {
-  merge(args[0], args[1]);
 }
