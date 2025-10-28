@@ -179,14 +179,14 @@ const getBannerCardBg = (item: HomeBannerItemT) => {
       <div class="banner-search">
         <OInput
           ref="inputRef"
-          :placeholder="t('home.searchPlaceholder')"
           v-model="searchValue"
+          :placeholder="t('home.searchPlaceholder')"
           :max-length="100"
           :input-on-outlimit="false"
+          class="search"
           clearable
           @keyup.enter="enterSearchDoc(searchValue)"
           @input="onInputValueInput"
-          class="search"
         >
           <template #prefix>
             <OIcon class="icon-search"><IconSearch /></OIcon>
@@ -284,8 +284,12 @@ const getBannerCardBg = (item: HomeBannerItemT) => {
 }
 .search {
   width: 660px;
-  --input-height: 40px;
+  --_box-height: 40px;
   --input-radius: var(--o-radius-xs);
+
+  :deep(.o_input-limit) {
+    display: none;
+  }
 }
 
 .hot-search {

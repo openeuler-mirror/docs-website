@@ -94,6 +94,7 @@ onMounted(() => {
       :phone-half-full="true"
       :style="{ '--dlg-head-padding': '16px 24px 0', '--dlg-body-padding': '24px 24px 16px', '--dlg-padding-body-top': '12px', '--dlg-radius': '4px 4px 0 0' }"
       :scroller="false"
+      main-class="disable-scroller"
       @change="change"
     >
       <FeedbackSlider :show="isShow" @close="change" />
@@ -105,9 +106,13 @@ onMounted(() => {
 .feedback-home {
   position: fixed;
   bottom: 200px;
-  right: 64px;
+  right: max(calc(64px + (var(--vw100) - 1920px) / 2), 64px);
   z-index: 10;
   height: 164px;
+
+  @media (min-width: 1441px) and (max-width: 1919px) {
+    right: 64px;
+  }
 
   @include respond-to('<=laptop') {
     right: 24px;

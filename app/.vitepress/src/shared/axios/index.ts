@@ -166,7 +166,7 @@ const responseInterceptorId = request.interceptors.response.use(
     }
 
     if (config && config.showError !== false && config.ignoreError !== err.response?.status) {
-      const msg = useMessage();
+      const msg = useMessage(null);
       msg.show({
         content: err.message,
         status: 'danger',

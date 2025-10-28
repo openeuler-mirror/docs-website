@@ -18,7 +18,7 @@ const props = defineProps({
 
 const { t, locale } = useLocale();
 const route = useRoute();
-const message = useMessage();
+const message = useMessage(null);
 
 const radioVersionValue = ref(props.version);
 const versionVisible = ref(false);

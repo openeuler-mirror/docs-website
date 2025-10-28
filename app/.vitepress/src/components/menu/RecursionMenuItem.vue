@@ -111,8 +111,6 @@ onBeforeUnmount(() => {
       padding-left: 13px;
     }
 
-
-
     .o-sub-menu-title {
       margin-left: 4px;
     }
@@ -139,6 +137,7 @@ onBeforeUnmount(() => {
 .recursion-menu-item {
   padding-left: 4px !important;
   --menu-item-color: var(--o-color-info2);
+  --menu-item-bg-color-selected: var(--o-color-control3-light);
 
   :deep(.o-menu-item-content) {
     display: inline-block;

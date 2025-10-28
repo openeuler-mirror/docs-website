@@ -33,9 +33,9 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
+        api: 'modern',
         charset: false,
         additionalData: `
-          @use "@/assets/style/element-plus/var.scss" as *;
           @use "@/assets/style/mixin/screen.scss" as *;
           @use "@/assets/style/mixin/font.scss" as *;
           @use "@/assets/style/mixin/common.scss" as *;

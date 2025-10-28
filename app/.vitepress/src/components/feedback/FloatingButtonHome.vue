@@ -109,7 +109,14 @@ const floatData = ref([
         <component :is="IconHeadset"> </component>
       </OIcon>
 
-      <OPopup position="rb" :target="issuebackRef" wrapper="#issueback" body-class="popup-issueback" :offset="24" trigger="hover">
+      <OPopup
+        position="rb"
+        :target="issuebackRef"
+        wrapper="#issueback"
+        :body-class="`popup-issueback ${locale === 'en' ? 'popup-issueback-en' : ''}`"
+        :offset="24"
+        trigger="hover"
+      >
         <OLink v-for="item in floatData" :key="item.link" :href="item.link" target="_blank" class="popup-item">
           <OIcon><component :is="item.img"></component> </OIcon>
 
@@ -168,7 +175,7 @@ const floatData = ref([
     background-color: var(--o-color-fill2);
     box-shadow: var(--o-shadow-2);
     border-radius: var(--o-radius-xs);
-    --popup-min-width: 315px;
+    width: 360px;
     top: 12px;
     position: relative;
 
@@ -201,17 +208,17 @@ const floatData = ref([
     background-color: var(--o-color-fill2);
     border-radius: var(--o-radius-s);
     box-shadow: var(--o-shadow-2);
-    --popup-min-width: 220px;
+    width: 224px;
     position: relative;
     display: flex;
     flex-direction: column;
 
     .popup-item {
-      width: 100%;
       padding: 0;
-      .o-link-label {
+
+      .o-link-main {
+        display: flex;
         align-items: flex-start;
-        flex-direction: row;
         color: var(--o-color-info1);
       }
 
@@ -246,6 +253,10 @@ const floatData = ref([
         }
       }
     }
+  }
+
+  .popup-issueback-en {
+    width: 332px;
   }
 }
 </style>

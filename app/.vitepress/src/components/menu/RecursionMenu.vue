@@ -48,6 +48,7 @@ provide('setCurrentNode', (node: DocMenuNodeT, el: HTMLElement) => {
   --menu-padding-h: 8px;
   --menu-secondary-padding-v: 8px;
   --menu-secondary-padding-h: 8px;
+  --menu-selected-gap-v: 0px;
 
   @include respond-to('<=laptop') {
     --menu-width: 207px;

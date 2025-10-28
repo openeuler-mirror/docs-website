@@ -6,6 +6,7 @@ export default {
   assetsDir: '/assets',
   cleanUrls: false,
   ignoreDeadLinks: true,
+  metaChunk: true,
   title: '文档 | openEuler社区',
   srcExclude: ['**/_menu.md'],
   head: [

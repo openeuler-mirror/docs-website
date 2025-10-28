@@ -25,7 +25,7 @@ const emits = defineEmits<{
 
 const route = useRoute();
 const router = useRouter();
-const message = useMessage();
+const message = useMessage(null);
 const nodeStore = useNodeStore();
 const { t, locale } = useLocale();
 const showDlg = ref(false);
@@ -124,8 +124,6 @@ const onClickItem = async (href: string) => {
         {{ item.title }}
       </div>
     </template>
-
-    <div class="bottom-empty"></div>
   </ODialog>
 </template>
 
@@ -179,9 +177,5 @@ const onClickItem = async (href: string) => {
 .doc-item-active-mb {
   color: var(--o-color-primary1);
   background-color: var(--o-color-control3-light);
-}
-
-.bottom-empty {
-  padding-bottom: 16px;
 }
 </style>

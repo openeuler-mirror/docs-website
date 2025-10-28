@@ -16,7 +16,7 @@ const props = defineProps({
   },
 });
 
-const message = useMessage();
+const message = useMessage(null);
 const { t } = useLocale();
 const { gtPhone, isPhone } = useScreen();
 
@@ -167,7 +167,6 @@ const RATE_INDEX = Array(RATE_MAX_MB + 1)
 
 .slider-title {
   color: var(--o-color-info1);
-  padding-right: 12px;
   text-align: center;
   @include tip1;
   @include respond-to('<=pad_v') {
@@ -336,7 +335,6 @@ const RATE_INDEX = Array(RATE_MAX_MB + 1)
   }
 
   .more-info {
-    max-width: 270px;
     color: var(--o-color-info3);
     margin-top: 8px;
     text-align: center;

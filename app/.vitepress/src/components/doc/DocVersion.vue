@@ -16,7 +16,7 @@ defineProps({
 });
 
 const { t, locale } = useLocale();
-const message = useMessage();
+const message = useMessage(null);
 const nodeStore = useNodeStore();
 
 

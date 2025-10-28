@@ -83,10 +83,10 @@ if (inBrowser) {
 
   --layout-header-height: 80px;
   --layout-header-zIndex: 101;
-  --layout-header-max-width: 1440px;
+  --layout-header-max-width: 1488px;
   --layout-header-padding: 12px;
 
-  --layout-content-max-width: 1440px;
+  --layout-content-max-width: 1488px;
   --layout-content-padding: 10px;
 
   --layout-doc-padding-top: 32px;

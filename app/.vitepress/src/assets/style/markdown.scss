@@ -395,13 +395,13 @@
   .copy {
     cursor: pointer;
     position: absolute;
-    top: var(--o-gap-3);
+    top: calc(var(--o-gap-2) + 2px);
     right: var(--o-gap-3);
     z-index: 3;
     border-radius: 4px;
     width: 24px;
     height: 24px;
-    background-color: transparent;
+    background-color: inherit;
     background-image: url('@/assets/category/docs/icon-copy.svg');
     background-position: 50%;
     background-size: 20px;
@@ -410,8 +410,12 @@
     opacity: 0;
     transition: all var(--o-duration-m1) var(--o-easing-standard-in);
 
+    @include respond-to('<=laptop') {
+      top: var(--o-gap-2);
+    }
+
     @include respond-to('phone') {
-      top: 4px;
+      top: 12px;
     }
   }
 

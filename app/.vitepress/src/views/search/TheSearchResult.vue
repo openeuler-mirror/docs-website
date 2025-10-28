@@ -31,7 +31,7 @@ const result = ref<SearchDocItemT[]>([]);
 const route = useRoute();
 const { t, locale } = useLocale();
 const searchStore = useSearchingStore();
-const { isPhone } = useScreen();
+const { lePadV } = useScreen();
 const nodeStore = useNodeStore();
 const viewStore = useViewStore();
 
@@ -170,9 +170,7 @@ const goToPage = (href: string) => {
         </div>
       </div>
       <!-- 分页器-->
-      <div v-show="!isPhone">
-        <OPagination :total="total" :page="currentPage" :page-size="pagesize" :page-sizes="pageSizes" :show-more="false" show-jumper @change="onChange" />
-      </div>
+      <OPagination :total="total" :page="currentPage" :page-size="pagesize" :page-sizes="pageSizes" :show-more="false" :simple="lePadV" show-jumper @change="onChange" />
     </div>
     <!-- loading -->
     <ClientOnly>
@@ -206,6 +204,7 @@ const goToPage = (href: string) => {
   padding: 24px 40px;
   overflow: hidden;
   border-radius: 8px;
+  min-height: calc(100vh - var(--layout-header-height) - var(--layout-doc-padding-top) - var(--layout-doc-padding-bottom) - 64px);
 }
 .search-tip {
   @include h1;
@@ -295,6 +294,10 @@ const goToPage = (href: string) => {
   margin-top: var(--o-gap-5);
   display: flex;
   justify-content: flex-end;
+
+  @include respond-to('<=pad') { 
+    justify-content: center;
+  }
 }
 
 .no-result-content {

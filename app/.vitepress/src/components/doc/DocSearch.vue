@@ -20,8 +20,6 @@ const { t } = useLocale();
 const { size } = useScreen();
 // 搜索状态库
 const searchStore = useSearchingStore();
-// 上次搜索值
-const lastSearchValue = ref('');
 // 本次搜索值
 const searchValue = ref('');
 
@@ -38,12 +36,12 @@ const enterSearchDoc = () => {
     lastRecommendCanceler('cancel');
   }
   showSearchWord.value = false;
-  if (lastSearchValue.value !== input) {
+  if (searchStore.lastSearchValue !== input) {
     searchStore.setIsSearching(true);
     searchStore.setKeyword(input);
     searchStore.setIsLoading(true);
     searchStore.setCurrentPage(1);
-    lastSearchValue.value = input;
+    searchStore.setLastSearchValue(input);
   }
   if (size.width < 1200) {
     emit('switchVisible');
@@ -51,8 +49,7 @@ const enterSearchDoc = () => {
 };
 
 const clearSearchDoc = () => {
-  lastSearchValue.value = '';
-  searchStore.setIsSearching(false);
+  searchStore.clearSearch();
   showSearchWord.value = false;
   recommendData.value = [];
 };
