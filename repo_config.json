@@ -1,0 +1,190 @@
+{
+    "openeuler/Virt-docs": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "openeuler/openstack-docs": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "openeuler/cloudnative-docs": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "openeuler/A-Tune": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "openeuler/oeAware-manager": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "openeuler/secDetector": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "openeuler/secGear": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "openeuler/aops-zeus": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "src-openeuler/oeDevPlugin": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "src-openeuler/roo-code": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "src-openeuler/oeGitExt": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "src-openeuler/oeDeploy": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "src-openeuler/calamares": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "openeuler/euler-copilot-framework": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "openeuler/compiler-docs": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "openeuler/syscare": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "openeuler/cve-ease": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "openeuler/jiuwen-agentcore": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "openeuler/jiuwen-deepsearch": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "openeuler/sysmaster": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "openeuler/sysmonitor": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "openeuler/dpu-utilities": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "src-openeuler/k3s": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "openeuler/epkg": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "openeuler/epkg-autopkg": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "openeuler/patch-tracking": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "openeuler/Storage-docs": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "openeuler/Computing-docs": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "openeuler/imageTailor": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "openeuler/eulerlauncher": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "openeuler/sysSentry": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "src-openeuler/gala-anteater": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "src-openeuler/kae_driver": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "openeuler/Ha-docs": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "openeuler/ros": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "src-openeuler/oemaker": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "src-openeuler/migration-tools": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "openeuler/ukui": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "openeuler/dde": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "openeuler/kiran-desktop": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "openeuler/Cpds": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "openeuler/PilotGo": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "openeuler/gazelle": {
+        "enabled": true,
+        "docPaths": "doc/zh/user_manual,doc/en/user_manual"
+    },
+    "openeuler/UniProton": {
+        "enabled": true,
+        "docPaths": "doc/zh,doc/en"
+    },
+    "openeuler/CCA": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "src-openeuler/DevStore": {
+        "enabled": true,
+        "docPaths": "docs/zh,docs/en"
+    },
+    "_default": {
+        "enabled": false,
+        "docPaths": "docs/zh,docs/en"
+    }
+}

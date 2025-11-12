@@ -1,8 +1,0 @@
-html:not(.dark) code span {
-  color: var(--shiki-light, inherit);
-}
-
-[data-o-theme="dark"] code span {
-  color: var(--shiki-dark, inherit);
-}
-

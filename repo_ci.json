@@ -1,0 +1,43 @@
+{
+    "openEuler/docs": {
+        "branches": {
+            "master": [
+                "markdownlint",
+                "link-validity-check",
+                "resource-existence-check",
+                "codespell-check",
+                "tag-closed-check",
+                "file-naming-consistency-check",
+                "toc-check"
+            ],
+            "stable-25.03": [
+                "markdownlint",
+                "link-validity-check",
+                "resource-existence-check",
+                "codespell-check",
+                "tag-closed-check",
+                "toc-check"
+            ]
+        }
+    },
+    "openeuler/docs-centralized": {
+        "global": [
+            "markdownlint",
+            "link-validity-check",
+            "resource-existence-check"
+        ]
+    },
+    "opengauss/docs": {
+        "global": [
+
+        ],
+        "branches": {
+            "refactor": [
+                "link-validity-check",
+                "resource-existence-check",
+                "tag-closed-check",
+                "toc-check"
+            ]
+        }
+    }
+}
