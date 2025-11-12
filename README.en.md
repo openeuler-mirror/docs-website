@@ -1,7 +1,7 @@
-# docs-website
+# docs-ci
 
 #### Description
-The repository of docs-website
+用于openEuler/docs的门禁ci
 
 #### Software Architecture
 Software architecture description
