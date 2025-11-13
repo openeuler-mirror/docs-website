@@ -65,7 +65,7 @@ onBeforeUnmount(() => {
     @click="emits('click', node)"
   >
     <template #title>
-      <a v-if="node.href" :href="node.href" @click.prevent>{{ node.label }}</a>
+      <a v-if="node.href && node.type === 'page'" :href="node.href" @click.prevent>{{ node.label }}</a>
       <span v-else>{{ node.label }}</span>
     </template>
     <RecursionMenuItem v-for="item in node.children" :key="item.id" :node="item" @click="(el) => emits('click', el)" />
