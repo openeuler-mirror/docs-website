@@ -26,8 +26,9 @@ langStore.lang = lang.value === 'zh' ? 'zh' : 'en';
 
 // 选择语言;
 const langOptions = [
-  { id: 'zh', label: '中文' },
-  { id: 'en', label: 'English' },
+  { id: 'zh', label: '简体中文', simple: '中' },
+  { id: 'en', label: 'English', simple: 'EN' },
+  { id: 'ar', label: 'العربية', simple: 'AR' },
 ];
 
 // 选择语言
@@ -38,7 +39,15 @@ const changeLanguageMobile = (newlang: string) => {
 };
 
 async function changeLanguage(newlang: string) {
-  if (lang.value === newlang) return;
+  if (lang.value === newlang) {
+    return;
+  }
+
+  if (newlang === 'ar') {
+    window.location.href = 'https://ar.openeuler.org/ar/docs/';
+    return;
+  }
+
   const { pathname, search } = window.location;
   const newHref = pathname.replace(`/${lang.value}/`, `/${newlang}/`);
   langStore.lang = newlang;
@@ -53,6 +62,7 @@ async function changeLanguage(newlang: string) {
 interface LangType {
   id: string;
   label: string;
+  simple: string;
 }
 const langList: Ref<LangType[]> = ref([]);
 const filterLang = () => {
@@ -75,9 +85,12 @@ watch(
 );
 
 const getLang = (lang: string, simple?: boolean) => {
-  return lePadV.value ? 
-  lang === 'zh' ? '中文' : 'EN'
-  : lang === 'zh' ? simple ? '中' : '简体中文' : simple ? 'EN' : 'English';
+  const item = langOptions.find((el: LangType) => el.id === lang);
+  if (item) {
+    return simple ? item.simple : item.label;
+  }
+
+  return simple ? 'EN': 'English';
 };
 </script>
 
@@ -93,7 +106,7 @@ const getLang = (lang: string, simple?: boolean) => {
 
       <template #dropdown>
         <ODropdownItem v-for="item in langList" @click="changeLanguage(item.id)" :key="item.id" :class="['list', { 'is-active': lang === item.id }]">
-          {{ getLang(item.id) }}
+          {{ getLang(item.id, lePadV) }}
         </ODropdownItem>
       </template>
     </ODropdown>
@@ -101,7 +114,7 @@ const getLang = (lang: string, simple?: boolean) => {
 
   <div v-else :class="langList.length <= 1 ? 'hide-lang' : 'mobile-change-language'">
     <span v-for="item in langList" :key="item.id" :class="{ active: lang === item.id }" @click.stop="changeLanguageMobile(item.id)">{{
-      getLang(item.id)
+      getLang(item.id, lePadV)
     }}</span>
   </div>
 </template>
@@ -191,7 +204,7 @@ const getLang = (lang: string, simple?: boolean) => {
   height: 36px;
   span {
     color: var(--o-color-info1);
-    margin-right: var(--o-gap-3);
+    margin-right: var(--o-gap-1);
     text-align: center;
     @include text1;
     cursor: pointer;
@@ -202,7 +215,7 @@ const getLang = (lang: string, simple?: boolean) => {
     &:not(:last-child) {
       &:after {
         content: '|';
-        margin-left: var(--o-gap-3);
+        margin-left: var(--o-gap-1);
         color: var(--o-color-info1);
       }
     }
