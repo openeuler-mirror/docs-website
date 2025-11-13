@@ -5,6 +5,7 @@ import { useData } from 'vitepress';
 
 import { useScreen } from '@/composables/useScreen';
 import { useAppearance } from '@/stores/common';
+import { useViewStore } from '@/stores/view';
 
 import ContentWrapper from '@/components/ContentWrapper.vue';
 import HeaderNav from '@/components/header/HeaderNav.vue';
@@ -17,8 +18,9 @@ import IconMenu from '~icons/app/icon-header-menu.svg';
 
 const { lang } = useData();
 const { lePadV } = useScreen();
+const viewStore = useViewStore();
 
-const langShow = ref(['zh', 'en']);
+const langShow = ref(viewStore.isHomeView ? ['zh', 'en', 'ar'] : ['zh', 'en']);
 
 const appearanceStore = useAppearance();
 // Logo主题判断
