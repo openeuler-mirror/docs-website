@@ -39,5 +39,13 @@
                 "toc-check"
             ]
         }
+    },
+    "openUBMC/docs": {
+        "global": [
+            "markdownlint",
+            "link-validity-check",
+            "resource-existence-check",
+            "tag-closed-check"
+        ]
     }
 }
