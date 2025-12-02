@@ -37,6 +37,12 @@
                 "resource-existence-check",
                 "tag-closed-check",
                 "toc-check"
+            ],
+            "master": [
+                "link-validity-check",
+                "resource-existence-check",
+                "tag-closed-check",
+                "toc-check"
             ]
         }
     },
