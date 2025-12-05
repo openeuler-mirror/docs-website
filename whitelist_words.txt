@@ -1,3 +1,7 @@
+bufferio
+NOKASLR
+DVFS
+Signatrust
 rosbase
 rmap
 netperf
