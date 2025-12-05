@@ -1,3 +1,7 @@
+rosbase
+rmap
+netperf
+libbpfgo
 Kimi
 iftop
 nload
