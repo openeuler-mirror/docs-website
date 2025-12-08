@@ -1,5 +1,5 @@
 {
-    "openEuler/docs": {
+    "openeuler/docs": {
         "branches": {
             "master": [
                 "markdownlint",

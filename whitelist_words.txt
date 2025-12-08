@@ -1,3 +1,5 @@
+baichuan
+percpu
 bufferio
 NOKASLR
 DVFS
