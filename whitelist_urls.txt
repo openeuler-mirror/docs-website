@@ -17,4 +17,4 @@ https://example.com/*
 https://repo.openeuler.org/openEuler-{version}/ISO/aarch64/openEuler-{version}-everything-aarch64-dvd.iso
 https://docs.openeuler.openatom.cn/en/docs/.*?/server/installation_upgrade/installation/installation_on_servers.html
 https://docs.openeuler.openatom.cn/zh/docs/.*?/server/installation_upgrade/installation/installation_on_servers.html
-https://repo.openeuler.org/.*?/OS/aarch64/Packages/
+https://docs.openeuler.org/zh/docs/.*?/server/security/secharden/os_hardening_overview.html
