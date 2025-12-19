@@ -8,7 +8,7 @@ if [ -d "./website" ]; then
 fi
 mkdir website
 
-git clone https://gitee.com/openeuler/docs-centralized
+git clone https://atomgit.com/openeuler/docs-centralized
 cd ./docs
 git checkout -b website origin/website
 cp -r * ../website

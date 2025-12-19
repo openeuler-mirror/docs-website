@@ -292,19 +292,19 @@ $(document).ready(() => {
         : (Problem = `- ${data.existProblem.join("、")}`);
       return `1. 【文档链接】
     
-    > ${data.link}
-    
-    2. 【"有虫"文档片段】
-    
-    > ${data.bugDocFragment.replace(/(\r\n|\r|\n)+/g, "$1")}
-    
-    3. 【存在的问题】
-    
-    ${Problem}
-    > ${data.problemDetail.replace(/(\r\n|\r|\n)+/g, "$1")}
-    
-    4. 【预期结果】
-    - 请填写预期结果`;
+> ${data.link}
+
+2. 【"有虫"文档片段】
+
+> ${data.bugDocFragment.replace(/(\r\n|\r|\n)+/g, "$1")}
+
+3. 【存在的问题】
+
+${Problem}
+> ${data.problemDetail.replace(/(\r\n|\r|\n)+/g, "$1")}
+
+4. 【预期结果】
+- 请填写预期结果`;
     }
     // 选中文字出现捉虫图标
     (function () {
@@ -455,11 +455,11 @@ $(document).ready(() => {
               if (JSON.parse(data).code === 200) {
                 if (submitType === "issue") {
                   openUrl(
-                    `https://gitee.com/openeuler/docs-centralized/issues/new?issue%5Bassignee_id%5D=0&issue%5Bmilestone_id%5D=0&title=文档捉虫&description=${body}`
+                    `https://atomgit.com/openeuler/docs-centralized/issues/new?title=文档捉虫&body=${body}`
                   );
                 } else {
                   openUrl(
-                    `https://gitee.com/-/ide/project/openeuler/docs-centralized/edit/stable2-${version}/-/docs/${lang}/docs/${path}?search=${first}&title=文档捉虫-openEuler ${version}-${title}&description=${feedback}&message=${feedback}&label_names=文档捉虫`
+                    `https://atomgit.com/openeuler/docs-centralized/edit/stable2-${version}/-/docs/${lang}/docs/${path}?search=${first}&title=文档捉虫-openEuler ${version}-${title}&description=${feedback}&message=${feedback}&label_names=文档捉虫`
                   );
                 }
               } else {

@@ -19,7 +19,7 @@ $(function ($) {
   versionStr = versionStr.join(" ");
   var sourceLast = urlArr[6].replace("html", "md");
   var sourceHref =
-    "https://gitee.com/openeuler/docs-centralized/tree/stable2-" +
+    "https://atomgit.com/openeuler/docs-centralized/tree/stable2-" +
     urlArr[3] +
     "/docs/" +
     lang +
