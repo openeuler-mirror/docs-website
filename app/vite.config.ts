@@ -4,7 +4,7 @@ import { defineConfig } from 'vitepress';
 import Icons from 'unplugin-icons/vite';
 import { FileSystemIconLoader } from 'unplugin-icons/loaders';
 
-import replaceUrlPlugin from './.vitepress/plugins/replace-url-plugin';
+import ReplaceUrlPlugin from './.vitepress/plugins/replace-url-plugin';
 
 export default defineConfig({
   plugins: [
@@ -17,7 +17,7 @@ export default defineConfig({
         feedback: FileSystemIconLoader(fileURLToPath(new URL('./.vitepress/src/assets/category/feedback/svg-icons', import.meta.url))),
       },
     }),
-    replaceUrlPlugin(),
+    ReplaceUrlPlugin(),
   ],
   assetsInclude: ['**/*.PNG'],
   build: {

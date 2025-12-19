@@ -5,12 +5,17 @@ import fs from 'fs';
  * 复制目录
  * @param {string} sourceDir 源目录
  * @param {string} destDir 目标目录
+ * @param {boolean} clearDestDir 若存在目标目录，复制前是否清空目标目录，默认不清空
  * @param {boolean} slient 是否禁止提示输出，默认输出
  */
-export function copyDirectorySync(sourceDir, destDir, slient) {
+export function copyDirectorySync(sourceDir, destDir, clearDestDir = false, slient = false) {
   if (!fs.existsSync(sourceDir)) {
     console.log(`[copyDirectorySync]：源路径 ${sourceDir} 不存在，跳过复制`);
     return;
+  }
+
+  if (clearDestDir) {
+    removeSync(destDir, true);
   }
 
   if (!fs.existsSync(destDir)) {
@@ -24,7 +29,7 @@ export function copyDirectorySync(sourceDir, destDir, slient) {
     const targetPath = path.join(destDir, item.name);
 
     if (item.isDirectory()) {
-      copyDirectorySync(sourcePath, targetPath, true);
+      copyDirectorySync(sourcePath, targetPath, clearDestDir, true);
     } else {
       fs.copyFileSync(sourcePath, targetPath);
     }
@@ -41,7 +46,7 @@ export function copyDirectorySync(sourceDir, destDir, slient) {
  * @param {string} destPath 目标路径
  * @param {boolean} slient 是否禁止提示输出，默认输出
  */
-export function copyFileSync(sourcePath, destPath, slient) {
+export function copyFileSync(sourcePath, destPath, slient = false) {
   if (!fs.existsSync(sourcePath)) {
     console.log(`[copyFileSync]：源文件 ${sourcePath} 不存在，跳过复制`);
     return;
@@ -66,7 +71,7 @@ export function copyFileSync(sourcePath, destPath, slient) {
  * @param {string} targetPath 目标路径
  * @param {boolean} slient 是否禁止提示输出，默认输出
  */
-export function removeSync(targetPath, slient) {
+export function removeSync(targetPath, slient = false) {
   if (fs.existsSync(targetPath)) {
     fs.rmSync(targetPath, {
       recursive: true,
@@ -96,17 +101,16 @@ export function ensureDirSync(dir) {
   });
 }
 
-
 /**
  * 重命名文件或目录
  * @param {string} oldPath 原始路径
  * @param {string} newPath 新路径
  * @param {boolean} slient 是否禁止提示输出，默认输出
  */
-export function renameSync(oldPath, newPath, slient) {
+export function renameSync(oldPath, newPath, slient = false) {
   if (fs.existsSync(oldPath)) {
     fs.renameSync(oldPath, newPath);
-    
+
     if (!slient) {
       console.log(`[renameSync]：已将 ${oldPath} 重命名为 ${newPath}`);
     }

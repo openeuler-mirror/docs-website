@@ -2,7 +2,7 @@
 import { onMounted, onUnmounted } from 'vue';
 
 import DocPagination from '@/components/doc/DocPagination.vue';
-import GiteeViewSource from '@/components/GiteeViewSource.vue';
+import DocViewSource from '@/components/doc/DocViewSource.vue';
 
 import { type DocMenuNodeT } from '@/utils/tree';
 import { getOffsetTop, getScrollRemainingBottom } from '@/utils/element';
@@ -148,7 +148,7 @@ router.onBeforeRouteChange = (to) => {
 <template>
   <div class="doc-body">
     <Content class="markdown-body" @click="onClickContent" />
-    <GiteeViewSource />
+    <DocViewSource />
     <ClientOnly>
       <DocPagination :node="nodeStore.manualNode ? [nodeStore.manualNode] : []" @page-change="(type) => emits('page-change', type)" />
     </ClientOnly>

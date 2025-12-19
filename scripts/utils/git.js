@@ -50,6 +50,8 @@ export function gitCloneAndCheckout(url, branch, storagePath) {
   }
 
   // 切换目标分支
+  execSync(`git checkout HEAD -- . && git clean -fd`, { stdio: 'inherit', cwd: repoDir });
+  execSync(`git pull`, { stdio: 'inherit', cwd: repoDir });
   const branchList = execSync(`git branch --list ${branch}`, { cwd: repoDir }).toString().trim();
   if (!branchList) {
     console.log(`[gitCloneAndCheckout]：本地不存在分支 ${branch}，开始尝试拉取并切换远程分支`);
@@ -60,7 +62,6 @@ export function gitCloneAndCheckout(url, branch, storagePath) {
 
   console.log(`[gitCloneAndCheckout]：本地存在分支 ${branch}，开始切换分支`);
   try {
-    execSync(`git checkout HEAD -- . && git clean -fd`, { stdio: 'inherit', cwd: repoDir });
     execSync(`git checkout ${branch}`, { stdio: 'inherit', cwd: repoDir });
     console.log(`[gitCloneAndCheckout]：切换分支成功，开始拉取远程更新内容`);
     execSync(`git pull origin ${branch}`, { stdio: 'inherit', cwd: repoDir });

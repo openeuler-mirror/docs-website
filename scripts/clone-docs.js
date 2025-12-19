@@ -71,7 +71,7 @@ function syncDsl() {
   const dslSourcePath = `${CACHE_DIR}/docs/dsl`;
   const dslTargetPath = `${BUILD_DIR}/app/.vitepress/public/dsl/`;
 
-  gitCloneAndCheckout('https://gitee.com/openeuler/docs.git', 'stable-common', CACHE_DIR);
+  gitCloneAndCheckout('https://atomgit.com/openeuler/docs.git', 'stable-common', CACHE_DIR);
   removeSync(dslTargetPath);
   copyDirectorySync(dslSourcePath, dslTargetPath);
 }
@@ -87,7 +87,7 @@ function syncDocs(branch) {
   const enSourcePath = `${CACHE_DIR}/docs/docs/en`;
   const enTargetPath = `${BUILD_DIR}/app/en/docs/${branchName}/`;
 
-  gitCloneAndCheckout('https://gitee.com/openeuler/docs.git', branch, CACHE_DIR);
+  gitCloneAndCheckout('https://atomgit.com/openeuler/docs.git', branch, CACHE_DIR);
   removeSync(zhTargetPath);
   removeSync(enTargetPath);
   copyDirectorySync(zhSourcePath, zhTargetPath);

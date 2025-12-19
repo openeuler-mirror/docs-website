@@ -118,12 +118,16 @@ dist
 # mac
 .DS_Store
 
+# Hugo build output
+/public
+/content
+.hugo_build.lock
+
+# Repo cache
 temp-docs
 .cache
 
-app/zh/docs/**/*
-app/en/docs/**/*
-
+# Project build output
 app/.vitepress/.temp
 app/.vitepress/.cache
 app/.vitepress/dist
@@ -132,4 +136,9 @@ app/.vitepress/public/menu/**/*
 app/.vitepress/public/toc/**/*
 app/.vitepress/public/dsl/**/*
 
+# Project docs
+app/zh/docs/**/*
+app/en/docs/**/*
+
+# Project env
 .env.development
