@@ -18,13 +18,6 @@ export const useUserInfoStore = defineStore('userInfo', {
       platformMaintainerPermission: null as boolean | null,
     };
   },
-  getters: {
-    // 获取giteeID
-    getGiteeId(status): string {
-      const id = status.identities.find((id) => id.identity === 'gitee');
-      return id ? id.login_name : '';
-    },
-  },
 });
 
 /**

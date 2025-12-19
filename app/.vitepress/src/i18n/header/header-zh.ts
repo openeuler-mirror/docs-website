@@ -171,13 +171,13 @@ export default {
             {
               NAME: 'EulerPublisher',
               DESCRIPTION: 'openEuler云原生发布工具',
-              URL: 'https://gitee.com/openeuler/eulerpublisher',
+              URL: 'https://atomgit.com/openeuler/eulerpublisher',
               ICON: OutLink,
             },
             {
               NAME: 'EulerLauncher',
               DESCRIPTION: '跨平台openEuler虚拟机管理工具',
-              URL: 'https://gitee.com/openeuler/eulerlauncher',
+              URL: 'https://atomgit.com/openeuler/eulerlauncher',
               ICON: OutLink,
             },
             {
@@ -194,7 +194,7 @@ export default {
             {
               NAME: 'oecp',
               DESCRIPTION: '操作系统差异比较分析工具',
-              URL: 'https://gitee.com/openeuler/oecp',
+              URL: 'https://atomgit.com/openeuler/oecp',
               ICON: OutLink,
             },
             {
@@ -245,7 +245,7 @@ export default {
         {
           NAME: 'CLA-FAQ',
           ICON: OutLink,
-          URL: 'https://gitee.com/openeuler/infrastructure/blob/master/docs/cla-guide/faq/faq.md',
+          URL: 'https://atomgit.com/openeuler/infrastructure/blob/master/docs/cla-guide/faq/faq.md',
         },
         {
           NAME: '开发者日历',
@@ -611,12 +611,12 @@ export default {
   SOURCE_CODE: [
     {
       NAME: '代码仓',
-      PATH: 'https://gitee.com/openeuler',
+      PATH: 'https://atomgit.com/openeuler',
       ICON: OutLink,
     },
     {
       NAME: '软件包仓',
-      PATH: 'https://gitee.com/src-openeuler',
+      PATH: 'https://atomgit.com/src-openeuler',
       ICON: OutLink,
     },
     {

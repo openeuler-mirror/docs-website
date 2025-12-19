@@ -26,12 +26,8 @@ const jumpToMsgCenter = () => {
 
 const unreadMsgCount = ref(0);
 const getMsgCount = async () => {
-  if (!userInfoStore.getGiteeId) {
-    return;
-  }
-
   try {
-    const data = await getUnreadMsgCount(userInfoStore.getGiteeId);
+    const data = await getUnreadMsgCount();
     unreadMsgCount.value = Object.values(data).reduce((count, val) => count + val, 0);
   } catch {
     // nothing

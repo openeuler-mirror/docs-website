@@ -11,7 +11,7 @@ export default {
   innerInputTip: 'Search in this document.',
   version: 'Version: ',
   version1: 'Version',
-  viewGiteeSource: 'View source on Gitee',
+  viewSource: 'View source on AtomGit',
   confirmTitle: 'Confirm',
   resetTitle: 'Reset',
   versionFilter: 'Version',

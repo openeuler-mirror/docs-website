@@ -453,12 +453,12 @@ export default {
   SOURCE_CODE: [
     {
       NAME: 'Code Sources',
-      PATH: 'https://gitee.com/openeuler',
+      PATH: 'https://atomgit.com/openeuler',
       ICON: OutLink,
     },
     {
       NAME: 'Package Sources',
-      PATH: 'https://gitee.com/src-openeuler',
+      PATH: 'https://atomgit.com/src-openeuler',
       ICON: OutLink,
     },
     {

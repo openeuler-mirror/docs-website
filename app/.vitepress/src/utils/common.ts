@@ -99,9 +99,9 @@ export function getYearByOffset(offset = 8) {
 }
 
 /**
- * 获取gitee源地址
+ * 获取文档源地址
  */
-export function getGiteeUrl(node: DocMenuNodeT | null) {
+export function getSourceUrl(node: DocMenuNodeT | null) {
   // 为空返回空字符串
   if (!node) {
     return '';
@@ -109,7 +109,7 @@ export function getGiteeUrl(node: DocMenuNodeT | null) {
 
   // 页面内容来源为 sig 仓库
   if (node.upstream) {
-    return node.upstream;
+    return node.upstream.replace('gitee', 'atomgit');
   }
 
   // 页面内容来源为文档仓
@@ -132,7 +132,7 @@ export function getGiteeUrl(node: DocMenuNodeT | null) {
     '22.03_LTS_SP4': 'stable-22.03_LTS_SP4',
   };
 
-  return `https://gitee.com/openeuler/docs/blob/${map[branch]}/docs/${lang}/${others.join('/')}`;
+  return `https://atomgit.com/openeuler/docs/blob/${map[branch]}/docs/${lang}/${others.join('/')}`;
 }
 
 /**

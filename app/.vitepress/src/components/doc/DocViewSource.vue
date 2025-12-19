@@ -6,7 +6,7 @@ import { isClient, OIcon } from '@opensig/opendesign';
 
 import IconOutLink from '~icons/app/icon-outlink.svg';
 
-import { getGiteeUrl } from '@/utils/common';
+import { getSourceUrl } from '@/utils/common';
 import { isOverlap } from '@/utils/element';
 
 import { useScreen } from '@/composables/useScreen';
@@ -19,19 +19,19 @@ const { width } = useWindowSize();
 const route = useRoute();
 const nodeStore = useNodeStore();
 
-const giteeUrl = ref('');
+const sourceUrl = ref('');
 
 watch(
   () => route.path,
   () => {
     if (isClient) {
-      giteeUrl.value = getGiteeUrl(nodeStore.pageNode);
+      sourceUrl.value = getSourceUrl(nodeStore.pageNode);
     }
   }
 );
 
 onMounted(() => {
-  giteeUrl.value = getGiteeUrl(nodeStore.pageNode);
+  sourceUrl.value = getSourceUrl(nodeStore.pageNode);
 });
 
 // -------------------- 检查标题和viewsource是否有重叠 --------------------
@@ -53,12 +53,12 @@ onMounted(() => {
   checkOverlap();
 });
 
-// -------------------- 移动端插入gitee --------------------
-const insertGiteeBtn = () => {
+// -------------------- 移动端插入查看源文件 --------------------
+const insertViewSourceBtn = () => {
   if (isPhone.value || overlap.value) {
-    const link = document.querySelector<HTMLElement>('.markdown-body .gitee') as HTMLAnchorElement;
+    const link = document.querySelector<HTMLElement>('.markdown-body .git') as HTMLAnchorElement;
     if (link) {
-      link.href = getGiteeUrl(nodeStore.pageNode);
+      link.href = getSourceUrl(nodeStore.pageNode);
       return;
     }
 
@@ -68,10 +68,10 @@ const insertGiteeBtn = () => {
       const container = document.createElement('div');
       container.className = 'article-detail-container';
       const a = document.createElement('a');
-      a.className = 'gitee';
-      a.href = getGiteeUrl(nodeStore.pageNode);
+      a.className = 'git';
+      a.href = getSourceUrl(nodeStore.pageNode);
       a.target = '_blank';
-      a.textContent = t('docs.viewGiteeSource') || '';
+      a.textContent = t('docs.viewSource') || '';
       const svgString = `
         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 32 32">
           <path fill="currentColor" d="M14.123 3.2c0.442 0 0.8 0.358 0.8 0.8 0 0.398-0.29 0.728-0.67 0.79l-0.13 0.010h-8.523c-0.398 0-0.728 0.29-0.79 0.67l-0.010 0.13v20.8c0 0.398 0.29 0.728 0.67 0.79l0.13 0.010h20.8c0.398 0 0.728-0.29 0.79-0.67l0.010-0.13v-8.576c0-0.442 0.358-0.8 0.8-0.8 0.398 0 0.728 0.29 0.79 0.67l0.010 0.13v8.576c0 1.259-0.97 2.292-2.203 2.392l-0.197 0.008h-20.8c-1.259 0-2.292-0.97-2.392-2.203l-0.008-0.197v-20.8c0-1.259 0.97-2.292 2.203-2.392l0.197-0.008h8.523z"></path>
@@ -86,7 +86,7 @@ const insertGiteeBtn = () => {
       titleDom.nextSibling.parentNode?.insertBefore(container, titleDom.nextSibling);
     }
   } else {
-    const link = document.querySelector<HTMLElement>('.markdown-body .gitee') as HTMLAnchorElement;
+    const link = document.querySelector<HTMLElement>('.markdown-body .git') as HTMLAnchorElement;
     if (link) {
       link.remove();
     }
@@ -96,14 +96,14 @@ const insertGiteeBtn = () => {
 watch([isPhone, width, route], async () => {
   await nextTick();
   checkOverlap();
-  insertGiteeBtn();
+  insertViewSourceBtn();
 });
 </script>
 
 <template>
-  <div v-show="!isPhone" class="gitee-view-source" :class="{ hidden: overlap }">
-    <a ref="linkRef" class="link" :href="giteeUrl" target="_blank" rel="noopener noreferrer">
-      <span class="title">{{ t('docs.viewGiteeSource') }}</span>
+  <div v-show="!isPhone" class="git-view-source" :class="{ hidden: overlap }">
+    <a ref="linkRef" class="link" :href="sourceUrl" target="_blank" rel="noopener noreferrer">
+      <span class="title">{{ t('docs.viewSource') }}</span>
       <OIcon class="icon"><IconOutLink /></OIcon>
     </a>
   </div>
@@ -114,7 +114,7 @@ watch([isPhone, width, route], async () => {
   margin-top: var(--o-gap-2);
   margin-bottom: var(--o-gap-6);
 
-  .gitee {
+  .git {
     display: flex;
     align-items: center;
     color: var(--o-color-link1);
@@ -130,7 +130,7 @@ watch([isPhone, width, route], async () => {
 </style>
 
 <style lang="scss" scoped>
-.gitee-view-source {
+.git-view-source {
   position: absolute;
   top: 0;
   right: 0;

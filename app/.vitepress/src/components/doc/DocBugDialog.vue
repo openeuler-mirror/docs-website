@@ -148,19 +148,19 @@ const issueTemplate = (data: DocsBugParamsT) => {
 
   return `1. 【文档链接】
     
-    > ${data.link}
-    
-    2. 【"有虫"文档片段】
-    
-    > ${data.bugDocFragment.replace(/(\r\n|\r|\n)+/g, '$1')}
-    
-    3. 【存在的问题】
-    
-    ${problem}
-    > ${data.problemDetail.replace(/(\r\n|\r|\n)+/g, '$1')}
-    
-    4. 【预期结果】
-    - 请填写预期结果`;
+> ${data.link}
+
+2. 【"有虫"文档片段】
+
+> ${data.bugDocFragment.replace(/(\r\n|\r|\n)+/g, '$1')}
+
+3. 【存在的问题】
+
+${problem}
+> ${data.problemDetail.replace(/(\r\n|\r|\n)+/g, '$1')}
+
+4. 【预期结果】
+- 请填写预期结果`;
 };
 
 const submitBug = (results: FieldResultT[]) => {
@@ -184,8 +184,8 @@ const submitBug = (results: FieldResultT[]) => {
         if (res.code === 200) {
           emit('update:modelValue', false);
           if (submitType.value === 'issue') {
-            const issueBaseUrl = nodeStore.pageNode?.upstream ? nodeStore.pageNode.upstream.split('/blob')[0] : 'https://gitee.com/openeuler/docs';
-            window.open(`${issueBaseUrl}/issues/new?issue%5Bassignee_id%5D=0&issue%5Bmilestone_id%5D=0&title=文档捉虫&description=${body}`);
+            const issueBaseUrl = nodeStore.pageNode?.upstream ? nodeStore.pageNode.upstream.split('/blob')[0] : 'https://atomgit.com/openeuler/docs';
+            window.open(`${issueBaseUrl}/issues/new?title=文档捉虫&body=${body}`);
           } else {
             let pathname = window.location.pathname;
             if (pathname.endsWith('.html')) {
@@ -199,12 +199,12 @@ const submitBug = (results: FieldResultT[]) => {
             const [_, lang, __, branch, ...others] = pathname.split('/');
             if (viewStore.isOverview && nodeStore.pageNode?.href) {
               const arr = nodeStore.pageNode.href.replace('index.html', '_toc.yaml').split('/');
-              window.open(`https://gitee.com/-/ide/project/openeuler/docs/edit/stable-${arr[3]}/-/docs/${lang}/${arr.slice(4).join('/')}?search=${first}&title=文档捉虫-openEuler ${branch}-${page.value.title}&description=${formData.description}&message=${formData.description}&label_names=文档捉虫`);
+              window.open(`https://atomgit.com/openeuler/docs/edit/stable-${arr[3]}/docs/${lang}/${arr.slice(4).join('/')}?search=${first}&title=文档捉虫-openEuler ${branch}-${page.value.title}&description=${formData.description}&message=${formData.description}&label_names=文档捉虫`);
             } else if (nodeStore.pageNode?.upstream) {
               const arr = nodeStore.pageNode.upstream.split('/');
-              window.open(`https://gitee.com/-/ide/project/${arr[3]}/${arr[4]}/edit/${arr[6]}/-/${arr.slice(7).join('/')}?search=${first}&title=文档捉虫-openEuler ${branch}-${page.value.title}&description=${formData.description}&message=${formData.description}&label_names=文档捉虫`);
+              window.open(`https://atomgit.com/${arr[3]}/${arr[4]}/edit/${arr[6]}/${arr.slice(7).join('/')}?search=${first}&title=文档捉虫-openEuler ${branch}-${page.value.title}&description=${formData.description}&message=${formData.description}&label_names=文档捉虫`);
             } else {
-              window.open(`https://gitee.com/-/ide/project/openeuler/docs/edit/stable-${branch}/-/docs/${lang}/${others.join('/')}?search=${first}&title=文档捉虫-openEuler ${branch}-${page.value.title}&description=${formData.description}&message=${formData.description}&label_names=文档捉虫`);
+              window.open(`https://atomgit.com/openeuler/docs/edit/stable-${branch}/docs/${lang}/${others.join('/')}?search=${first}&title=文档捉虫-openEuler ${branch}-${page.value.title}&description=${formData.description}&message=${formData.description}&label_names=文档捉虫`);
             }
            
           }
