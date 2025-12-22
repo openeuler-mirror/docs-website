@@ -122,7 +122,7 @@ export default {
             {
               NAME: 'CLA签署',
               DESCRIPTION: '参与贡献前，需签署贡献者许可协议（CLA）',
-              URL: 'https://clasign.osinfra.cn/sign/gitee_openeuler-1611298811283968340',
+              URL: 'https://clasign.osinfra.cn/sign/6946817fe1b3f3e542b4e2d9',
               ICON: OutLink,
             },
             {
@@ -143,7 +143,7 @@ export default {
             {
               NAME: 'EulerMaker',
               DESCRIPTION: '开放式统一构建服务',
-              URL: 'https://eulermaker.compass-ci.openeuler.openatom.cn/',
+              URL: 'https://eulermaker.openeuler.openatom.cn/',
               ANALYTICSNAME: 'eulermaker',
             },
             {
