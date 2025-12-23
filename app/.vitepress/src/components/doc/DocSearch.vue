@@ -12,7 +12,6 @@ import { useLocale } from '@/composables/useLocale';
 import type { SearchRecommendT } from '@/@types/type-search';
 import { getSearchRecommend } from '@/api/api-search';
 import { onClickOutside } from '@vueuse/core';
-import { oaReport } from '@/shared/analytics';
 
 const emit = defineEmits(['switchVisible']);
 
@@ -59,7 +58,7 @@ const reportSearch = () => {
   if (!val) {
     return;
   }
-  oaReport('input', {
+  (window as any).__OA_REPORT__?.('input', {
     keyword: val,
     $url: window.location.href,
     locale: location.pathname.match(/^\/(zh|en)\//)?.[1] || 'zh',

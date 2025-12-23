@@ -10,7 +10,6 @@ import { useNodeStore } from '@/stores/node';
 import { useLocale } from '@/composables/useLocale';
 import { isElementVisible } from '@/utils/element';
 import { getVersionFromUrl } from '@/utils/common';
-import { oaReport } from '@/shared/analytics';
 import { isPageExist } from '@/api/api-common';
 
 const props = defineProps({
@@ -87,7 +86,7 @@ const onClickItem = async (href: string) => {
 };
 
 const reportDocTypeClick = () => {
-  oaReport('click', {
+  (window as any).__OA_REPORT__?.('click', {
     $url: location.href,
     type: 'docType',
   });

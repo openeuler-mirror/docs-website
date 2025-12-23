@@ -14,7 +14,6 @@ import HeaderCode from './HeaderCode.vue';
 import HeaderLogin from './HeaderLogin.vue';
 import HeaderSearch from './HeaderSearch.vue';
 import NavLink from './NavLink.vue';
-import { oaReport } from '@/shared/analytics';
 import { useLocale } from '@/composables/useLocale';
 
 const appearanceStore = useAppearance();
@@ -43,7 +42,7 @@ class NavAccessAnalyzer {
   stepCount: number = 0;
 
   end(navPath: string[]) {
-    oaReport(
+    (window as any).__OA_REPORT__?.(
       'click',
       {
         module: 'navigation',
@@ -79,7 +78,7 @@ const toggleDebounced = useDebounceFn(function (item: any | null) {
     isPicture.value = false;
   } else {
     (navAnalyzer ??= new NavAccessAnalyzer()).stepIncr();
-    oaReport('hover', {
+    (window as any).__OA_REPORT__?.('hover', {
       module: 'navigation',
       level1: item.NAME,
     });

@@ -1,19 +1,20 @@
 <script setup lang="ts">
-import { inBrowser, useRouter } from 'vitepress';
+import { inBrowser, useData, useRoute, useRouter } from 'vitepress';
 
 import { OScroller, OConfigProvider } from '@opensig/opendesign';
+import { OCookieNotice, OPlusConfigProvider } from '@opendesign-plus/components';
 import zhCN from '@opensig/opendesign/es/locale/lang/zh-cn';
 import enUS from '@opensig/opendesign/es/locale/lang/en-us';
 
 import AppHeader from '@/components/header/AppHeader.vue';
-import CookieNotice from '@/components/CookieNotice.vue';
 import LayoutDoc from '@/layouts/LayoutDoc.vue';
 
 import { scrollToTop } from '@/utils/common';
 import { useLocale } from '@/composables/useLocale';
 import { useViewStore } from '@/stores/view';
-import { oa, oaReport } from './shared/analytics';
+import { nextTick, ref, watch } from 'vue';
 
+const { lang } = useData();
 const { isZh } = useLocale();
 const viewStore = useViewStore();
 
@@ -22,9 +23,35 @@ router.onBeforePageLoad = () => {
   scrollToTop(0, false);
 };
 
+const cookieNoticeVisible = ref(false);
+const HOME_URL = import.meta.env.VITE_MAIN_DOMAIN_URL;
+
+const route = useRoute();
+const cookieRef = ref();
+watch(
+  () => route.path,
+  async () => {
+    await nextTick();
+    cookieRef.value?.check();
+  }
+);
+
+// ============埋点============
+const currentHref = ref('');
+if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+  const route = useRoute();
+  watch(
+    () => route.path,
+    () => {
+      currentHref.value = location.href;
+    },
+    { immediate: true, flush: 'post' }
+  );
+}
+
 if (inBrowser) {
   document.addEventListener('click', (event) => {
-    if (!oa.enabled) return;
+    if (!(window as any).__OA_INSTANCE__?.enabled) return;
     // 获取点击的目标元素
     let target = event.target as HTMLElement;
     // 向上查找最近的 <a> 标签（处理嵌套元素点击）
@@ -39,20 +66,21 @@ if (inBrowser) {
     if (href.startsWith('javascript:')) return;
 
     const data = {
-      $url: location.href,
+      $url: currentHref.value,
       target: href,
+      content: target.textContent!.trim(),
       type: 'link',
     };
 
-    if (/\/(zh|en)\/$/.test(location.href)) {
+    if (/\/(zh|en)\/$/.test(currentHref.value)) {
       data.type = 'homePage';
     } else if (target.classList.contains('o-breadcrumb-item-label')) {
       data.type = 'breadcrumb';
-    } else if (target.parentElement?.parentElement?.classList.contains('doc-footer-content')) {
+    } else if (target.parentElement?.classList.contains('doc-footer-content')) {
       data.type = 'pageChange';
     }
 
-    oaReport('click', data, 'docs', { immediate: true });
+    (window as any).__OA_REPORT__?.('click', data, 'docs');
   });
 }
 </script>
@@ -66,9 +94,9 @@ if (inBrowser) {
         <LayoutDoc v-else />
       </main>
     </OScroller>
-    <ClientOnly>
-      <CookieNotice />
-    </ClientOnly>
+    <OPlusConfigProvider :locale="lang">
+      <OCookieNotice ref="cookieRef" v-model:visible="cookieNoticeVisible" community="openEuler" :detail-url="`${HOME_URL}/${lang}/other/cookies/`" />
+    </OPlusConfigProvider>
   </OConfigProvider>
 </template>
 
