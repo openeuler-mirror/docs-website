@@ -129,6 +129,7 @@ export function getSourceUrl(node: DocMenuNodeT | null) {
     '25.03': 'stable-25.03',
     '24.03_LTS_SP1': 'stable-24.03_LTS_SP1',
     '24.03_LTS_SP2': 'stable-24.03_LTS_SP2',
+    '24.03_LTS_SP3': 'stable-24.03_LTS_SP3',
     '22.03_LTS_SP4': 'stable-22.03_LTS_SP4',
   };
 

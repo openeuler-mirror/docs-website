@@ -33,7 +33,7 @@ export const useSearchingStore = defineStore('isSearching', {
       lastSearchValue: '',
       isLoading: false,
       currentPage: 1,
-      version: '25.09', // 文档当前版本
+      version: '24.03_LTS_SP3', // 文档当前版本
     };
   },
   actions: {

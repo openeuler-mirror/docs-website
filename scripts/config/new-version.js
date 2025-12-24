@@ -3,6 +3,7 @@
 // 后续添加请按规则添加
 export default {
   'stable-common': 'common',
+  'stable-24.03_LTS_SP3': '24.03_LTS_SP3',
   'stable-25.09': '25.09',
   'stable-24.03_LTS_SP2': '24.03_LTS_SP2',
   'stable-25.03': '25.03', 
