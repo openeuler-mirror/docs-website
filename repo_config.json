@@ -183,6 +183,10 @@
         "enabled": true,
         "docPaths": "docs/zh,docs/en"
     },
+    "openeuler/yuanrong": {
+        "enabled": true,
+        "docPaths": "docs"
+    },
     "_default": {
         "enabled": false,
         "docPaths": "docs/zh,docs/en"
