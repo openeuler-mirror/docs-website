@@ -1,5 +1,5 @@
 {{ template "hrefhack" . }}
-{{ $version := .File.Dir }}
+{{ $version := path.Clean .File.Dir }}
 {{ $versionArr := split $version "docs" }}
 {{ $versionArr := index $versionArr 1 }}
 {{ $versionArr := split $versionArr "/" }}
