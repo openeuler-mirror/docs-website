@@ -67,7 +67,7 @@ const searchResult = async () => {
       keyword: searchStore.keyword,
       lang: locale.value,
       page: currentPage.value,
-      version: route.path.split('/')?.[3] || searchStore.version,
+      version: route.path.split('/')?.[3],
       path: url.replace(`/${locale.value}/`, '').replace('/index.html', ''),
     });
 

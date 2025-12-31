@@ -126,10 +126,13 @@ export default {
       // 处理文档里写的html标签
       const defaultHtmlBlockRender = md.renderer.rules.html_block;
       md.renderer.rules.html_block = (tokens, idx, options, env, self) => {
-        const content = tokens[idx].content;
+        tokens[idx].content = tokens[idx].content
+          .replace(/\s+(width|height)=['|"](.*?)['|"]/g, '')
+          .replace(/<a([^>]*?)href\s*=\s*['"](?!(?:https?:)?\/\/)([^'"]+)\.md(#.*?)?['"]([^>]*?)>/gi, '<a$1href="$2.html$3"$4>');
+
         const renderContent = defaultHtmlBlockRender!!(tokens, idx, options, env, self);
-        if (content.includes('<img')) {
-          return `<MarkdownImage>${renderContent.replace(/(width|height)=['|"](.*?)['|"]/g, '')}</MarkdownImage>`;
+        if (renderContent.includes('<img')) {
+          return renderContent.replace(/(<img\s[^>]*>\s*<\/img>|<img\s[^>]*\/?>)/gi, '<MarkdownImage>$1</MarkdownImage>');
         }
 
         return renderContent;
@@ -137,10 +140,13 @@ export default {
 
       const defaultHtmlInlineRender = md.renderer.rules.html_inline;
       md.renderer.rules.html_inline = function (tokens, idx, options, env, self) {
-        const content = tokens[idx].content;
+        tokens[idx].content = tokens[idx].content
+          .replace(/\s+(width|height)=['|"](.*?)['|"]/g, '')
+          .replace(/<a([^>]*?)href\s*=\s*['"](?!(?:https?:)?\/\/)([^'"]+)\.md(#.*?)?['"]([^>]*?)>/gi, '<a$1href="$2.html$3"$4>');
+
         const renderContent = defaultHtmlInlineRender!!(tokens, idx, options, env, self);
-        if (content.includes('<img')) {
-          return `<MarkdownImage>${renderContent.replace(/(width|height)=['|"](.*?)['|"]/g, '')}</MarkdownImage>`;
+        if (renderContent.includes('<img')) {
+          return `<MarkdownImage>${renderContent}</MarkdownImage>`;
         }
 
         return renderContent;
