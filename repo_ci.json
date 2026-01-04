@@ -30,7 +30,6 @@
     "openeuler/yuanrong": {
         "global": [
             "markdownlint",
-            "link-validity-check",
             "resource-existence-check"
         ]
     },
