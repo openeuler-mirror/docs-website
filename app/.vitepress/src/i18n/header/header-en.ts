@@ -24,8 +24,7 @@ export default {
           CHILDREN: [
             {
               NAME: 'openEuler 24.03 LTS SP3',
-              DESCRIPTION:
-                'openEuler 24.03 LTS SP3, built on Linux Kernel 6.6, introduces support for the groundbreaking UnifiedBus SuperPoD architecture. Engineered for server, cloud, and AI workloads, it delivers robust performance and scalability for next-generation digital infrastructure.',
+              DESCRIPTION: 'Explore the UnifiedBus SuperPoD architecture on openEuler.',
               TAG: TAG_TYPE.NEW,
               URL: '/download/#openEuler 24.03 LTS SP3',
             },
