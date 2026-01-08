@@ -18,3 +18,4 @@ https://repo.openeuler.org/openEuler-{version}/ISO/aarch64/openEuler-{version}-e
 https://docs.openeuler.openatom.cn/en/docs/.*?/server/installation_upgrade/installation/installation_on_servers.html
 https://docs.openeuler.openatom.cn/zh/docs/.*?/server/installation_upgrade/installation/installation_on_servers.html
 https://docs.openeuler.org/zh/docs/.*?/server/security/secharden/os_hardening_overview.html
+https://repo.openeuler.org/openEuler-{version}/OS/$basearch/
