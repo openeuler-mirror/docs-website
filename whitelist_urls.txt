@@ -19,3 +19,8 @@ https://docs.openeuler.openatom.cn/en/docs/.*?/server/installation_upgrade/insta
 https://docs.openeuler.openatom.cn/zh/docs/.*?/server/installation_upgrade/installation/installation_on_servers.html
 https://docs.openeuler.org/zh/docs/.*?/server/security/secharden/os_hardening_overview.html
 https://repo.openeuler.org/openEuler-{version}/OS/$basearch/
+https://gitee.com/$user/openEuler
+https://eulercopilot.test.com
+ https://eulercopilot.test.com/api/auth/login
+ https://eulercopilot.test.com/api/auth/login
+ 
