@@ -1,3 +1,13 @@
+rcfile
+noprofile
+norc
+popd
+pushd
+unalias
+shopt
+elif
+esac
+utshellrc
 XNNPACK
 mspn
 pagenum
