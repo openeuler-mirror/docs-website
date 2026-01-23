@@ -23,12 +23,14 @@ import { useAppearance } from '@/stores/common';
 import { useThrottleFn } from '@vueuse/core';
 import { useScreen } from '@/composables/useScreen';
 import { useLocale } from '@/composables/useLocale';
+import { useNodeStore } from '@/stores/node';
 import { postArticleFeedback, type FeedBackDataT } from '@/api/api-feedback';
 import { vAnalytics } from '@/shared/analytics';
 
 const { t, locale } = useLocale();
 const { isPhone, gtPhone } = useScreen();
 const message = useMessage(null);
+const nodeStore = useNodeStore();
 
 const isDark = computed(() => {
   return useAppearance().theme === 'dark' ? true : false;
@@ -291,7 +293,7 @@ const submitArticleFeedback = () => {
 
 <template>
   <div v-if="gtPhone" class="feedback">
-    <div class="bug-box" @click="docBugVisible = true">
+    <div v-if="nodeStore.currentNode" class="bug-box" @click="docBugVisible = true">
       <div class="bug-text">{{ t('feedback.bugCatching') }}</div>
     </div>
     <div class="feedback-container">

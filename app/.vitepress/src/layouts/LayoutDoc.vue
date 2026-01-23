@@ -439,7 +439,7 @@ onUnmounted(() => {
 
     <!-- 文档右侧内容 -->
     <div class="ly-doc" :class="{ 'ly-doc-no-menu': !nodeStore.currentNode }">
-      <DocBreadCrumb v-if="!isPhone && nodeStore.currentNode" />
+      <DocBreadCrumb v-if="!isPhone" />
       <div class="doc-content">
         <!-- 文档模块总览 -->
         <TheDocsNode v-if="!searchStore.isSearching && viewStore.isOverview" @change-node-index="onChangeNodeIndex" />
@@ -458,7 +458,7 @@ onUnmounted(() => {
     </div>
 
     <!-- 文档选中捉虫 -->
-    <DocBug />
+    <DocBug v-if="nodeStore.currentNode" />
     <!-- 右侧悬浮组件 -->
     <FloatingButtonDocs />
   </div>
@@ -690,6 +690,15 @@ onUnmounted(() => {
 
 .ly-doc-no-menu {
   max-width: var(--layout-content-max-width);
-  margin: 0 auto;
+  margin-left: max(calc(226px + (var(--vw100) - 1920px) / 2), 64px);
+
+  @include respond-to('<=laptop') {
+    margin-left: max(calc(64px + (var(--vw100) - 1920px) / 2), 64px);
+  }
+
+  @include respond-to('phone') {
+    padding-top: 24px;
+    margin-left: var(--layout-doc-offset-left);
+  }
 }
 </style>

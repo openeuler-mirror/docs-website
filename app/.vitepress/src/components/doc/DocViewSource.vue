@@ -55,10 +55,19 @@ onMounted(() => {
 
 // -------------------- 移动端插入查看源文件 --------------------
 const insertViewSourceBtn = () => {
+  const url = getSourceUrl(nodeStore.pageNode);
+  if (!url) {
+    const container = document.querySelector('.article-detail-container');
+    if (container) {
+      container.remove();
+    }
+    return;
+  }
+
   if (isPhone.value || overlap.value) {
     const link = document.querySelector<HTMLElement>('.markdown-body .git') as HTMLAnchorElement;
     if (link) {
-      link.href = getSourceUrl(nodeStore.pageNode);
+      link.href = url;
       return;
     }
 
@@ -69,7 +78,7 @@ const insertViewSourceBtn = () => {
       container.className = 'article-detail-container';
       const a = document.createElement('a');
       a.className = 'git';
-      a.href = getSourceUrl(nodeStore.pageNode);
+      a.href = url;
       a.target = '_blank';
       a.textContent = t('docs.viewSource') || '';
       const svgString = `
@@ -101,7 +110,7 @@ watch([isPhone, width, route], async () => {
 </script>
 
 <template>
-  <div v-show="!isPhone" class="git-view-source" :class="{ hidden: overlap }">
+  <div v-if="sourceUrl" v-show="!isPhone" class="git-view-source" :class="{ hidden: overlap }">
     <a ref="linkRef" class="link" :href="sourceUrl" target="_blank" rel="noopener noreferrer">
       <span class="title">{{ t('docs.viewSource') }}</span>
       <OIcon class="icon"><IconOutLink /></OIcon>

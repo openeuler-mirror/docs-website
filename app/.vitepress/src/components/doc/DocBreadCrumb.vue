@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vitepress';
 import { OBreadcrumb, OBreadcrumbItem, OIcon } from '@opensig/opendesign';
 
@@ -15,6 +15,16 @@ const viewStore = useViewStore();
 const nodeStore = useNodeStore();
 const searchStore = useSearchingStore();
 
+const noMenuLabel = ref('');
+
+onMounted(() => {
+  setTimeout(() => {
+    if (!nodeStore.currentNode) {
+      noMenuLabel.value = document.querySelector('.markdown-body h1 .title')?.textContent || '';
+    }
+  }, 300);
+});
+
 // -------------------- 是否需要显示模块节点 --------------------
 const showModuleItem = computed(() => {
   return (!viewStore.isOverview && !viewStore.isCommonView) || (viewStore.isOverview && searchStore.isSearching);
@@ -22,6 +32,10 @@ const showModuleItem = computed(() => {
 
 // -------------------- 当前节点标题 --------------------
 const currentTitle = computed(() => {
+  if (!nodeStore.currentNode) {
+    return noMenuLabel.value;
+  }
+  
   return viewStore.isOverview ? nodeStore.moduleNode?.label : nodeStore.pageNode?.label;
 });
 
