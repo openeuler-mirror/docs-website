@@ -60,7 +60,7 @@ export default {
       dark: 'dark-plus',
     },
     anchor: {
-      slugify: (s: string) => `user-content-${getDomId(s)}`
+      slugify: (s: string) => `user-content-${getDomId(s)}`,
     },
     config: (md: Markdown) => {
       // 处理须知/说明/警告/注意
@@ -84,7 +84,35 @@ export default {
           state.env.content = src;
         }
       });
-      
+
+      // 处理表格内的{}
+      md.core.ruler.before('inline', 'td_replace', function (state) {
+        let tdOpen = false;
+        state.tokens.forEach((token) => {
+          if (token.type === 'td_open') {
+            tdOpen = true;
+            return;
+          }
+
+          if (token.type === 'td_close') {
+            tdOpen = false;
+            return;
+          }
+
+          if (
+            token.type === 'inline' &&
+            tdOpen &&
+            !token.content.includes('v-pre') &&
+            !token.content.includes('\\{') &&
+            !token.content.includes('\\}') &&
+            token.content.includes('{') &&
+            token.content.includes('}')
+          ) {
+            token.content = token.content.replace(/\{/g, '\\{');
+          }
+        });
+      });
+
       md.renderer.rules.code_inline = (tokens, idx) => {
         const content = tokens[idx].content;
         // 转义
