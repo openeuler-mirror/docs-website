@@ -21,7 +21,6 @@ import { useLocale } from '@/composables/useLocale';
 import type { SearchRecommendT } from '@/@types/type-search';
 import type { HomeBannerItemT } from '@/@types/type-home';
 import HomeSectionCard from './components/HomeSectionCard.vue';
-import { oaReport } from '@/shared/analytics';
 
 const appearanceStore = useAppearance();
 const searchStore = useSearchingStore();
@@ -77,7 +76,7 @@ const reportSearch = (val: string) => {
   if (!val.trim()) {
     return;
   }
-  oaReport('input', {
+  (window as any).__OA_REPORT__?.('input', {
     keyword: val.trim(),
     lang: locale.value,
     version: searchStore.version,

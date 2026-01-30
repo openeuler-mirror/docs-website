@@ -23,7 +23,6 @@ import type { DocsBugParamsT } from '@/@types/type-feedback';
 import { submitDocsBug } from '@/api/api-feedback';
 
 import { useLocale } from '@/composables/useLocale';
-import { oaReport } from '@/shared/analytics';
 import { useNodeStore } from '@/stores/node';
 import { useViewStore } from '@/stores/view';
 
@@ -219,7 +218,7 @@ const submitBug = (results: FieldResultT[]) => {
 };
 
 const reportAnalytics = (data: DocsBugParamsT) => {
-  oaReport('click', {
+  (window as any).__OA_REPORT__?.('click', {
     type: 'bug',
     content: data,
   });

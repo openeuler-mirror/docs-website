@@ -2,7 +2,6 @@ import Cookies from 'js-cookie';
 import { useLangStore } from '@/stores/common';
 import { useLoginStore, useUserInfoStore } from '@/stores/user';
 import { queryUserInfo } from '@/api/api-user';
-import { oa } from './analytics';
 
 const LOGIN_URL = import.meta.env.VITE_LOGIN_URL;
 const XSRF_COOKIE_NAME = import.meta.env.VITE_XSRF_COOKIE_NAME;
@@ -70,7 +69,7 @@ export async function tryLogin() {
     loginStore.setLoginStatus(LOGIN_STATUS.DOING);
     userInfoStore.$patch(await queryUserInfo());
     loginStore.setLoginStatus(LOGIN_STATUS.DONE);
-    oa.setUserId(userInfoStore.username);
+    (window as any).__OA_INSTANCE__?.setUserId(userInfoStore.username);
   } catch {
     loginStore.setLoginStatus(LOGIN_STATUS.FAILED);
   } finally {

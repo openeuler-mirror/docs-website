@@ -7,6 +7,7 @@ import NotFound from '@/NotFound.vue';
 import '@/assets/style/base.scss';
 import 'element-plus/theme-chalk/src/index.scss';
 import '@opensig/opendesign/es/index.scss';
+import '@opendesign-plus/components/styles';
 import '@/assets/style/theme/default-light.token.css';
 import '@/assets/style/theme/dark.token.css';
 import '@/assets/style/markdown.scss';
@@ -18,7 +19,9 @@ import VueDOMPurifyHTML from 'vue-dompurify-html';
 import MarkdownTitle from '@/components/markdown/MarkdownTitle.vue';
 import MarkdownImage from '@/components/markdown/MarkdownImage.vue';
 
-import '@/shared/analytics';
+import { initOpenDesignAnalytics } from '@opendesign-plus/plugins/analytics';
+import { BAIDU_HM, COOKIE_KEY_EN } from '@/config/data';
+import { removeCustomCookie } from '@/shared/cookie';
 
 export default {
   Layout,
@@ -28,6 +31,37 @@ export default {
     app.use(VueDOMPurifyHTML, {
       default: {
         ADD_ATTR: ['target'],
+      },
+    });
+    app.use(initOpenDesignAnalytics, {
+      appKey: 'openEuler',
+      service: 'docs',
+      request: '/api-dsapi/query/track/openeuler',
+      isCookieAgreed() {
+        return location.pathname.startsWith('/zh') ? true : document.cookie.includes(`${COOKIE_KEY_EN}=1`);
+      },
+      onEnable() {
+        const hm = document.createElement('script');
+        hm.src = BAIDU_HM;
+        hm.classList.add('analytics-script');
+        const s = document.getElementsByTagName('HEAD')[0];
+        s.appendChild(hm);
+      },
+      onDisable() {
+        const scripts = document.querySelectorAll('script.analytics-script');
+        scripts.forEach((script) => {
+          script.remove();
+        });
+        const hm = /^hm/i;
+        document.cookie
+          .split(';')
+          .map((c) => c.trim())
+          .forEach((c) => {
+            const key = decodeURIComponent(c.split('=')[0]);
+            if (hm.test(key)) {
+              removeCustomCookie(key);
+            }
+          });
       },
     });
 

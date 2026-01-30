@@ -30,8 +30,6 @@ import { getNodeHrefSafely, type DocMenuNodeT } from '@/utils/tree';
 import { scrollIntoView } from '@/utils/scroll-to';
 import { isElementVisible } from '@/utils/element';
 import { getDomId } from '@/utils/common';
-import { oaReport } from '@/shared/analytics';
-import { vAnalytics } from '@/shared/analytics';
 import { nextTick } from 'vue';
 
 const { hash, lang } = useData();
@@ -263,7 +261,7 @@ const reportMenuClick = (item: DocMenuNodeT) => {
   if (!viewStore.isCommonView) {
     path.unshift(version.value);
   }
-  oaReport(
+  (window as any).__OA_REPORT__?.(
     'click',
     {
       type: 'menu',
@@ -291,7 +289,7 @@ if (inBrowser) {
         for (const section of currentReadingSections) {
           if (!section.startTime) continue;
           const duration = Date.now() - section.startTime;
-          oaReport('sectionDuration', {
+          (window as any).__OA_REPORT__?.('sectionDuration', {
             section: section.start.id,
             duration: duration,
           });
@@ -301,7 +299,7 @@ if (inBrowser) {
       }
       const scrollContainer = document.querySelector<HTMLElement>('.o-scroller-container');
       if (!scrollContainer) return;
-      oaReport('scroll', {
+      (window as any).__OA_REPORT__?.('scroll', {
         scrollTop: scrollContainer.scrollTop,
         section: menuVal.value.slice(menuVal.value.lastIndexOf('#') + 1),
         path: menuVal.value,
@@ -368,7 +366,7 @@ onMounted(() => {
           const duration = Date.now() - section.startTime;
           section.startTime = null;
           currentReadingSections.delete(section);
-          oaReport('sectionDuration', {
+          (window as any).__OA_REPORT__?.('sectionDuration', {
             section: section.start.id,
             duration: duration,
           });

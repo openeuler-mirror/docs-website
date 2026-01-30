@@ -9,8 +9,6 @@ import RecursionMenuItem from '@/components/menu/RecursionMenuItem.vue';
 import { getNodeHrefSafely, type DocMenuNodeT } from '@/utils/tree';
 import { getDomId } from '@/utils/common'; 
 
-import { vAnalytics } from '@/shared/analytics';
-
 const props = defineProps({
   // 绑定值
   modelValue: {

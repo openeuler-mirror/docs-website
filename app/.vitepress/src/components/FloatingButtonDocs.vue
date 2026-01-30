@@ -25,7 +25,6 @@ import { useScreen } from '@/composables/useScreen';
 import { useLocale } from '@/composables/useLocale';
 import { useNodeStore } from '@/stores/node';
 import { postArticleFeedback, type FeedBackDataT } from '@/api/api-feedback';
-import { vAnalytics } from '@/shared/analytics';
 
 const { t, locale } = useLocale();
 const { isPhone, gtPhone } = useScreen();

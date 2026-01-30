@@ -65,6 +65,7 @@ export const COOKIE_AGREED_STATUS = {
   NOT_SIGNED: '0', // 未签署
   ALL_AGREED: '1', // 同意所有cookie
   NECCESSARY_AGREED: '2', // 仅同意必要cookie
+  NOT_SHOW_BUT_AGREED: '3', // 不再显示但已同意
 };
 
 // cookie key

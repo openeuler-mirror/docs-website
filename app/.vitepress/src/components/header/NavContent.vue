@@ -3,7 +3,6 @@ import { ref } from 'vue';
 import { OTag, OIcon } from '@opensig/opendesign';
 
 import NavLink from './NavLink.vue';
-import { oaReport } from '@/shared/analytics';
 
 defineProps({
   navContent: {
@@ -34,7 +33,7 @@ const descMouseenter = (e: MouseEvent) => {
 
 const onClickNavLink = (item?: any) => {
   if (item?.ANALYTICSNAME) {
-    oaReport('click', undefined, item.ANALYTICSNAME);
+    (window as any).__OA_REPORT__?.('click', undefined, item.ANALYTICSNAME);
   }
   if (Array.isArray(item.NAV_PATH)) {
     emits('report-nav-click-path', item.NAV_PATH);
