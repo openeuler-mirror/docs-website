@@ -25,7 +25,7 @@ router.onBeforePageLoad = () => {
 
 const cookieNoticeVisible = ref(false);
 const HOME_URL = import.meta.env.VITE_MAIN_DOMAIN_URL;
-
+const COOKIE_DOMAIN = import.meta.env.VITE_COOKIE_DOMAIN;
 const route = useRoute();
 const cookieRef = ref();
 watch(
@@ -95,7 +95,7 @@ if (inBrowser) {
       </main>
     </OScroller>
     <OPlusConfigProvider :locale="lang">
-      <OCookieNotice ref="cookieRef" v-model:visible="cookieNoticeVisible" community="openEuler" :detail-url="`${HOME_URL}/${lang}/other/cookies/`" />
+      <OCookieNotice ref="cookieRef" v-model:visible="cookieNoticeVisible" community="openEuler" :detail-url="`${HOME_URL}/${lang}/other/cookies/`" :cookie-domain="COOKIE_DOMAIN" />
     </OPlusConfigProvider>
   </OConfigProvider>
 </template>

@@ -13,8 +13,8 @@ importers:
   .:
     dependencies:
       '@opendesign-plus/components':
-        specifier: 0.0.1-rc.5
-        version: 0.0.1-rc.5(@types/markdown-it@14.1.2)(markdown-it@14.1.0)(vue@3.3.4)
+        specifier: 0.0.1-rc.6
+        version: 0.0.1-rc.6(@types/markdown-it@14.1.2)(markdown-it@14.1.0)(vue@3.3.4)
       '@opendesign-plus/plugins':
         specifier: 0.0.1-rc.1
         version: 0.0.1-rc.1
@@ -775,8 +775,8 @@ packages:
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
 
-  '@opendesign-plus/components@0.0.1-rc.5':
-    resolution: {integrity: sha512-csaDj9VTuafAc8HRuFejKotkSAyb0uIr9aawGgMdEcS+UxfGOUz1V3Tvi+2LCN3pdvtLDqkO7pN0EsvVqI2atA==}
+  '@opendesign-plus/components@0.0.1-rc.6':
+    resolution: {integrity: sha512-EZ5OKQe2ARFFEDqgPoKD4qC9+Ann5W1NOzKptQHmzrm+lq3dHpq8jiJgK0Y3N1r4v4GV+CCMNlTU4J99jNmYKw==}
 
   '@opendesign-plus/composables@0.0.1-rc.6':
     resolution: {integrity: sha512-Uvbcl6Omtu6FwaMWLUQJDbyPUuFyx3zgGJ2qwj3WkcKUUWQ8AuBFMw7Vs3lLDQCg37roBmqvrwnBJE4ST4xPNw==}
@@ -3716,7 +3716,7 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.18.0
 
-  '@opendesign-plus/components@0.0.1-rc.5(@types/markdown-it@14.1.2)(markdown-it@14.1.0)(vue@3.3.4)':
+  '@opendesign-plus/components@0.0.1-rc.6(@types/markdown-it@14.1.2)(markdown-it@14.1.0)(vue@3.3.4)':
     dependencies:
       '@opendesign-plus/composables': 0.0.1-rc.6(@types/markdown-it@14.1.2)(markdown-it@14.1.0)(vue@3.3.4)
       '@opendesign-plus/styles': 0.0.1-rc.2
