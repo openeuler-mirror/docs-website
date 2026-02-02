@@ -4209,3 +4209,5 @@ ltdl
 unnaming
 startparam
 SUDOT
+xalarmd
+memid
