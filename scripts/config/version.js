@@ -1,7 +1,7 @@
 // 第一个为 common 分支
 // 后续的按照文档显示版本的顺序
 // 后续添加请按规则添加
-export default {
+export const VITEPRESS_VERSION_CONFIG = {
   'stable-common': 'common',
   'stable-24.03_LTS_SP3': '24.03_LTS_SP3',
   'stable-25.09': '25.09',

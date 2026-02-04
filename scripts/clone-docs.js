@@ -40,15 +40,15 @@ import fs from 'fs';
 import path from 'path';
 import yaml from 'js-yaml';
 
-import NEW_VERSONS from './config/new-version.js';
+import { VITEPRESS_VERSION_CONFIG } from './config/version.js';
 import { parseNamedArgs } from './utils/common.js';
 import { getGitUrlInfo, gitCloneAndCheckout } from './utils/git.js';
 import { copyDirectorySync, removeSync } from './utils/file.js';
 
 // ============================================ 脚本执行逻辑 ============================================
 const args = parseNamedArgs();
-const BUILD_DIR = args.build || path.resolve();
-const CACHE_DIR = args.cache || path.join(BUILD_DIR, '.cache');
+const BUILD_PATH = args.build || path.resolve();
+const CACHE_PATH = args.cache || path.join(BUILD_PATH, '.cache');
 const BRANCH = args.branch || '';
 
 const branches = BRANCH.split(',');
@@ -68,10 +68,10 @@ for (const branch of branches) {
  * 同步 dsl 内容
  */
 function syncDsl() {
-  const dslSourcePath = `${CACHE_DIR}/docs/dsl`;
-  const dslTargetPath = `${BUILD_DIR}/app/.vitepress/public/dsl/`;
+  const dslSourcePath = `${CACHE_PATH}/docs/dsl`;
+  const dslTargetPath = `${BUILD_PATH}/app/.vitepress/public/dsl/`;
 
-  gitCloneAndCheckout('https://atomgit.com/openeuler/docs.git', 'stable-common', CACHE_DIR);
+  gitCloneAndCheckout('https://atomgit.com/openeuler/docs.git', 'stable-common', CACHE_PATH);
   removeSync(dslTargetPath);
   copyDirectorySync(dslSourcePath, dslTargetPath);
 }
@@ -81,13 +81,13 @@ function syncDsl() {
  * @param {string} branch 分支名
  */
 function syncDocs(branch) {
-  const branchName = NEW_VERSONS[branch];
-  const zhSourcePath = `${CACHE_DIR}/docs/docs/zh`;
-  const zhTargetPath = `${BUILD_DIR}/app/zh/docs/${branchName}/`;
-  const enSourcePath = `${CACHE_DIR}/docs/docs/en`;
-  const enTargetPath = `${BUILD_DIR}/app/en/docs/${branchName}/`;
+  const branchName = VITEPRESS_VERSION_CONFIG[branch];
+  const zhSourcePath = `${CACHE_PATH}/docs/docs/zh`;
+  const zhTargetPath = `${BUILD_PATH}/app/zh/docs/${branchName}/`;
+  const enSourcePath = `${CACHE_PATH}/docs/docs/en`;
+  const enTargetPath = `${BUILD_PATH}/app/en/docs/${branchName}/`;
 
-  gitCloneAndCheckout('https://atomgit.com/openeuler/docs.git', branch, CACHE_DIR);
+  gitCloneAndCheckout('https://atomgit.com/openeuler/docs.git', branch, CACHE_PATH);
   removeSync(zhTargetPath);
   removeSync(enTargetPath);
   copyDirectorySync(zhSourcePath, zhTargetPath);
@@ -103,9 +103,9 @@ function syncSigDocs(branch) {
     if (typeof obj?.href?.upstream === 'string') {
       const { url, repo, branch, locations } = getGitUrlInfo(obj.href.upstream);
       console.log(`[syncSigDocs]: 检测到远程地址 - ${obj.href.upstream}`);
-      const sourcePath = path.join(CACHE_DIR, repo, ...locations.slice(0, -1));
+      const sourcePath = path.join(CACHE_PATH, repo, ...locations.slice(0, -1));
       const destPath = typeof obj.href.path === 'string' ? path.join(currentDir, obj.href.path) : path.join(currentDir, repo, ...locations.slice(2, -1));
-      gitCloneAndCheckout(url, branch, CACHE_DIR);
+      gitCloneAndCheckout(url, branch, CACHE_PATH);
       copyDirectorySync(sourcePath, destPath);
     }
 
@@ -132,7 +132,7 @@ function syncSigDocs(branch) {
     }
   };
 
-  const branchName = NEW_VERSONS[branch];
-  scanDir(`${BUILD_DIR}/app/zh/docs/${branchName}`);
-  scanDir(`${BUILD_DIR}/app/en/docs/${branchName}`);
+  const branchName = VITEPRESS_VERSION_CONFIG[branch];
+  scanDir(`${BUILD_PATH}/app/zh/docs/${branchName}`);
+  scanDir(`${BUILD_PATH}/app/en/docs/${branchName}`);
 }

@@ -1,17 +1,17 @@
 import fs from 'fs';
 import path from 'path';
 
-import NEW_VERSONS from './config/new-version.js';
+import { VITEPRESS_VERSION_CONFIG } from './config/version.js';
 import { getGitUrlInfo, isGitRepo, checkoutBranch } from './utils/git.js';
 import { copyDirectorySync } from './utils/file.js';
 
-const REPO_DIR = path.join(process.cwd(), '../../');
+const REPO_PATH = path.join(process.cwd(), '../../');
 const relativeRepo = new Set();
 
 const copyRepoFromDiskCache = async (upstream, dir, storagePath) => {
   try {
     const { repo, branch, locations } = getGitUrlInfo(upstream);
-    const cachePath = path.join(REPO_DIR, repo);
+    const cachePath = path.join(REPO_PATH, repo);
     if (!isGitRepo(cachePath)) {
       console.log(`不存在 ${repo} 仓库缓存，跳过~`);
     }
@@ -92,7 +92,7 @@ if (args.length === 0) {
   console.error('请提供分支名称');
   process.exit(1);
 } else {
-  if (Object.keys(NEW_VERSONS).includes(args[0])) {
+  if (Object.keys(VITEPRESS_VERSION_CONFIG).includes(args[0])) {
     merge(args[0]);
   } else {
     console.error('非新版本内容，跳过处理~');

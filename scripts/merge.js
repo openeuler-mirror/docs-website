@@ -38,15 +38,15 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-import NEW_VERSONS from './config/new-version.js';
+import { VITEPRESS_VERSION_CONFIG } from './config/version.js';
 import { getBranchName } from './utils/common.js';
 import { checkoutBranch, isGitRepo, pullRemoteBranch } from './utils/git.js';
 import { copyDirectorySync, removeSync, renameSync, copyFileSync, ensureDirSync } from './utils/file.js';
 
 // ============================================ 脚本执行逻辑 ============================================
 const REPO_PATH = path.join(process.cwd(), '../../'); // repo 路径
-const DOCS_PATH = path.join(REPO_PATH, 'docs'); // docs 仓库路径 （vitepress 构建所需）
-const DOCS_CENTRALIZED_PATH = path.join(REPO_PATH, 'docs-centralized'); // docs-centralized 仓库路径 （hugo 构建所需）
+const DOCS_VITEPRESS_PATH = path.join(REPO_PATH, 'docs'); // docs 仓库路径 （vitepress 构建所需）
+const DOCS_HUGO_PATH = path.join(REPO_PATH, 'docs-centralized'); // docs-centralized 仓库路径 （hugo 构建所需）
 
 (async () => {
   const [branch, source] = process.argv.slice(2);
@@ -61,7 +61,7 @@ const DOCS_CENTRALIZED_PATH = path.join(REPO_PATH, 'docs-centralized'); // docs-
   ensureDirSync(buildPath);
 
   // 处理文档内容
-  if (Object.keys(NEW_VERSONS).includes(branch)) {
+  if (Object.keys(VITEPRESS_VERSION_CONFIG).includes(branch)) {
     normalizeVitepressDocsContent(buildPath, branch, source);
   } else {
     normalizeHugoDocsContent(buildPath, branch, source);
@@ -113,11 +113,11 @@ function replaceOrgDomain(targetPath) {
  */
 function normalizeVitepressDocsContent(buildPath, branch, source) {
   // 判断文档仓库是否存在
-  if (!isGitRepo(DOCS_PATH)) {
-    throw new Error(`docs 文档仓库不存在： ${DOCS_PATH}`);
+  if (!isGitRepo(DOCS_VITEPRESS_PATH)) {
+    throw new Error(`docs 文档仓库不存在： ${DOCS_VITEPRESS_PATH}`);
   }
 
-  const branchName = NEW_VERSONS[branch] || getBranchName(branch);
+  const branchName = VITEPRESS_VERSION_CONFIG[branch] || getBranchName(branch);
 
   // 复制website-vitepress内容到build目录
   copyDirectorySync(path.join(REPO_PATH, 'website-vitepress'), buildPath);
@@ -150,32 +150,32 @@ function normalizeVitepressDocsContent(buildPath, branch, source) {
   }
 
   // 检出文档内容分支
-  checkoutBranch(DOCS_PATH, branch);
-  pullRemoteBranch(DOCS_PATH, branch);
+  checkoutBranch(DOCS_VITEPRESS_PATH, branch);
+  pullRemoteBranch(DOCS_VITEPRESS_PATH, branch);
 
   // 存在 zh 内容进行复制
-  if (fs.existsSync(`${DOCS_PATH}/docs/zh/`) && (fs.existsSync(`${DOCS_PATH}/docs/zh/_toc.yaml`) || branchName === 'common')) {
-    copyDirectorySync(`${DOCS_PATH}/docs/zh/`, `${buildPath}/app/zh/docs/${branchName}/`);
+  if (fs.existsSync(`${DOCS_VITEPRESS_PATH}/docs/zh/`) && (fs.existsSync(`${DOCS_VITEPRESS_PATH}/docs/zh/_toc.yaml`) || branchName === 'common')) {
+    copyDirectorySync(`${DOCS_VITEPRESS_PATH}/docs/zh/`, `${buildPath}/app/zh/docs/${branchName}/`);
   }
 
   // 存在 en 内容进行复制
-  if (fs.existsSync(`${DOCS_PATH}/docs/en/`) && (fs.existsSync(`${DOCS_PATH}/docs/en/_toc.yaml`) || branchName === 'common')) {
-    copyDirectorySync(`${DOCS_PATH}/docs/en/`, `${buildPath}/app/en/docs/${branchName}/`);
+  if (fs.existsSync(`${DOCS_VITEPRESS_PATH}/docs/en/`) && (fs.existsSync(`${DOCS_VITEPRESS_PATH}/docs/en/_toc.yaml`) || branchName === 'common')) {
+    copyDirectorySync(`${DOCS_VITEPRESS_PATH}/docs/en/`, `${buildPath}/app/en/docs/${branchName}/`);
   }
 
   // 复制 redirect.yaml
-  if (fs.existsSync(`${DOCS_PATH}/_redirect.yaml`)) {
-    copyFileSync(`${DOCS_PATH}/_redirect.yaml`, `${buildPath}/.cache/_redirect-${branchName}.yaml`);
+  if (fs.existsSync(`${DOCS_VITEPRESS_PATH}/_redirect.yaml`)) {
+    copyFileSync(`${DOCS_VITEPRESS_PATH}/_redirect.yaml`, `${buildPath}/.cache/_redirect-${branchName}.yaml`);
   }
 
   // 复制 stable-common 分支下的 dsl
   if (branchName !== 'common') {
-    checkoutBranch(DOCS_PATH, 'stable-common');
-    pullRemoteBranch(DOCS_PATH, 'stable-common');
+    checkoutBranch(DOCS_VITEPRESS_PATH, 'stable-common');
+    pullRemoteBranch(DOCS_VITEPRESS_PATH, 'stable-common');
   }
 
-  if (fs.existsSync(`${DOCS_PATH}/dsl/`)) {
-    copyDirectorySync(`${DOCS_PATH}/dsl/`, `${buildPath}/app/.vitepress/public/dsl/`);
+  if (fs.existsSync(`${DOCS_VITEPRESS_PATH}/dsl/`)) {
+    copyDirectorySync(`${DOCS_VITEPRESS_PATH}/dsl/`, `${buildPath}/app/.vitepress/public/dsl/`);
     if (
       source === 'test' &&
       fs.existsSync(`${buildPath}/app/.vitepress/public/dsl/zh/home_test.json`) &&
@@ -199,8 +199,8 @@ function normalizeVitepressDocsContent(buildPath, branch, source) {
  */
 function normalizeHugoDocsContent(buildPath, branch, source) {
   // 判断文档仓库是否存在
-  if (!isGitRepo(DOCS_CENTRALIZED_PATH)) {
-    throw new Error(`docs-centralized 文档仓库不存在：${DOCS_CENTRALIZED_PATH}`);
+  if (!isGitRepo(DOCS_HUGO_PATH)) {
+    throw new Error(`docs-centralized 文档仓库不存在：${DOCS_HUGO_PATH}`);
   }
 
   const branchName = getBranchName(branch);
@@ -216,17 +216,17 @@ function normalizeHugoDocsContent(buildPath, branch, source) {
   }
 
   // 检出文档内容分支
-  checkoutBranch(DOCS_CENTRALIZED_PATH, branch);
-  pullRemoteBranch(DOCS_CENTRALIZED_PATH, branch);
+  checkoutBranch(DOCS_HUGO_PATH, branch);
+  pullRemoteBranch(DOCS_HUGO_PATH, branch);
 
   // 存在 zh 内容进行复制
-  if (fs.existsSync(`${DOCS_CENTRALIZED_PATH}/docs/zh/`)) {
-    copyDirectorySync(`${DOCS_CENTRALIZED_PATH}/docs/zh/`, `${buildPath}/content/zh/docs/${branchName}/`);
+  if (fs.existsSync(`${DOCS_HUGO_PATH}/docs/zh/`)) {
+    copyDirectorySync(`${DOCS_HUGO_PATH}/docs/zh/`, `${buildPath}/content/zh/docs/${branchName}/`);
   }
 
   // 存在 en 内容进行复制
-  if (fs.existsSync(`${DOCS_CENTRALIZED_PATH}/docs/en/`)) {
-    copyDirectorySync(`${DOCS_CENTRALIZED_PATH}/docs/en/`, `${buildPath}/content/en/docs/${branchName}/`);
+  if (fs.existsSync(`${DOCS_HUGO_PATH}/docs/en/`)) {
+    copyDirectorySync(`${DOCS_HUGO_PATH}/docs/en/`, `${buildPath}/content/en/docs/${branchName}/`);
   }
 
   // 构建来源是 openatom 进行域名替换

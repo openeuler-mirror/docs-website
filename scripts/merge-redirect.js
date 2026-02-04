@@ -2,15 +2,15 @@ import path from 'path';
 import fs from 'fs';
 import yaml from 'js-yaml';
 
-import NEW_VERSONS from './config/new-version.js';
+import { VITEPRESS_VERSION_CONFIG } from './config/version.js';
 import { getBranchName } from './utils/common.js';
 import { getGitUrlInfo } from './utils/git.js';
 
-const __dirname = path.resolve();
-const tocZhPath = path.join(__dirname, './app/.vitepress/public/toc/toc.json');
-const tocEnPath = path.join(__dirname, './app/.vitepress/public/toc/toc-en.json');
-const cachePath = path.join(__dirname, '.cache');
-const nginxPath = path.join(__dirname, './deploy/nginx/nginx.conf');
+const BUILD_PATH = path.resolve();
+const TOC_ZH_PATH = path.join(BUILD_PATH, './app/.vitepress/public/toc/toc.json');
+const TOC_EN_PATH = path.join(BUILD_PATH, './app/.vitepress/public/toc/toc-en.json');
+const CACHE_PATH = path.join(BUILD_PATH, '.cache');
+const NGINX_PATH = path.join(BUILD_PATH, './deploy/nginx/nginx.conf');
 
 const reversedRedirectMap = {};
 const outputRedirectMap = {};
@@ -21,7 +21,7 @@ function getRepoReversedRedirect(repoName) {
       return reversedRedirectMap[repoName];
     }
 
-    const yamlPath = path.join(cachePath, `_redirect-${repoName}.yaml`);
+    const yamlPath = path.join(CACHE_PATH, `_redirect-${repoName}.yaml`);
     if (!fs.existsSync(yamlPath)) {
       return;
     }
@@ -45,8 +45,8 @@ function processSelfRedirect() {
   }
 
   versions.forEach((version) => {
-    const branchName = NEW_VERSONS[version] || getBranchName(version);
-    const yamlPath = path.join(cachePath, `_redirect-${branchName}.yaml`);
+    const branchName = VITEPRESS_VERSION_CONFIG[version] || getBranchName(version);
+    const yamlPath = path.join(CACHE_PATH, `_redirect-${branchName}.yaml`);
     if (!fs.existsSync(yamlPath)) {
       return;
     }
@@ -117,8 +117,8 @@ function replaceCommonNginxRedirect(obj) {
       rewrites.push(`rewrite ^${oldUrl}$ ${obj[key]} permanent;`);
     });
 
-    const nginxContent = fs.readFileSync(nginxPath, 'utf8').replace('#[rewrite_template]', rewrites.join('\n      '));
-    fs.writeFileSync(nginxPath, nginxContent, 'utf8');
+    const nginxContent = fs.readFileSync(NGINX_PATH, 'utf8').replace('#[rewrite_template]', rewrites.join('\n      '));
+    fs.writeFileSync(NGINX_PATH, nginxContent, 'utf8');
     console.log(nginxContent);
     console.log(`替换nginx转发成功`);
   } catch (err) {
@@ -130,14 +130,14 @@ function main() {
   processSelfRedirect();
 
   try {
-    const tocZh = JSON.parse(fs.readFileSync(tocZhPath, 'utf-8') || '[]');
+    const tocZh = JSON.parse(fs.readFileSync(TOC_ZH_PATH, 'utf-8') || '[]');
     tocZh.forEach(processToc);
   } catch (err) {
     console.log(`转换redirect异常 - zh: ${err?.message}`);
   }
 
   try {
-    const tocEn = JSON.parse(fs.readFileSync(tocEnPath, 'utf-8') || '[]');
+    const tocEn = JSON.parse(fs.readFileSync(TOC_EN_PATH, 'utf-8') || '[]');
     tocEn.forEach(processToc);
   } catch (err) {
     console.log(`转换redirect异常 - en: ${err?.message}`);
