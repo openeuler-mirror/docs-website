@@ -112,7 +112,7 @@ export default {
             {
               NAME: 'CLA',
               DESCRIPTION: 'Sign the CLA to protect your work—multiple options available!',
-              URL: 'https://clasign.osinfra.cn/sign/6946817fe1b3f3e542b4e2d9',
+              URL: 'https://clasign.osinfra.cn/sign/6983225bdcbb19710248ccf0',
               ICON: OutLink,
             },
             {

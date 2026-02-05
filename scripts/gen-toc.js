@@ -1,22 +1,22 @@
 /**
  * 文档目录结构生成脚本
  * ====================================================================================================
- * 
+ *
  * 功能概述：
  * - 解析 _toc.yaml 生成文档站点的目录结构，并输出为 toc.json
  * - 支持远程 SIG 文档中 _toc.yaml 的整合
- * 
+ *
  * 使用方式：
  *   在项目根目录下执行：
  *   node scripts/gen-toc.js <branch1> [branch2] [branch3]...
- * 
+ *
  * 参数说明：
  *   branch - 文档版本分支名
- * 
+ *
  * 示例：
  *   node scripts/gen-toc.js stable-common
  *   node scripts/gen-toc.js stable-common stable-25.09
- * 
+ *
  * 输出文件：
  *   - app/.vitepress/public/toc/toc.json    (中文)
  *   - app/.vitepress/public/toc/toc-en.json (英文)
@@ -31,7 +31,7 @@ import markdownIt from 'markdown-it';
 import markdownItAnchor from 'markdown-it-anchor';
 import yaml from 'js-yaml';
 
-import NEW_VERSONS from './config/new-version.js';
+import { VITEPRESS_VERSION_CONFIG } from './config/version.js';
 import { getBranchName } from './utils/common.js';
 import { getGitUrlInfo } from './utils/git.js';
 import { getMdTitleId, getMdFilterContent } from './utils/markdown.js';
@@ -57,7 +57,7 @@ const globalHandledYaml = new Map();
   const outputEnPath = path.join(BUILD_PATH, './app/.vitepress/public/toc/toc-en.json');
 
   for (const item of versions) {
-    const version = NEW_VERSONS[item] || getBranchName(item);
+    const version = VITEPRESS_VERSION_CONFIG[item] || getBranchName(item);
     console.log(`正在构建 ${version} toc 文件...`);
     if (version === 'common') {
       // common 分支处理
@@ -79,6 +79,11 @@ const globalHandledYaml = new Map();
     console.log('[Exceptions - 异常]：');
     globalErrors.forEach((item) => {
       console.log('-------------------------------------------------------');
+      if (typeof item === 'string') {
+        console.log(item);
+        return;
+      }
+      
       console.log(`[调用函数]：${item.functionName}`);
       console.log(`[错误信息]：${item.message}`);
       console.log(`[本地资源]：${item.filePath.replace(BUILD_PATH, '').replaceAll('\\', '/')}`);
@@ -88,6 +93,11 @@ const globalHandledYaml = new Map();
 
       if (item.toc && (item.toc.label || item.toc.href)) {
         console.log(`[toc]：${item.toc.label ? `label: ${item.toc.label}` : ''} ${item.toc.href ? `href: ${item.toc.href}` : ''}`);
+      }
+
+      if (item.err) {
+        console.log('[原始错误]：');
+        console.log(item.err);
       }
     });
   }
@@ -241,6 +251,7 @@ function parseTocYaml(tocFilePath, upstream) {
       message: err.message,
       upstream,
       filePath: tocFilePath,
+      err,
     });
   }
 
@@ -274,6 +285,7 @@ function parseToc(toc, tocFilePath, upstream) {
       toc,
       upstream,
       filePath: tocFilePath,
+      err,
     });
   }
 
@@ -446,6 +458,7 @@ function parseAnchorSections(toc, mdPath, upstream) {
       toc,
       upstream,
       filePath: mdPath,
+      err,
     });
   }
 
