@@ -122,7 +122,7 @@ export default {
             {
               NAME: 'CLA签署',
               DESCRIPTION: '参与贡献前，需签署贡献者许可协议（CLA）',
-              URL: 'https://clasign.osinfra.cn/sign/6946817fe1b3f3e542b4e2d9',
+              URL: 'https://clasign.osinfra.cn/sign/6983225bdcbb19710248ccf0',
               ICON: OutLink,
             },
             {
