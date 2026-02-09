@@ -122,7 +122,7 @@ export const linksData2 = {
       URL: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/zh/other/brand/`,
     },
     {
-      NAME: '隐私政策',
+      NAME: '隐私声明',
       URL: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/zh/other/privacy/`,
     },
     {
@@ -140,7 +140,7 @@ export const linksData2 = {
       URL: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/other/brand/`,
     },
     {
-      NAME: 'Privacy Policy',
+      NAME: 'Privacy Statement',
       URL: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/other/privacy/`,
     },
     {
