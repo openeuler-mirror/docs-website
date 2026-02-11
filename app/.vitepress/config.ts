@@ -1,5 +1,6 @@
 import type Markdown from 'markdown-it';
 import { getDomId } from './src/utils/common';
+import type Token from 'markdown-it/lib/token.mjs';
 
 export default {
   base: '/',
@@ -111,6 +112,33 @@ export default {
             token.content = token.content.replace(/\{/g, '\\{');
           }
         });
+      });
+
+      // 处理资源图片
+      md.core.ruler.after('inline', 'fix-image-paths', (state) => {
+        if (!state.tokens) return;
+
+        const processTokens = (tokens: Token[]) => {
+          tokens.forEach((token) => {
+            // 处理 HTML 块和行内元素中的 img 标签
+            if ((token.type === 'html_block' || token.type === 'html_inline') && token.content && token.content.includes('<img')) {
+              token.content = token.content.replace(/<img([^>]*)src=['"]?([^'"> ]*)['"]?([^>]*)>/gi, (match, before, src, after) => {
+                // 判断是否为本地地址且没有以 / ./ ../ 开头
+                if (src && !src.startsWith('http') && !src.startsWith('https') && !src.startsWith('/') && !src.startsWith('./') && !src.startsWith('../')) {
+                  return `<img${before}src="./${src}"${after}>`;
+                }
+                return match;
+              });
+            }
+
+            // 递归处理子 tokens
+            if (token.children && token.children.length > 0) {
+              processTokens(token.children);
+            }
+          });
+        };
+
+        processTokens(state.tokens);
       });
 
       md.renderer.rules.code_inline = (tokens, idx) => {
