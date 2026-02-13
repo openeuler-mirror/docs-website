@@ -7,7 +7,7 @@
     "dev:clone": "node scripts/clone-docs.js",
     "dev:toc": "node scripts/gen-toc.js",
     "dev:app": "vitepress dev app",
-    "build": "node scripts/gen-toc.js $VERSION && node scripts/merge-redirect.js $VERSION && vitepress build app",
+    "build": "node scripts/build.js $VERSION",
     "preview": "vitepress preview app",
     "format": "prettier --write app/.vitepress/src/",
     "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
@@ -65,6 +65,7 @@
     "typescript-eslint": "^8.35.0",
     "unplugin-icons": "^0.17.1",
     "vitepress": "^1.6.4",
+    "vitepress-plugin-llms": "^1.10.0",
     "vitest": "^3.2.3",
     "vue-tsc": "^1.8.19"
   }

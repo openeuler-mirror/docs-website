@@ -37,7 +37,7 @@ import { getGitUrlInfo } from './utils/git.js';
 import { getMdTitleId, getMdFilterContent } from './utils/markdown.js';
 
 // ============================================ 脚本执行逻辑 ============================================
-const BUILD_PATH = path.resolve();
+const BUILD_PATH = path.resolve(path.dirname(url.fileURLToPath(import.meta.url)), '..');
 
 const globalErrors = [];
 const globalIds = new Set();
