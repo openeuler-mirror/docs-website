@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, computed, watch, onUpdated, onUnmounted } from 'vue';
+import { onMounted, ref, computed, watch, onUpdated, onUnmounted, nextTick } from 'vue';
 import { useRouter, useData, inBrowser, useRoute } from 'vitepress';
 import { OIcon, useMessage } from '@opensig/opendesign';
 
@@ -28,9 +28,8 @@ import { useViewStore } from '@/stores/view';
 
 import { getNodeHrefSafely, type DocMenuNodeT } from '@/utils/tree';
 import { scrollIntoView } from '@/utils/scroll-to';
-import { isElementVisible } from '@/utils/element';
 import { getDomId } from '@/utils/common';
-import { nextTick } from 'vue';
+import { refreshSelectedMenuItemPosition } from '@/utils/refresh-ui';
 
 const { hash, lang } = useData();
 const { lePad, isPhone, size } = useScreen();
@@ -64,14 +63,7 @@ const updateExpandedKeys = () => {
     }
 
     menuExpandedKeys.value = Array.from(set);
-
-    setTimeout(() => {
-      const parent = document.querySelector<HTMLElement>('#menuScrollDom .o-scroller-container');
-      const el = document.querySelector<HTMLElement>('#rec-active-menu-item');
-      if (parent && el && !isElementVisible(el, parent, 38)) {
-        scrollIntoView(el, parent, 100, 200);
-      }
-    }, 300);
+    refreshSelectedMenuItemPosition();
   }
 };
 
