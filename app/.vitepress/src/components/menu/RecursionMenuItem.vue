@@ -2,8 +2,9 @@
 import { inject, onBeforeUnmount, onMounted, ref, watch, type PropType } from 'vue';
 import { isArray, OMenuItem, OSubMenu } from '@opensig/opendesign';
 
-import { useLocale } from '@/composables/useLocale';
 import type { DocMenuNodeT } from '@/utils/tree';
+import { useLocale } from '@/composables/useLocale';
+import { refreshSelectedMenuItemPosition } from '@/utils/refresh-ui';
 
 const props = defineProps({
   node: {
@@ -20,13 +21,11 @@ const parentProps = inject<{
   readonly modelValue: string;
 }>('parentProps');
 
-const setCurrentNode = inject<(node: DocMenuNodeT, el: HTMLElement) => void>('setCurrentNode');
-
 watch(
   () => parentProps?.modelValue,
   () => {
     if (props.node.id === parentProps?.modelValue && itemRef.value?.$el) {
-      setCurrentNode?.(props.node, itemRef.value.$el);
+      refreshSelectedMenuItemPosition();
     }
   }
 );

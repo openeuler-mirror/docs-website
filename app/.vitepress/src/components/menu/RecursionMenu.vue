@@ -3,10 +3,6 @@ import { provide, type PropType } from 'vue';
 import { useVModel } from '@vueuse/core';
 import { OMenu } from '@opensig/opendesign';
 
-import type { DocMenuNodeT } from '@/utils/tree';
-import { isElementVisible } from '@/utils/element';
-import { scrollIntoView } from '@/utils/scroll-to';
-
 const props = defineProps({
   modelValue: {
     type: String,
@@ -26,13 +22,6 @@ provide('parentProps', props);
 const emits = defineEmits(['update:modelValue', 'update:expanded']);
 const menuValue = useVModel(props, 'modelValue', emits);
 const expanded = useVModel(props, 'expanded', emits);
-
-provide('setCurrentNode', (node: DocMenuNodeT, el: HTMLElement) => {
-  const parent = document.querySelector<HTMLElement>('#menuScrollDom .o-scroller-container');
-  if (parent && !isElementVisible(el, parent, 38)) {
-    scrollIntoView(el, parent, 100, 200);
-  }
-});
 </script>
 
 <template>

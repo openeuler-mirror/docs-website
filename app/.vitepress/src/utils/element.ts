@@ -19,7 +19,7 @@ export const isElementVisible = (el: HTMLElement, parent: HTMLElement, min = 0) 
   const visibleTop = Math.max(0, childRect.top - parentRect.top);
   const visibleBottom = Math.min(parentRect.bottom, childRect.bottom) - parentRect.top;
   const visibleHeight = visibleBottom - visibleTop;
-  return visibleHeight > min;
+  return visibleHeight >= min;
 };
 
 export const getScrollRemainingBottom = (container: HTMLElement) => {

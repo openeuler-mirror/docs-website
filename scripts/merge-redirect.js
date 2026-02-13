@@ -1,12 +1,13 @@
 import path from 'path';
 import fs from 'fs';
 import yaml from 'js-yaml';
+import url from 'url';
 
 import { VITEPRESS_VERSION_CONFIG } from './config/version.js';
 import { getBranchName } from './utils/common.js';
 import { getGitUrlInfo } from './utils/git.js';
 
-const BUILD_PATH = path.resolve();
+const BUILD_PATH = path.resolve(path.dirname(url.fileURLToPath(import.meta.url)), '..');
 const TOC_ZH_PATH = path.join(BUILD_PATH, './app/.vitepress/public/toc/toc.json');
 const TOC_EN_PATH = path.join(BUILD_PATH, './app/.vitepress/public/toc/toc-en.json');
 const CACHE_PATH = path.join(BUILD_PATH, '.cache');
