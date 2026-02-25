@@ -93,7 +93,7 @@ export function scrollTo(y: number, opts: ScrollTopOptions) {
   });
 }
 
-export async function scrollIntoView(target: HTMLElement, scrollContainer: HTMLElement, targetOffset = 100, duration = 450) {
+export async function scrollIntoView(target: HTMLElement, scrollContainer: HTMLElement, targetOffset = 100, duration = 300) {
   const { scrollTop } = getScroll(scrollContainer);
   const offsetTop = getOffsetTop(target, scrollContainer);
   const y = scrollTop + offsetTop - targetOffset;
