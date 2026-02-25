@@ -149,7 +149,9 @@ const scrollIntoTitle = async () => {
     }
   }
 
-  viewStore.isScrolling = false;
+  setTimeout(() => {
+    viewStore.isScrolling = false;
+  }, 100);
 };
 
 onMounted(() => {

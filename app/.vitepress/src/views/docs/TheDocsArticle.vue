@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue';
+import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
+import { useData, useRouter } from 'vitepress';
+import { isClient } from '@opensig/opendesign';
 
 import DocPagination from '@/components/doc/DocPagination.vue';
 import DocViewSource from '@/components/doc/DocViewSource.vue';
@@ -8,7 +10,6 @@ import { type DocMenuNodeT } from '@/utils/tree';
 import { getOffsetTop, getScrollRemainingBottom } from '@/utils/element';
 import { useViewStore } from '@/stores/view';
 import { useNodeStore } from '@/stores/node';
-import { useRouter } from 'vitepress';
 
 const emits = defineEmits<{
   (evt: 'update-menu-expaned'): void;
@@ -22,7 +23,10 @@ const nodeStore = useNodeStore();
 const router = useRouter();
 
 // -------------------- 菜单更新锚点选中 --------------------
-const onScrollUpdateAnchor = () => {
+let scrollUpdateAnchorTimer: NodeJS.Timeout | null;
+const onScrollUpdateAnchor = (_: any, flag = false) => {
+  clearTimeout(scrollUpdateAnchorTimer!);
+
   if (viewStore.isScrolling) {
     return;
   }
@@ -33,6 +37,14 @@ const onScrollUpdateAnchor = () => {
 
   const scrollContainer = document.querySelector<HTMLElement>('#app > .o-scroller > .o-scroller-container');
   if (!scrollContainer) {
+    return;
+  }
+
+  if (scrollContainer.scrollTop === 0 && !flag) {
+    scrollUpdateAnchorTimer = setTimeout(() => {
+      scrollUpdateAnchorTimer = null;
+      onScrollUpdateAnchor(_, true);
+    }, 100);
     return;
   }
 
@@ -109,16 +121,42 @@ const onScrollUpdateAnchor = () => {
 
 onMounted(() => {
   const scrollContainer = document.querySelector<HTMLElement>('#app > .o-scroller > .o-scroller-container');
-  if (scrollContainer) {
-    scrollContainer.addEventListener('scroll', onScrollUpdateAnchor);
-  }
+  scrollContainer?.addEventListener('scroll', onScrollUpdateAnchor);
 });
 
 onUnmounted(() => {
   const scrollContainer = document.querySelector<HTMLElement>('#app > .o-scroller > .o-scroller-container');
-  if (scrollContainer) {
-    scrollContainer.removeEventListener('scroll', onScrollUpdateAnchor);
+  scrollContainer?.removeEventListener('scroll', onScrollUpdateAnchor);
+});
+
+// -------------------- 监听hash变化刷新锚点选中 --------------------
+const { hash } = useData();
+const docBody = ref<HTMLElement>();
+
+const refreshHashAnchor = async () => {
+  if (!isClient || !hash.value || !docBody.value) {
+    return;
   }
+
+  const decodedHash = decodeURIComponent(hash.value);
+  const target =
+    docBody.value.querySelector<HTMLElement>(`#user-content-${decodedHash.slice(1)}`) ||
+    docBody.value.querySelector<HTMLElement>(decodedHash) ||
+    docBody.value.querySelector<HTMLElement>(`[name='${decodedHash.slice(1)}']`);
+
+  if (target?.tagName !== 'H1' && target?.tagName !== 'H2') {
+    setTimeout(() => {
+      onScrollUpdateAnchor(null);
+    }, 500);
+  }
+};
+
+onMounted(() => {
+  setTimeout(refreshHashAnchor, 300);
+});
+
+watch(hash, () => {
+  setTimeout(refreshHashAnchor, 100);
 });
 
 // -------------------- 点击锚点链接滚动到指定位置 --------------------
@@ -146,7 +184,7 @@ router.onBeforeRouteChange = (to) => {
 </script>
 
 <template>
-  <div class="doc-body">
+  <div ref="docBody" class="doc-body">
     <Content class="markdown-body" @click="onClickContent" />
     <DocViewSource />
     <ClientOnly>

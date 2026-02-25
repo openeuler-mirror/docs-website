@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { inBrowser, useData, useRoute, useRouter } from 'vitepress';
+import { nextTick, ref, watch } from 'vue';
 
 import { OScroller, OConfigProvider } from '@opensig/opendesign';
 import { OCookieNotice, OPlusConfigProvider } from '@opendesign-plus/components';
@@ -12,7 +13,6 @@ import LayoutDoc from '@/layouts/LayoutDoc.vue';
 import { scrollToTop } from '@/utils/common';
 import { useLocale } from '@/composables/useLocale';
 import { useViewStore } from '@/stores/view';
-import { nextTick, ref, watch } from 'vue';
 
 const { lang } = useData();
 const { isZh } = useLocale();
@@ -20,7 +20,9 @@ const viewStore = useViewStore();
 
 const router = useRouter();
 router.onBeforePageLoad = () => {
-  scrollToTop(0, false);
+  viewStore.isScrolling = true;
+  scrollToTop(0, false, true);
+  viewStore.isScrolling = false;
 };
 
 const cookieNoticeVisible = ref(false);
