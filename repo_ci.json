@@ -17,6 +17,15 @@
                 "codespell-check",
                 "tag-closed-check",
                 "toc-check"
+            ],
+            "stable-common":[
+                "markdownlint",
+                "link-validity-check",
+                "resource-existence-check",
+                "codespell-check",
+                "tag-closed-check",
+                "file-naming-check",
+                "file-naming-consistency-check"
             ]
         }
     },
