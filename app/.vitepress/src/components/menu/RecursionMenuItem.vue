@@ -49,6 +49,27 @@ onBeforeUnmount(() => {
     }
   }
 });
+
+// ================埋点================
+const reportTocNodePath = (node: DocMenuNodeT) => {
+  let _node = node as DocMenuNodeT | null;
+  const path = [] as string[];
+  while (_node && _node.type !== 'root') {
+    path.unshift(_node.label);
+    _node = _node.parent;
+  }
+  const sp = location.pathname.split('/');
+  if (sp.length > 3) {
+    path.unshift(sp[3]);
+  }
+  return path.reduce(
+    (acc, item, index) => {
+      acc[`level_${index + 1}`] = item;
+      return acc;
+    },
+    {} as Record<string, string>
+  );
+};
 </script>
 
 <template>
@@ -64,7 +85,7 @@ onBeforeUnmount(() => {
     @click="emits('click', node)"
   >
     <template #title>
-      <a v-if="node.href && node.type === 'page'" :href="node.href" @click.prevent>{{ node.label }}</a>
+      <a v-if="node.href && node.type === 'page'" v-analytics.bubble="() => reportTocNodePath(node)" :href="node.href" @click.prevent>{{ node.label }}</a>
       <span v-else>{{ node.label }}</span>
     </template>
     <RecursionMenuItem v-for="item in node.children" :key="item.id" :node="item" @click="(el) => emits('click', el)" />
@@ -78,7 +99,7 @@ onBeforeUnmount(() => {
     @click="emits('click', node)"
     :title="!isZh ? node.label : ''"
   >
-    <a v-if="node.href" :href="node.href" @click.prevent>{{ node.label }}</a>
+    <a v-if="node.href" :href="node.href" v-analytics.bubble="() => reportTocNodePath(node)" @click.prevent>{{ node.label }}</a>
     <span v-else>{{ node.label }}</span>
   </OMenuItem>
 </template>
