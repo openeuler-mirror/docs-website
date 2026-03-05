@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, computed, watch, onUpdated, onUnmounted, nextTick } from 'vue';
+import { onMounted, ref, computed, watch, onUpdated, onUnmounted, shallowRef, nextTick } from 'vue';
 import { useRouter, useData, inBrowser, useRoute } from 'vitepress';
 import { OIcon, useMessage } from '@opensig/opendesign';
 
@@ -85,7 +85,6 @@ const onPageChange = () => {
 
 // 点击菜单跳转文档
 const onClickMenuItem = (item: DocMenuNodeT, newOpener?: boolean) => {
-  reportMenuClick(item);
   if (item.type !== 'page' && item.type !== 'anchor') {
     return;
   }
@@ -214,8 +213,9 @@ const switchMenu = () => {
 const { t } = useLocale();
 const message = useMessage(null);
 
-const popMessage = () => {
+const popMessage = (ev: Event) => {
   message.success({ content: t('docs.copySuccess') });
+  reportCopyClick(ev.target as HTMLElement);
 };
 
 const copyDoc = () => {
@@ -241,25 +241,71 @@ onUnmounted(() => {
 });
 
 // -------------------- 埋点 --------------------
-/**
- * 上报菜单点击事件
- *
- * @param item 菜单项
- */
-const reportMenuClick = (item: DocMenuNodeT) => {
+/** 当前目录路径 */
+const currentTocPath = computed(() => {
   const path = [] as string[];
-  while (item?.label) {
-    path.unshift(item.label);
-    item = item.parent as DocMenuNodeT;
+  let current = nodeStore.currentNode;
+  const sp = route.path.split('/');
+  let version;
+  if (sp.length > 3) {
+    version = sp[3];
+  }
+  while (current?.label) {
+    path.unshift(current.label);
+    current = current.parent as DocMenuNodeT;
   }
   if (!viewStore.isCommonView) {
-    path.unshift(version.value);
+    path.unshift(version as string);
+  }
+  return path;
+});
+
+const currentDocContentWrapperDiv = shallowRef<HTMLElement>();
+if (typeof document !== 'undefined') {
+  watch(
+    () => route.path,
+    async () => {
+      await nextTick();
+      currentDocContentWrapperDiv.value = document.querySelector('.markdown-body > div') as HTMLElement;
+    },
+    { immediate: true }
+  );
+}
+
+/**
+ * 上报代码块复制事件
+ * @param button button
+ */
+const reportCopyClick = (button: Element) => {
+  let el = button;
+  while (el) {
+    if (!el.parentElement) return;
+    if (el.parentElement === currentDocContentWrapperDiv.value) {
+      break;
+    }
+    el = el.parentElement;
+  }
+  const pattern = /H[1-6]/;
+  let currentLevel = Infinity;
+  const titlePath = [];
+  // 向上查找H元素，作为代码块所在路径的一部分
+  while (el) {
+    if (pattern.test(el.tagName)) {
+      const level = Number(el.tagName.slice(1));
+      if (level < currentLevel) {
+        currentLevel = level;
+        titlePath.unshift(el.textContent.replace(/\u200B/g, '').trim());
+      }
+    }
+    el = el.previousElementSibling!;
   }
   (window as any).__OA_REPORT__?.(
     'click',
     {
-      type: 'menu',
-      ...path.reduce(
+      type: 'copy-code',
+      $url: location.href,
+      title: document.title,
+      ...[...new Set([...currentTocPath.value, ...titlePath])].reduce(
         (acc, label, index) => {
           acc[`level_${index + 1}`] = label;
           return acc;
@@ -267,38 +313,57 @@ const reportMenuClick = (item: DocMenuNodeT) => {
         {} as Record<string, string>
       ),
     },
-    'docs',
-    { immediate: true }
+    'docs'
   );
 };
 
-const currentReadingSections = new Set<{ start: HTMLElement; end: HTMLElement | null; startTime: number | null }>();
+/**
+ * 上报菜单点击事件
+ */
+const reportMenuClick = () => {
+  return {
+    event: 'click',
+    properties: {
+      type: 'menu'
+    }
+  }
+};
 
+const reportScroll = () => {
+  const scrollContainer = document.querySelector<HTMLElement>('.o-scroller-container');
+  if (!scrollContainer) return;
+  (window as any).__OA_REPORT__?.('scroll', {
+    scrollTop: scrollContainer.scrollTop,
+    section: menuVal.value.slice(menuVal.value.lastIndexOf('#') + 1),
+    path: menuVal.value,
+    $url: location.origin + menuVal.value,
+    title: document.title,
+    perentage: ((scrollContainer.scrollTop * 100) / (scrollContainer.scrollHeight - scrollContainer.clientHeight)).toFixed(2) + '%',
+  });
+};
+
+const currentReadingSections = new Set<{ start: HTMLElement; end: HTMLElement | null; startTime: number | null }>();
+const clearCurrentReadingSections = () => {
+  // 如果当前阅读的章节中有内容,就上报阅读时长
+  for (const section of currentReadingSections) {
+    if (!section.startTime) continue;
+    const duration = Date.now() - section.startTime;
+    (window as any).__OA_REPORT__?.('sectionDuration', {
+      section: section.start.id,
+      $url: location.href,
+      title: document.title,
+      duration: duration,
+    });
+    section.startTime = null;
+  }
+  currentReadingSections.clear();
+};
 if (inBrowser) {
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'hidden') {
       if (viewStore.isOverview) return;
-      // 如果当前阅读的章节中有内容,就上报阅读时长
-      if (currentReadingSections.size) {
-        for (const section of currentReadingSections) {
-          if (!section.startTime) continue;
-          const duration = Date.now() - section.startTime;
-          (window as any).__OA_REPORT__?.('sectionDuration', {
-            section: section.start.id,
-            duration: duration,
-          });
-          section.startTime = null;
-        }
-        currentReadingSections.clear();
-      }
-      const scrollContainer = document.querySelector<HTMLElement>('.o-scroller-container');
-      if (!scrollContainer) return;
-      (window as any).__OA_REPORT__?.('scroll', {
-        scrollTop: scrollContainer.scrollTop,
-        section: menuVal.value.slice(menuVal.value.lastIndexOf('#') + 1),
-        path: menuVal.value,
-        perentage: ((scrollContainer.scrollTop * 100) / (scrollContainer.scrollHeight - scrollContainer.clientHeight)).toFixed(2) + '%',
-      });
+      clearCurrentReadingSections();
+      reportScroll();
     }
   });
 }
@@ -311,7 +376,7 @@ const updateObserver = () => {
   obs.disconnect();
   const mdContent = document.querySelector('.doc-body > .markdown-body > div');
   if (!mdContent) return;
-  sections = [] as { start: HTMLElement; end: HTMLElement | null; startTime: number | null }[];
+  sections = [];
   for (const element of mdContent.children) {
     if (element.tagName === 'H2') {
       sections.push({
@@ -333,6 +398,17 @@ const updateObserver = () => {
     obs!.observe(section.end!);
   });
 };
+
+onMounted(() => {
+  router.onBeforeRouteChange = () => {
+    clearCurrentReadingSections();
+    reportScroll();
+  };
+});
+
+onUnmounted(() => {
+  router.onBeforeRouteChange = undefined;
+});
 
 watch(route, () => {
   nextTick(() => {
@@ -361,6 +437,8 @@ onMounted(() => {
           section.startTime = null;
           currentReadingSections.delete(section);
           (window as any).__OA_REPORT__?.('sectionDuration', {
+            $url: location.href,
+            title: document.title,
             section: section.start.id,
             duration: duration,
           });
@@ -392,7 +470,7 @@ onUnmounted(() => {
         <DocVersion v-if="!viewStore.isCommonView" :version="version" />
         <DocSearch @switchVisible="isSidebarHidden = true" />
         <DocMenu
-          v-analytics.catchBubble="(_: any, data: any) => reportMenuClick(data)"
+          v-analytics.catchBubble="reportMenuClick"
           v-model="menuVal"
           v-model:expanded="menuExpandedKeys"
           :items="docsMenu"

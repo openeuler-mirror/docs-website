@@ -7,7 +7,7 @@ import RecursionMenu from '@/components/menu/RecursionMenu.vue';
 import RecursionMenuItem from '@/components/menu/RecursionMenuItem.vue';
 
 import { getNodeHrefSafely, type DocMenuNodeT } from '@/utils/tree';
-import { getDomId } from '@/utils/common'; 
+import { getDomId } from '@/utils/common';
 
 const props = defineProps({
   // 绑定值
@@ -51,6 +51,30 @@ const emits = defineEmits<{
 
 const menuValue = useVModel(props, 'modelValue', emits);
 const expanded = useVModel(props, 'expanded', emits);
+
+// ================埋点================
+const reportTocNodePath = (node: DocMenuNodeT) => {
+  let _node = node as DocMenuNodeT | null;
+  const path = [] as string[];
+  while (_node && _node.type !== 'root') {
+    path.unshift(_node.label);
+    _node = _node.parent;
+  }
+  const sp = location.pathname.split('/');
+  if (sp.length > 3) {
+    path.unshift(sp[3]);
+  }
+  return {
+    ...path.reduce(
+      (acc, item, index) => {
+        acc[`level_${index + 1}`] = item;
+        return acc;
+      },
+      {} as Record<string, string>
+    ),
+    url: location.origin + getNodeHrefSafely(node),
+  };
+};
 </script>
 
 <template>
@@ -84,19 +108,33 @@ const expanded = useVModel(props, 'expanded', emits);
         >
           <!-- 第二层-手册节点 -->
           <template v-if="chapter.isManual || chapter.children?.length === 0">
-            <a v-analytics.bubble="chapter" class="o-menu-item chapter-menu-item2" :value="chapter.href" target="_blank" rel="noopener noreferrer" :href="getNodeHrefSafely(chapter)">
+            <a
+              v-analytics.bubble="() => reportTocNodePath(chapter)"
+              class="o-menu-item chapter-menu-item2"
+              :value="chapter.href"
+              target="_blank"
+              rel="noopener noreferrer"
+              :href="getNodeHrefSafely(chapter)"
+            >
               {{ chapter.label }}
             </a>
           </template>
           <template v-else>
-            <p :id="getDomId(chapter.label)" class="chapter-title" :class="{ 'chapter-title-active': nodeIndex === i }" @click="emits('click-title', chapter)">
+            <p :id="getDomId(chapter.label)" v-analytics.bubble="() => reportTocNodePath(chapter)" class="chapter-title" :class="{ 'chapter-title-active': nodeIndex === i }" @click="emits('click-title', chapter)">
               {{ chapter.label }}
             </p>
             <template v-if="isArray(chapter.children) && chapter.children?.length">
               <template v-for="item in chapter.children" :key="item.id">
                 <!-- 第三层-手册节点 -->
                 <template v-if="item.isManual || item.href?.startsWith('http')">
-                  <a v-analytics.bubble="item" class="o-menu-item chapter-menu-item" :value="item.href" target="_blank" rel="noopener noreferrer" :href="getNodeHrefSafely(item)">
+                  <a
+                    v-analytics.bubble="() => reportTocNodePath(item)"
+                    class="o-menu-item chapter-menu-item"
+                    :value="item.href"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    :href="getNodeHrefSafely(item)"
+                  >
                     {{ item.label }}
                   </a>
                 </template>
@@ -104,9 +142,10 @@ const expanded = useVModel(props, 'expanded', emits);
                 <template v-else-if="item.children.length > 0">
                   <p class="o-menu-item chapter-menu-item4">{{ item.label }}</p>
                   <div class="sub-menu-children">
-                    <a v-analytics.bubble="child"
+                    <a
                       v-for="child in item.children"
                       :key="child.id"
+                      v-analytics.bubble="() => reportTocNodePath(child)"
                       class="o-menu-item child-chapter-menu-item"
                       :value="child.href"
                       :href="getNodeHrefSafely(child)"
