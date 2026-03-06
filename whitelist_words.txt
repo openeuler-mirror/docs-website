@@ -4211,3 +4211,5 @@ startparam
 SUDOT
 xalarmd
 memid
+hiraidadm
+storcli
