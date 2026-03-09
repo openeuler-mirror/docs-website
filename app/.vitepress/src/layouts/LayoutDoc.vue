@@ -277,6 +277,7 @@ if (typeof document !== 'undefined') {
  * @param button button
  */
 const reportCopyClick = (button: Element) => {
+  const content = button.parentElement?.querySelector('pre')?.textContent?.trim();
   let el = button;
   while (el) {
     if (!el.parentElement) return;
@@ -304,6 +305,7 @@ const reportCopyClick = (button: Element) => {
     {
       type: 'copy-code',
       $url: location.href,
+      target: content,
       title: document.title,
       ...[...new Set([...currentTocPath.value, ...titlePath])].reduce(
         (acc, label, index) => {
