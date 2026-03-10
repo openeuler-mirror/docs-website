@@ -61,5 +61,13 @@
             "resource-existence-check",
             "tag-closed-check"
         ]
+    },
+    "boostkit/opencv": {
+        "global": [
+            "markdownlint",
+            "link-validity-check",
+            "resource-existence-check",
+            "tag-closed-check"
+        ]
     }
 }
