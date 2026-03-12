@@ -1,0 +1,17 @@
+{
+  "name": "基础检查配置",
+  "config": {
+    "base": {
+      "docPath": ".*",
+      "markdownlintRemoteConfigUrl": "https://raw.gitcode.com/openeuler/docs-website/raw/ci/.doctools/markdownlint.config.json",
+      "linkValidityCheckRemoteWhitelistUrl": "https://raw.gitcode.com/openeuler/docs-website/raw/ci/.doctools/url.whitelist.json",
+      "resourceExistenceCheckRemoteWhitelistUrl": "https://raw.gitcode.com/openeuler/docs-website/raw/ci/.doctools/url.whitelist.json",
+      "ci": [
+        "markdownlint",
+        "tag-closed-check",
+        "link-validity-check",
+        "resource-existence-check"
+      ]
+    }
+  }
+}
