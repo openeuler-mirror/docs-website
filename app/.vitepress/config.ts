@@ -1,6 +1,7 @@
 import type Markdown from 'markdown-it';
 import { getDomId } from './src/utils/common';
 import type Token from 'markdown-it/lib/token.mjs';
+import llmstxt from 'vitepress-plugin-llms';
 
 export default {
   base: '/',
@@ -210,6 +211,11 @@ export default {
     },
   },
   vite: {
+    plugins: [
+      llmstxt({
+        ignoreFiles: ['!**/25.09/**']
+      }),
+    ],
     ssr: {
       noExternal: ['@opendesign-plus/components', 'element-plus']
     }
