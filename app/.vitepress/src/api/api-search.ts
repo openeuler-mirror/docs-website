@@ -58,3 +58,24 @@ export function getSearchDocs(params: SearchDocQueryT) {
   const url = '/api-search/search/sort/docs';
   return request.post(url, params, { showError: false }).then((res: AxiosResponse) => res.data);
 }
+
+/**
+ * 上传图片，获取OBS图片URL
+ * @param {Object} params 包含image文件对象
+ * @returns {Promise<ResponseT>} OBS图片URL
+ */
+export function imageUpload(params: { image: File }): Promise<{
+  msg: string;
+  obj: string;
+  status: number;
+}> {
+  const url = '/api-search/search/sort/upload/image';
+  const formData = new FormData();
+  formData.append('image', params.image);
+  return request
+    .post(url, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+      showError: false,
+    })
+    .then((res: AxiosResponse) => res.data);
+}
