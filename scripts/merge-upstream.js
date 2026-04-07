@@ -3,7 +3,7 @@ import path from 'path';
 
 import { VITEPRESS_VERSION_CONFIG } from './config/version.js';
 import { getGitUrlInfo, isGitRepo, checkoutBranch } from './utils/git.js';
-import { copyDirectorySync } from './utils/file.js';
+import { copyDirectorySync, copyFileSync } from './utils/file.js';
 
 const REPO_PATH = path.join(process.cwd(), '../../');
 const relativeRepo = new Set();
@@ -28,7 +28,40 @@ const copyRepoFromDiskCache = async (upstream, dir, storagePath) => {
   }
 };
 
-const scanYaml = async (yamlPath, dir) => {
+const copyMdFromDiskCache = async (upstream, storagePath) => {
+  try {
+    const { repo, branch, locations } = getGitUrlInfo(upstream);
+    const cachePath = path.join(REPO_PATH, repo);
+    if (!isGitRepo(cachePath)) {
+      console.log(`不存在 ${repo} 仓库缓存，跳过~`);
+    }
+
+    relativeRepo.add(cachePath.replace(/\\/g, '/'));
+    await checkoutBranch(cachePath, branch);
+
+    // 复制 md
+    const sourceMd = path.join(cachePath, ...locations);
+    const destMd = path.join(storagePath, locations[locations.length - 1]);
+    copyFileSync(sourceMd, destMd);
+
+    // 复制 md 可能关联的资源目录
+    const sourceDir = path.join(cachePath, ...locations.slice(0, -1));
+    for (const item of fs.readdirSync(sourceDir)) {
+      const completeDir = path.join(sourceDir, item);
+      if (fs.statSync(completeDir).isDirectory()) {
+        const destDir = path.join(storagePath, item);
+        copyDirectorySync(completeDir, destDir);
+      }
+    }
+
+    console.log('复制完成');
+  } catch (err) {
+    console.error(`copyRepoFromDiskCache error: ${err?.message}, upstream: ${upstream}`);
+    process.exit(1);
+  }
+};
+
+const scanTocYaml = async (yamlPath, dir) => {
   const lines = fs.readFileSync(yamlPath, 'utf-8').split('\n');
   let i = 0;
   while (i < lines.length) {
@@ -41,7 +74,13 @@ const scanYaml = async (yamlPath, dir) => {
       }
 
       await copyRepoFromDiskCache(upstream, dir, storagePath);
+    } 
+    
+    const match = lines[i]?.trim().match(/https?:\/\/(?:gitcode|atomgit|gitee)\.com\/([^\/]+)\/([^\/]+)\/blob\/([^\/]+)\/(.+\.md)/);
+    if (match) {
+      copyMdFromDiskCache(lines[i].replace('href:', '').trim(), path.dirname(yamlPath));
     }
+    
     i++;
   }
 };
@@ -52,8 +91,8 @@ const mergeUpstream = async (targetPath) => {
       const completePath = path.join(targetPath, item);
       if (fs.statSync(completePath).isDirectory()) {
         await mergeUpstream(completePath);
-      } else if (item.endsWith('.yaml')) {
-        await scanYaml(completePath, targetPath);
+      } else if (item.endsWith('_toc.yaml')) {
+        await scanTocYaml(completePath, targetPath);
       }
     }
   }
