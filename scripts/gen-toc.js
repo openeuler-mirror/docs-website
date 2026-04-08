@@ -340,7 +340,7 @@ function parseHref(toc, tocFilePath, upstream) {
       return parseTocYaml(path.join(currentDir, toc.href), upstream);
     }
 
-    // md 文件
+    // 本地 md 文件
     if (!toc.href.startsWith('http') && toc.href.endsWith('.md')) {
       // 如果存在 upstream，代表该 toc 的祖/父节点是远程 toc 节点，需要还原出 git 地址
       if (upstream) {
@@ -353,6 +353,14 @@ function parseHref(toc, tocFilePath, upstream) {
       if (!Array.isArray(toc.sections)) {
         return parseAnchorSections(toc, mdPath, upstream);
       }
+    }
+
+    // 远程 md 文件
+    if (/https?:\/\/(?:gitcode|atomgit|gitee)\.com\/([^\/]+)\/([^\/]+)\/blob\/([^\/]+)\/(.+\.md)/.test(toc.href)) {
+      const mdPath = path.resolve(currentDir, toc.href.split('/').pop());
+      toc.upstream = toc.href;
+      toc.href = getDocsUrl(mdPath, toc.label || '');
+      toc.type = 'page';
     }
 
     // toc 有 sections 或 href 可能为一个外链

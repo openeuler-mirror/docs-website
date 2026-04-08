@@ -43,7 +43,7 @@ import yaml from 'js-yaml';
 import { VITEPRESS_VERSION_CONFIG } from './config/version.js';
 import { parseNamedArgs } from './utils/common.js';
 import { getGitUrlInfo, gitCloneAndCheckout } from './utils/git.js';
-import { copyDirectorySync, removeSync } from './utils/file.js';
+import { copyDirectorySync, copyFileSync, removeSync } from './utils/file.js';
 
 // ============================================ 脚本执行逻辑 ============================================
 const args = parseNamedArgs();
@@ -99,6 +99,8 @@ function syncDocs(branch) {
  * @param {string} branch 分支名
  */
 function syncSigDocs(branch) {
+  const handledPath = {};
+
   const scanYaml = (obj, currentDir) => {
     if (typeof obj?.href?.upstream === 'string') {
       const { url, repo, branch, locations } = getGitUrlInfo(obj.href.upstream);
@@ -107,6 +109,34 @@ function syncSigDocs(branch) {
       const destPath = typeof obj.href.path === 'string' ? path.join(currentDir, obj.href.path) : path.join(currentDir, repo, ...locations.slice(2, -1));
       gitCloneAndCheckout(url, branch, CACHE_PATH);
       copyDirectorySync(sourcePath, destPath);
+
+      if (!handledPath[sourcePath]) {
+        handledPath[sourcePath] = true;
+        scanDir(sourcePath);
+      } else {
+        console.log(`[syncSigDocs]: ${destPath} 已处理过`);
+      }
+    }
+
+    if (typeof obj?.href === 'string' && /https?:\/\/(?:gitcode|atomgit|gitee)\.com\/([^\/]+)\/([^\/]+)\/blob\/([^\/]+)\/(.+\.md)/.test(obj.href)) {
+      const { url, repo, branch, locations } = getGitUrlInfo(obj.href);
+      console.log(`[syncSigDocs]: 检测到远程 md 地址 - ${obj.href}`);
+      gitCloneAndCheckout(url, branch, CACHE_PATH);
+
+      // 复制 md
+      const sourceMd = path.join(CACHE_PATH, repo, ...locations);
+      const destMd = path.join(currentDir, locations[locations.length - 1]);
+      copyFileSync(sourceMd, destMd);
+
+      // 复制 md 可能关联的资源目录
+      const sourceDir = path.join(CACHE_PATH, repo, ...locations.slice(0, -1));
+      for (const item of fs.readdirSync(sourceDir)) {
+        const completeDir = path.join(sourceDir, item);
+        if (fs.statSync(completeDir).isDirectory()) {
+          const destDir = path.join(currentDir, item);
+          copyDirectorySync(completeDir, destDir);
+        }
+      }
     }
 
     if (Array.isArray(obj.sections)) {
@@ -119,13 +149,14 @@ function syncSigDocs(branch) {
   const scanDir = (targetPath) => {
     if (!fs.existsSync(targetPath)) {
       console.log(`${targetPath} 不存在`);
+      return;
     }
 
     for (const item of fs.readdirSync(targetPath)) {
       const completePath = path.join(targetPath, item);
       if (fs.statSync(completePath).isDirectory()) {
         scanDir(completePath);
-      } else if (item.endsWith('.yaml')) {
+      } else if (item.endsWith('_toc.yaml')) {
         const obj = yaml.load(fs.readFileSync(completePath, 'utf-8'));
         scanYaml(obj, targetPath);
       }
