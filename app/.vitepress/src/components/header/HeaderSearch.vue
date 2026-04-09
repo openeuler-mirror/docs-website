@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, ref, onMounted, watch } from 'vue';
-import { OInput, OIcon } from '@opensig/opendesign';
+import { computed, ref, onMounted, watch, nextTick } from 'vue';
+import { OInput, OIcon, OFigure, OPopover } from '@opensig/opendesign';
 import { useData } from 'vitepress';
 
 import { useAppearance } from '@/stores/common';
@@ -9,16 +9,20 @@ import { useLocale } from '@/composables/useLocale';
 
 import type { SearchRecommendT } from '@/@types/type-search';
 
-import { getPop, getSearchRecommend } from '@/api/api-search';
+import { getPop, getSearchRecommend, imageUpload } from '@/api/api-search';
 
 import useClickOutside from '@/components/hooks/useClickOutside';
 import { useScreen } from '@/composables/useScreen';
+import { useDebounceFn } from '@vueuse/core';
 
 import IconClose from '~icons/app/icon-close.svg';
 import IconSearch from '~icons/app/icon-header-search.svg';
 import IconDelete from '~icons/app/icon-header-delete.svg';
 import IconDeleteAll from '~icons/app/icon-delete.svg';
 import IconBack from '~icons/app/icon-header-back.svg';
+import IconImageUpload from '~icons/app/icon-image-upload.svg';
+import IconImageClose from '~icons/app/icon-image-close.svg';
+import IconImageZoomin from '~icons/app/icon-image-zoomin.svg';
 
 const { lang } = useData();
 
@@ -35,15 +39,33 @@ const appearanceStore = useAppearance();
 const isDark = computed(() => (appearanceStore.theme === 'dark' ? true : false));
 
 // 搜索事件
-function handleSearchEvent() {
+async function handleSearchEvent() {
+  if (pastedFile.value) {
+    if (isUploading.value) {
+      await uploadPromise;
+    }
+    const query = searchInput.value.trim();
+    const params = new URLSearchParams();
+    if (!uploadedImageUrl.value && !query) return;
+    if (uploadedImageUrl.value) params.set('imageUrl', uploadedImageUrl.value);
+    if (query) params.set('q', query);
+    window.open(
+      `${import.meta.env.VITE_MAIN_DOMAIN_URL}/${lang.value}/other/search/?${params.toString()}`,
+      '_blank'
+    );
+    return;
+  }
+
   const input = searchInput.value.trim();
   if (!input) {
     return;
   }
-  
-  isShowDrawer.value = false;
+
   handleSearch(input);
-  window.open(`${import.meta.env.VITE_MAIN_DOMAIN_URL}/${lang.value}/other/search/?q=${encodeURIComponent(input)}`, '_blank');
+  window.open(
+    `${import.meta.env.VITE_MAIN_DOMAIN_URL}/${lang.value}/other/search/?q=${encodeURIComponent(input)}`,
+    '_blank'
+  );
 }
 // 点击热搜标签
 const onTopSearchItemClick = (val: string) => {
@@ -52,6 +74,12 @@ const onTopSearchItemClick = (val: string) => {
 };
 
 const searchValue = computed(() => i18n.global.messages.value[locale.value].header.SEARCH);
+// 图片搜索占位符
+const currentPlaceholder = computed(() => {
+  if (showThumbnail.value) return searchValue.value.PLEACHOLDER_EXTEND;
+  if (isShowDrawer.value) return searchValue.value.PLEACHOLDER_IMAGE;
+  return searchValue.value.PLEACHOLDER;
+});
 // 显示/移除搜索框
 const isShowBox = ref(false);
 const popList = ref<string[]>([]);
@@ -73,6 +101,7 @@ const showDrawer = () => {
 // 关闭搜索框
 const closeSearchBox = () => {
   searchInput.value = '';
+  removeImage();
   emits('search-click', isShowBox.value);
   if (!lePadV.value) {
     isShowBox.value = false;
@@ -83,7 +112,7 @@ const closeSearchBox = () => {
 
 onMounted(() => {
   window.addEventListener('click', () => {
-    if (isClickOutside.value && !lePadV.value) {
+    if (isClickOutside.value && !lePadV.value && !isPreviewOpen.value && !justClosedPreview.value) {
       closeSearchBox();
     }
   });
@@ -91,13 +120,13 @@ onMounted(() => {
 // ----------------- 联想搜索 -------------------------
 const recommendData = ref<SearchRecommendT[]>([]);
 
-const queryGetSearchRecommend = (val: string) => {
+const queryGetSearchRecommend = useDebounceFn((val: string) => {
   getSearchRecommend({
     query: val,
   }).then((res) => {
     recommendData.value = res.obj.word;
   });
-};
+}, 300);
 
 watch(
   () => searchInput.value,
@@ -149,67 +178,198 @@ const deleteHistory = (data: string) => {
 
 const closeSearch = () => {
   searchInput.value = '';
+  removeImage();
   isShowBox.value = false;
   appearanceStore.iconMenuShow = true;
   isShowDrawer.value = false;
   emits('search-click', isShowBox.value);
+};
+
+// ----------------------- 图片搜索 -----------------------
+const pastedImage = ref<string>('');
+const pastedFile = ref<File | null>(null);
+const showThumbnail = ref(false);
+const uploadedImageUrl = ref<string>('');
+const isUploading = ref(false);
+let uploadPromise: Promise<void> | null = null;
+const isPreviewOpen = ref(false);
+const justClosedPreview = ref(false);
+
+const onPreviewChange = (visible: boolean) => {
+  isPreviewOpen.value = visible;
+  if (!visible) {
+    justClosedPreview.value = true;
+    setTimeout(() => {
+      justClosedPreview.value = false;
+    }, 100);
+  }
+};
+
+const handlePaste = async (event: ClipboardEvent) => {
+  const items = event.clipboardData?.items;
+  if (!items) return;
+
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i];
+    if (item.type.indexOf('image') !== -1) {
+      const file = item.getAsFile();
+      if (file) {
+        handleImageFile(file);
+      }
+      break;
+    }
+  }
+};
+
+const removeImage = () => {
+  URL.revokeObjectURL(pastedImage.value);
+  pastedImage.value = '';
+  pastedFile.value = null;
+  showThumbnail.value = false;
+  uploadedImageUrl.value = '';
+};
+
+const fileInputRef = ref<HTMLInputElement>();
+const oInputRef = ref();
+
+const handleUploadClick = () => {
+  // 重置 value，确保选同一张图片也能触发 change 事件
+  if (fileInputRef.value) {
+    fileInputRef.value.value = '';
+  }
+  fileInputRef.value?.click();
+};
+
+const handleFileSelect = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  const file = target.files?.[0];
+  if (file) {
+    handleImageFile(file);
+    nextTick(() => oInputRef.value?.focus());
+  }
+};
+
+const handleImageFile = (file: File) => {
+  pastedFile.value = file;
+  pastedImage.value = URL.createObjectURL(file);
+  showThumbnail.value = true;
+
+  uploadedImageUrl.value = '';
+  isUploading.value = true;
+  uploadPromise = imageUpload({ image: file })
+    .then((res) => {
+      if (res.status === 200 && res.obj) {
+        uploadedImageUrl.value = res.obj;
+      }
+    })
+    .finally(() => {
+      isUploading.value = false;
+    });
+};
+
+const handleDragOver = (event: DragEvent) => {
+  event.preventDefault();
+  event.stopPropagation();
+};
+
+const handleDrop = (event: DragEvent) => {
+  event.preventDefault();
+  event.stopPropagation();
+
+  const file = event.dataTransfer?.files?.[0];
+  if (file && file.type.indexOf('image') !== -1) {
+    handleImageFile(file);
+  }
 };
 </script>
 <template>
   <div class="search-wrapper">
     <div :class="{ search: !lePadV, focus: isShowDrawer && !lePadV }">
       <div ref="searchRef" class="header-search">
-        <div :class="{ 'input-focus': isShowDrawer }">
+        <div :class="{ 'input-focus': isShowDrawer, 'has-image': showThumbnail }" @dragover="handleDragOver" @drop="handleDrop">
           <OIcon v-if="lePadV && isShowDrawer" class="search-icon icon" @click.stop="closeSearch"><IconBack></IconBack></OIcon>
-          <OInput
-            v-model="searchInput"
-            :placeholder="isShowDrawer ? searchValue.PLEACHOLDER_EXTEND : searchValue.PLEACHOLDER"
-            @keyup.enter="handleSearchEvent"
-            @focus="showDrawer"
-            class="normal"
-          >
-            <template #prefix>
-              <OIcon class="icon"><IconSearch></IconSearch></OIcon>
-            </template>
-            <template v-if="(!lePadV && isShowDrawer) || (lePadV && searchInput)" #suffix>
-              <OIcon class="icon hover-icon-rotate" @click="closeSearchBox"><IconClose /></OIcon>
-            </template>
-          </OInput>
+          <div class="search-input-wrapper" :class="{ 'with-image': showThumbnail }">
+            <OInput
+              ref="oInputRef"
+              v-model="searchInput"
+              :placeholder="currentPlaceholder"
+              @keyup.enter="handleSearchEvent"
+              @focus="showDrawer"
+              @paste="handlePaste"
+              class="normal"
+            >
+              <template #prefix>
+                <OIcon class="icon"><IconSearch></IconSearch></OIcon>
+              </template>
+              <template v-if="isShowDrawer" #suffix>
+                <OPopover v-if="!lePadV" trigger="hover" position="bottom" wrap-class="upload-tooltip-popup">
+                  <template #target>
+                    <span class="upload-btn">
+                      <OIcon class="upload icon" @mousedown.prevent @click="handleUploadClick"><IconImageUpload /></OIcon>
+                    </span>
+                  </template>
+                  {{ searchValue.UPLOAD_TOOLTIP }}
+                </OPopover>
+                <span v-else class="upload-btn">
+                  <OIcon class="upload icon" @mousedown.prevent @click="handleUploadClick"><IconImageUpload /></OIcon>
+                </span>
+                <OIcon class="icon hover-icon-rotate" @click="closeSearchBox"><IconClose /></OIcon>
+              </template>
+            </OInput>
+            <div v-if="showThumbnail" class="input-image-preview">
+              <div class="preview-image-wrapper">
+                <OFigure :src="pastedImage" preview alt="" class="preview-image" @preview="onPreviewChange" />
+                <div class="preview-zoom-overlay">
+                  <OIcon class="preview-zoom-icon"><IconImageZoomin /></OIcon>
+                </div>
+                <OIcon class="preview-remove" @click.stop="removeImage"><IconImageClose /></OIcon>
+              </div>
+            </div>
+          </div>
+          <input
+            ref="fileInputRef"
+            type="file"
+            accept="image/*"
+            class="file-input"
+            @change="handleFileSelect"
+          />
           <OIcon class="only-icon" @click="showDrawer"><IconSearch></IconSearch></OIcon>
           <span v-if="lePadV && isShowDrawer" class="search-text" @click="handleSearchEvent">{{ searchValue.TEXT }}</span>
         </div>
 
-        <div v-show="isShowDrawer" class="drawer">
-          <div v-if="recommendData.length && searchInput" class="search-recommend">
-            <div v-for="item in recommendData" class="recommend-item" @click="onTopSearchItemClick(item.key)" :key="item.key">
-              {{ item.key }}
-            </div>
-          </div>
-          <div v-else-if="searchHistory.length" class="history-container">
-            <div class="history-title">
-              <span class="title">{{ searchValue.BROWSEHISTORY }}</span>
-              <OIcon class="icon" @click.stop="deleteHistory('')">
-                <IconDeleteAll></IconDeleteAll>
-              </OIcon>
-            </div>
-            <div class="history">
-              <div v-for="item in searchHistory" class="history-item" :class="{ dark: isDark }" @click="onTopSearchItemClick(item)" :key="item">
-                <span class="history-text">{{ item }}</span>
-                <OIcon class="icon-container" @click.stop="deleteHistory(item)"><IconDelete class="icon delete-icon"></IconDelete></OIcon>
+        <div v-show="isShowDrawer && (!showThumbnail || lePadV)" class="drawer">
+          <template v-if="!showThumbnail">
+            <div v-if="recommendData.length && searchInput" class="search-recommend">
+              <div v-for="item in recommendData" class="recommend-item" @click="onTopSearchItemClick(item.key)" :key="item.key">
+                {{ item.key }}
               </div>
             </div>
-            <div class="split-line"></div>
-          </div>
-          <div class="hots">
-            <div class="hots-title">
-              <p>{{ searchValue.TOPSEARCH }}</p>
+            <div v-else-if="searchHistory.length" class="history-container">
+              <div class="history-title">
+                <span class="title">{{ searchValue.BROWSEHISTORY }}</span>
+                <OIcon class="icon" @click.stop="deleteHistory('')">
+                  <IconDeleteAll></IconDeleteAll>
+                </OIcon>
+              </div>
+              <div class="history">
+                <div v-for="item in searchHistory" class="history-item" :class="{ dark: isDark }" @click="onTopSearchItemClick(item)" :key="item">
+                  <span class="history-text">{{ item }}</span>
+                  <OIcon class="icon-container" @click.stop="deleteHistory(item)"><IconDelete class="icon delete-icon"></IconDelete></OIcon>
+                </div>
+              </div>
+              <div class="split-line"></div>
             </div>
-            <div class="hots-list">
-              <div v-for="item in popList" :key="item" type="text" class="hots-list-item" @click="onTopSearchItemClick(item)">
-                {{ item }}
+            <div class="hots">
+              <div class="hots-title">
+                <p>{{ searchValue.TOPSEARCH }}</p>
+              </div>
+              <div class="hots-list">
+                <div v-for="item in popList" :key="item" type="text" class="hots-list-item" @click="onTopSearchItemClick(item)">
+                  {{ item }}
+                </div>
               </div>
             </div>
-          </div>
+          </template>
         </div>
       </div>
       <OIcon @click="showDrawer" class="icon search-icon"><IconSearch></IconSearch></OIcon>
@@ -248,6 +408,7 @@ const closeSearch = () => {
 
     &.focus {
       top: -32px;
+      border-radius: 4px;
     }
   }
 }
@@ -300,6 +461,10 @@ const closeSearch = () => {
       @include respond-to('<=pad_v') {
         display: none;
       }
+    }
+
+    &.has-image::after {
+      display: none;
     }
 
     .search-text {
@@ -568,5 +733,136 @@ const closeSearch = () => {
     border: 1px solid var(--o-color-primary1);
     box-shadow: unset;
   }
+}
+
+.search-input-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid transparent;
+  border-radius: var(--o-radius-xs);
+  transition: border-color 0.2s;
+
+  &.with-image {
+    border-color: var(--o-color-primary1);
+
+    :deep(.o_box-main) {
+      border: none !important;
+      box-shadow: none !important;
+      border-radius: var(--o-radius-xs) var(--o-radius-xs) 0 0;
+    }
+
+    .input-image-preview {
+      margin-top: 8px;
+    }
+  }
+}
+
+.input-image-preview {
+  padding: 0 12px 8px;
+
+  .preview-image-wrapper {
+    position: relative;
+    display: inline-flex;
+    overflow: visible;
+
+    @include hover {
+      .preview-remove {
+        opacity: 1;
+      }
+      .preview-zoom-overlay {
+        opacity: 1;
+      }
+    }
+  }
+
+  .preview-zoom-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+
+    .preview-zoom-icon {
+      color: #fff;
+      font-size: 24px;
+    }
+  }
+
+  .preview-image {
+    height: 72px;
+    width: 72px;
+    border-radius: 4px;
+    overflow: hidden;
+
+    :deep(img) {
+      height: 72px;
+      width: 72px;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 4px;
+    }
+  }
+
+  .preview-remove {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 16px;
+    height: 16px;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    z-index: 1;
+    transition: opacity 0.2s;
+
+    :deep(svg) {
+      width: 16px;
+      height: 16px;
+      fill: rgb(var(--o-mixedgray-9));
+    }
+  }
+}
+
+.file-input {
+  display: none;
+}
+
+.upload-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  margin-right: 4px;
+  cursor: pointer;
+  flex-shrink: 0;
+
+  @include hover {
+    background-color: var(--o-color-control2-light);
+
+    .upload.icon {
+      color: var(--o-color-primary2);
+    }
+  }
+}
+
+.icon.upload {
+  color: var(--o-color-info1);
+}
+</style>
+<style lang="scss">
+.upload-tooltip-popup {
+  @include tip2;
+  padding: var(--o-gap-3) var(--o-gap-4);
+  max-width: 240px;
 }
 </style>

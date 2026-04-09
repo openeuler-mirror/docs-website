@@ -448,6 +448,8 @@ export default {
     CHANGE: 'Change',
     PLEACHOLDER: 'Please enter...',
     PLEACHOLDER_EXTEND: 'Please enter the content',
+    PLEACHOLDER_IMAGE: 'Search by text or image',
+    UPLOAD_TOOLTIP: 'JPG, PNG, JPEG supported (max 10 MB)',
     TEXT: 'Search',
   },
   SOURCE_CODE: [

@@ -72,7 +72,7 @@ const mobileClick = () => {
   left: 0;
   right: 0;
   top: 0;
-  z-index: 1998;
+  z-index: 1000;
   box-shadow: var(--o-shadow-1);
   backdrop-filter: blur(5px);
 
