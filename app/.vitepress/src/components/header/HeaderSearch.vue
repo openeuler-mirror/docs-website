@@ -9,7 +9,7 @@ import { useLocale } from '@/composables/useLocale';
 
 import type { SearchRecommendT } from '@/@types/type-search';
 
-import { getPop, getSearchRecommend, imageUpload } from '@/api/api-search';
+import { getPop, getSearchRecommend, getOnestepSearch, imageUpload } from '@/api/api-search';
 
 import useClickOutside from '@/components/hooks/useClickOutside';
 import { useScreen } from '@/composables/useScreen';
@@ -68,9 +68,16 @@ async function handleSearchEvent() {
   );
 }
 // 点击热搜标签
-const onTopSearchItemClick = (val: string) => {
-  searchInput.value = val;
-  handleSearchEvent();
+type SearchItemClickType = 'history' | 'popular' | 'suggest' | 'onestep';
+
+const onTopSearchItemClick = (val: string, type: SearchItemClickType = 'history') => {
+  if (type === 'onestep') {
+    const url = /^https?:\/\//.test(val) ? val : `/${lang.value}${val.startsWith('/') ? '' : '/'}${val}`;
+    window.open(url, '_blank');
+  } else {
+    searchInput.value = val;
+    handleSearchEvent();
+  }
 };
 
 const searchValue = computed(() => i18n.global.messages.value[locale.value].header.SEARCH);
@@ -98,10 +105,15 @@ const showDrawer = () => {
     popList.value = res.obj;
   });
 };
-// 关闭搜索框
-const closeSearchBox = () => {
+// 清空输入框内容（保持搜索框展开状态）
+const clearSearchInput = () => {
   searchInput.value = '';
   removeImage();
+};
+
+// 关闭搜索框
+const closeSearchBox = () => {
+  clearSearchInput();
   emits('search-click', isShowBox.value);
   if (!lePadV.value) {
     isShowBox.value = false;
@@ -119,12 +131,19 @@ onMounted(() => {
 });
 // ----------------- 联想搜索 -------------------------
 const recommendData = ref<SearchRecommendT[]>([]);
+const onestepData = ref<SearchRecommendT[]>([]);
 
 const queryGetSearchRecommend = useDebounceFn((val: string) => {
   getSearchRecommend({
     query: val,
   }).then((res) => {
     recommendData.value = res.obj.word;
+  });
+  getOnestepSearch({
+    query: val,
+    lang: lang.value,
+  }).then((res) => {
+    onestepData.value = res.obj.word;
   });
 }, 300);
 
@@ -135,6 +154,7 @@ watch(
       queryGetSearchRecommend(val);
     } else {
       recommendData.value = [];
+      onestepData.value = [];
     }
   }
 );
@@ -194,6 +214,23 @@ const isUploading = ref(false);
 let uploadPromise: Promise<void> | null = null;
 const isPreviewOpen = ref(false);
 const justClosedPreview = ref(false);
+
+const highlightText = (text: string) => {
+  const keyword = searchInput.value.trim();
+  if (!keyword) return [{ text, match: false }];
+  const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const parts: { text: string; match: boolean }[] = [];
+  let lastIndex = 0;
+  const regex = new RegExp(escaped, 'gi');
+  let m: RegExpExecArray | null;
+  while ((m = regex.exec(text)) !== null) {
+    if (m.index > lastIndex) parts.push({ text: text.slice(lastIndex, m.index), match: false });
+    parts.push({ text: m[0], match: true });
+    lastIndex = m.index + m[0].length;
+  }
+  if (lastIndex < text.length) parts.push({ text: text.slice(lastIndex), match: false });
+  return parts;
+};
 
 const onPreviewChange = (visible: boolean) => {
   isPreviewOpen.value = visible;
@@ -313,7 +350,7 @@ const handleDrop = (event: DragEvent) => {
                 <span v-else class="upload-btn">
                   <OIcon class="upload icon" @mousedown.prevent @click="handleUploadClick"><IconImageUpload /></OIcon>
                 </span>
-                <OIcon class="icon hover-icon-rotate" @click="closeSearchBox"><IconClose /></OIcon>
+                <OIcon class="icon hover-icon-rotate" @mousedown.prevent @click="clearSearchInput"><IconClose /></OIcon>
               </template>
             </OInput>
             <div v-if="showThumbnail" class="input-image-preview">
@@ -339,12 +376,39 @@ const handleDrop = (event: DragEvent) => {
 
         <div v-show="isShowDrawer && (!showThumbnail || lePadV)" class="drawer">
           <template v-if="!showThumbnail">
-            <div v-if="recommendData.length && searchInput" class="search-recommend">
-              <div v-for="item in recommendData" class="recommend-item" @click="onTopSearchItemClick(item.key)" :key="item.key">
-                {{ item.key }}
+            <template v-if="searchInput">
+              <template v-if="onestepData.length">
+                <div class="search-recommend search-onestep">
+                  <div class="recommend-section-title">{{ searchValue.ONESTEP }}</div>
+                  <div
+                    v-for="item in onestepData"
+                    class="recommend-item"
+                    @click="onTopSearchItemClick(item.path as string, 'onestep')"
+                    :key="item.key"
+                  >
+                    <template v-for="part in highlightText(item.key)" :key="part.text + part.match"><span :class="{ 'highlight-keyword': part.match }">{{ part.text }}</span></template>
+                    <div class="onestep-tag">{{ item.type }}</div>
+                  </div>
+                </div>
+                <div class="split-line"></div>
+              </template>
+              <div class="search-recommend">
+                <div class="recommend-section-title">{{ searchValue.SUGGEST }}</div>
+                <template v-if="recommendData.length">
+                  <div
+                    v-for="item in recommendData"
+                    class="recommend-item"
+                    @click="onTopSearchItemClick(item.key, 'suggest')"
+                    :key="item.key"
+                  >
+                    <template v-for="part in highlightText(item.key)" :key="part.text + part.match"><span :class="{ 'highlight-keyword': part.match }">{{ part.text }}</span></template>
+                  </div>
+                </template>
+                <div v-else class="recommend-no-data">{{ searchValue.NO_DATA }}</div>
               </div>
-            </div>
-            <div v-else-if="searchHistory.length" class="history-container">
+            </template>
+            <template v-else>
+            <div v-if="searchHistory.length" class="history-container">
               <div class="history-title">
                 <span class="title">{{ searchValue.BROWSEHISTORY }}</span>
                 <OIcon class="icon" @click.stop="deleteHistory('')">
@@ -369,6 +433,7 @@ const handleDrop = (event: DragEvent) => {
                 </div>
               </div>
             </div>
+            </template>
           </template>
         </div>
       </div>
@@ -501,7 +566,7 @@ const handleDrop = (event: DragEvent) => {
     box-shadow: var(--o-shadow-2);
     backdrop-filter: blur(5px);
     padding: var(--o-gap-5);
-    padding-top: var(--o-gap-2);
+    padding-top: 0;
     background: var(--o-color-fill2);
     border-radius: 0 0 4px 4px;
 
@@ -668,22 +733,68 @@ const handleDrop = (event: DragEvent) => {
     margin-bottom: var(--o-gap-5);
   }
 }
-.search-recommend {
-  color: var(--o-color-info1);
+.split-line {
+  background: var(--o-color-control4);
+  width: 100%;
+  height: 1px;
+  margin: var(--o-gap-4) 0;
+}
+.search-onestep {
   margin-bottom: var(--o-gap-3);
+}
+.search-recommend {
+  .recommend-section-title {
+    @include tip1;
+    color: var(--o-color-info3);
+    margin-bottom: var(--o-gap-3);
+    font-weight: 400;
+
+    @include respond-to('<=pad_v') {
+      @include text2;
+    }
+  }
 
   .recommend-item {
-    @include tip2;
-    & + .recommend-item {
-      margin-top: var(--o-gap-3);
+    @include tip1;
+    padding: 5px 8px;
+    cursor: pointer;
+    color: var(--o-color-info1);
+    border-radius: 4px;
+
+    &:hover {
+      background-color: var(--o-color-control2-light);
     }
 
-    cursor: pointer;
-    @include hover {
-      color: var(--o-color-primary1);
+    &:active {
+      background-color: var(--o-color-control3-light);
     }
 
     @include respond('<=pad_v') {
+      @include text2;
+    }
+
+    .onestep-tag {
+      @include tip2;
+      height: 20px;
+      display: inline;
+      padding: 1px 8px;
+      border-radius: 4px;
+      font-weight: 400;
+      margin-left: 8px;
+      border: 1px solid var(--o-color-control4);
+    }
+
+    .highlight-keyword {
+      color: var(--o-color-primary1);
+      font-weight: 600;
+    }
+  }
+
+  .recommend-no-data {
+    @include tip2;
+    color: var(--o-color-info3);
+
+    @include respond-to('<=pad_v') {
       @include text1;
     }
   }
