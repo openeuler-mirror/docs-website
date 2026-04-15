@@ -374,7 +374,12 @@ export default {
           ],
         },
       ],
-      SHORTCUT: [],
+      SHORTCUT: [
+        {
+          NAME: 'Featured in Linux Magazine: A Comprehensive Focus Guide on openEuler',
+          URL: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/category/technology/Linux Magazine Focus Guide-openEuler.pdf`,
+        },
+      ],
     },
     {
       NAME: 'Stay Updated',
