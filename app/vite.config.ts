@@ -3,11 +3,15 @@ import { fileURLToPath, URL } from 'node:url';
 import { defineConfig } from 'vitepress';
 import Icons from 'unplugin-icons/vite';
 import { FileSystemIconLoader } from 'unplugin-icons/loaders';
+import llmstxt from 'vitepress-plugin-llms';
 
 import ReplaceUrlPlugin from './.vitepress/plugins/replace-url-plugin';
 
 export default defineConfig({
   plugins: [
+    llmstxt({
+      ignoreFiles: ['zh/index.md', 'en/index.md'],
+    }),
     Icons({
       compiler: 'vue3',
       customCollections: {
