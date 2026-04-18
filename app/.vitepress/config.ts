@@ -1,6 +1,23 @@
+import { resolve } from 'node:path';
+import { existsSync, readFileSync } from 'node:fs';
+
 import type Markdown from 'markdown-it';
-import { getDomId } from './src/utils/common';
 import type Token from 'markdown-it/lib/token.mjs';
+
+import { getDomId } from './src/utils/common';
+
+function readEnvVar(key: string): string | undefined {
+  const envFile = resolve(process.cwd(), '.env.production');
+  if (!existsSync(envFile)) {
+    return undefined;
+  }
+
+  const match = readFileSync(envFile, 'utf-8').match(new RegExp(`^${key}\\s*=\\s*(.+)$`, 'm'));
+
+  return match ? match[1].trim() : undefined;
+}
+
+const sitemapHostname = readEnvVar('VITE_MAIN_DOMAIN_URL') || 'https://www.openeuler.org';
 
 export default {
   base: '/',
@@ -10,6 +27,16 @@ export default {
   metaChunk: true,
   title: '文档 | openEuler社区',
   srcExclude: ['**/_menu.md'],
+  sitemap: {
+    hostname: sitemapHostname,
+    transformItems: (items: any[]) => {
+      items.forEach((item) => {
+        item.lastmod = new Date().toISOString();
+      });
+
+      return items;
+    },
+  },
   head: [
     [
       'link',
@@ -211,7 +238,7 @@ export default {
   },
   vite: {
     ssr: {
-      noExternal: ['@opendesign-plus/components', 'element-plus']
-    }
-  }
+      noExternal: ['@opendesign-plus/components', 'element-plus'],
+    },
+  },
 };
