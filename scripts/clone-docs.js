@@ -41,7 +41,7 @@ import path from 'path';
 import yaml from 'js-yaml';
 
 import { VITEPRESS_VERSION_CONFIG } from './config/version.js';
-import { parseNamedArgs } from './utils/common.js';
+import { parseNamedArgs, sleep } from './utils/common.js';
 import { getGitUrlInfo, gitCloneAndCheckout } from './utils/git.js';
 import { copyDirectorySync, copyFileSync, removeSync } from './utils/file.js';
 
@@ -61,6 +61,7 @@ syncDsl();
 for (const branch of branches) {
   syncDocs(branch);
   syncSigDocs(branch);
+  await sleep(8000);
 }
 
 // ============================================ 同步文档函数 ============================================

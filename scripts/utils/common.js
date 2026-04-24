@@ -36,3 +36,11 @@ export function parseNamedArgs() {
   
   return namedArgs;
 }
+
+/**
+ * sleep 休眠
+ * @param {number} ms 休眠时间
+ */
+export function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
