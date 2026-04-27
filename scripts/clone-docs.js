@@ -111,9 +111,9 @@ function syncSigDocs(branch) {
       gitCloneAndCheckout(url, branch, CACHE_PATH);
       copyDirectorySync(sourcePath, destPath);
 
-      if (!handledPath[sourcePath]) {
-        handledPath[sourcePath] = true;
-        scanDir(sourcePath);
+      if (!handledPath[destPath]) {
+        handledPath[destPath] = true;
+        scanDir(destPath);
       } else {
         console.log(`[syncSigDocs]: ${destPath} 已处理过`);
       }

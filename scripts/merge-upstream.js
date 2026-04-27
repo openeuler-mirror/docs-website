@@ -61,38 +61,42 @@ const copyMdFromDiskCache = async (upstream, storagePath) => {
   }
 };
 
-const scanTocYaml = async (yamlPath, dir) => {
+const scanTocYaml = async (yamlPath, dir, type) => {
   const lines = fs.readFileSync(yamlPath, 'utf-8').split('\n');
   let i = 0;
   while (i < lines.length) {
-    if (lines[i].includes('upstream:')) {
-      const upstream = lines[i].replace('upstream:', '').trim();
-      let storagePath = '';
+    if (type === '_toc.yaml') {
+      if (lines[i].includes('upstream:')) {
+        const upstream = lines[i].replace('upstream:', '').trim();
+        let storagePath = '';
 
-      if (i + 1 < lines.length && lines[i + 1].includes('path:')) {
-        storagePath = lines[i + 1].replace('path:', '').trim();
+        if (i + 1 < lines.length && lines[i + 1].includes('path:')) {
+          storagePath = lines[i + 1].replace('path:', '').trim();
+        }
+
+        await copyRepoFromDiskCache(upstream, dir, storagePath);
       }
-
-      await copyRepoFromDiskCache(upstream, dir, storagePath);
-    } 
-    
-    const match = lines[i]?.trim().match(/https?:\/\/(?:gitcode|atomgit|gitee)\.com\/([^\/]+)\/([^\/]+)\/blob\/([^\/]+)\/(.+\.md)/);
-    if (match) {
-      copyMdFromDiskCache(lines[i].replace('href:', '').trim(), path.dirname(yamlPath));
     }
-    
+
+    if (type === 'md') {
+      const match = lines[i]?.trim().match(/https?:\/\/(?:gitcode|atomgit|gitee)\.com\/([^\/]+)\/([^\/]+)\/blob\/([^\/]+)\/(.+\.md)/);
+      if (match) {
+        copyMdFromDiskCache(lines[i].replace('href:', '').trim(), path.dirname(yamlPath));
+      }
+    }
+
     i++;
   }
 };
 
-const mergeUpstream = async (targetPath) => {
+const mergeUpstream = async (targetPath, type) => {
   if (fs.existsSync(targetPath)) {
     for (const item of fs.readdirSync(targetPath)) {
       const completePath = path.join(targetPath, item);
       if (fs.statSync(completePath).isDirectory()) {
-        await mergeUpstream(completePath);
+        await mergeUpstream(completePath, type);
       } else if (item.endsWith('_toc.yaml')) {
-        await scanTocYaml(completePath, targetPath);
+        await scanTocYaml(completePath, targetPath, type);
       }
     }
   }
@@ -120,9 +124,10 @@ const copyRedirectYaml = async (buildPath) => {
 
 const merge = async (branch) => {
   const buildPath = path.join(process.cwd(), `../../../build/${branch}`);
-
-  await mergeUpstream(`${buildPath}/app/zh/`);
-  await mergeUpstream(`${buildPath}/app/en/`);
+  await mergeUpstream(`${buildPath}/app/zh/`, '_toc.yaml');
+  await mergeUpstream(`${buildPath}/app/en/`, '_toc.yaml');
+  await mergeUpstream(`${buildPath}/app/zh/`, 'md');
+  await mergeUpstream(`${buildPath}/app/en/`, 'md');
   copyRedirectYaml(buildPath);
 };
 
