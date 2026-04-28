@@ -139,6 +139,7 @@ const scrollIntoTitle = async () => {
       const hash = decodeURIComponent(window.location.hash);
       const target =
         contentDom.querySelector<HTMLElement>(`#user-content-${hash.slice(1)}`) ||
+        contentDom.querySelector<HTMLElement>(`#user-content-${getDomId(hash.slice(1))}`) ||
         contentDom.querySelector<HTMLElement>(hash) ||
         contentDom.querySelector<HTMLElement>(`[name='${hash.slice(1)}']`);
       const scrollContainer = document.querySelector<HTMLElement>('#app > .o-scroller > .o-scroller-container');

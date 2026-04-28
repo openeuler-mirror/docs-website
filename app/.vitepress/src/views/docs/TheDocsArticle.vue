@@ -7,6 +7,7 @@ import DocPagination from '@/components/doc/DocPagination.vue';
 import DocViewSource from '@/components/doc/DocViewSource.vue';
 
 import { type DocMenuNodeT } from '@/utils/tree';
+import { getDomId } from '@/utils/common';
 import { getOffsetTop, getScrollRemainingBottom } from '@/utils/element';
 import { useViewStore } from '@/stores/view';
 import { useNodeStore } from '@/stores/node';
@@ -141,6 +142,7 @@ const refreshHashAnchor = async () => {
   const decodedHash = decodeURIComponent(hash.value);
   const target =
     docBody.value.querySelector<HTMLElement>(`#user-content-${decodedHash.slice(1)}`) ||
+    docBody.value.querySelector<HTMLElement>(`#user-content-${getDomId(decodedHash.slice(1))}`) ||
     docBody.value.querySelector<HTMLElement>(decodedHash) ||
     docBody.value.querySelector<HTMLElement>(`[name='${decodedHash.slice(1)}']`);
 

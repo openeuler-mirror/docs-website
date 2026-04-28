@@ -270,6 +270,10 @@ function parseToc(toc, tocFilePath, upstream) {
   }
 
   try {
+    if (typeof upstream === 'string' && typeof toc.href === 'string' && typeof !toc.href.startsWith('http') && toc.href.endsWith('_toc.yaml')) {
+      upstream = new URL(toc.href.replace('_toc.yaml', ''), upstream).href;
+    }
+
     toc = parseHref(toc, tocFilePath, upstream);
     if (toc && !toc.id) {
       toc = parseId(toc);
@@ -344,7 +348,7 @@ function parseHref(toc, tocFilePath, upstream) {
     if (!toc.href.startsWith('http') && toc.href.endsWith('.md')) {
       // 如果存在 upstream，代表该 toc 的祖/父节点是远程 toc 节点，需要还原出 git 地址
       if (upstream) {
-        toc.upstream = url.resolve(upstream, toc.href).replace(/\\/g, '/');
+        toc.upstream = new URL(toc.href, upstream).href;
       }
 
       const mdPath = path.resolve(currentDir, toc.href);
