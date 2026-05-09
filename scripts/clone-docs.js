@@ -1,33 +1,33 @@
 /**
  * 文档克隆脚本
  * ====================================================================================================
- * 
+ *
  * 功能概述：
  * - 克隆指定分支的文档内容并复制到构建目录
  * - 扫描 _toc.yaml 中的 sig 仓，克隆 sig 文档并复制到构建目录
  * - 同步 DSL 相关文档内容
- * 
+ *
  * 使用方式：
  *   在项目根目录下执行：
  *   node scripts/clone-docs.js [--branch=<branch1,branch2>] [--build=<build-path>] [--cache=<cache-path>]
- * 
+ *
  * 参数说明：
  *   --branch=<names>     指定要同步的分支名称，必需，多个分支用逗号分隔
  *   --build=<path>       指定构建目录路径，可省略，默认为当前工作目录
  *   --cache=<path>       指定缓存目录路径，可省略，默认为构建目录下的 .cache 文件夹
- * 
+ *
  * 示例：
  *   node scripts/clone-docs.js --branch=stable-common
  *   node scripts/clone-docs.js --branch=stable-common,stable-25.09 --build=./
  *   node scripts/clone-docs.js --branch=stable-common,stable-25.09 --cache=.cache
- * 
+ *
  * 工作流程：
  *   1. 解析命令行参数
  *   2. 同步 stable-common 分支中的 dsl 内容到构建目录
  *   3. 针对每个指定分支：
  *      a. 同步该分支的中英文文档
  *      b. 解析 _toc.yaml，将其中出现的远程 SIG 仓内容同步下来，并将用到的文档内容复制到构建目录中
- * 
+ *
  * 目录结构：
  *   同步后的文档将按照以下结构存放：
  *   - 中文文档: app/zh/docs/[version]/
@@ -126,7 +126,7 @@ function syncSigDocs(branch) {
 
       // 复制 md
       const sourceMd = path.join(CACHE_PATH, repo, ...locations);
-      const destMd = path.join(currentDir, locations[locations.length - 1]);
+      const destMd = path.join(currentDir, ...locations.slice(locations.length > 3 ? 2 : locations.length - 1));
       copyFileSync(sourceMd, destMd);
 
       // 复制 md 可能关联的资源目录
@@ -134,7 +134,7 @@ function syncSigDocs(branch) {
       for (const item of fs.readdirSync(sourceDir)) {
         const completeDir = path.join(sourceDir, item);
         if (fs.statSync(completeDir).isDirectory()) {
-          const destDir = path.join(currentDir, item);
+          const destDir = path.join(path.dirname(destMd), item);
           copyDirectorySync(completeDir, destDir);
         }
       }
@@ -145,7 +145,7 @@ function syncSigDocs(branch) {
         scanYaml(item, currentDir);
       });
     }
-  }
+  };
 
   const scanDir = (targetPath) => {
     if (!fs.existsSync(targetPath)) {

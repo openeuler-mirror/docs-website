@@ -13,6 +13,12 @@ export function getGitUrlInfo(gitUrl) {
   const url = new URL(gitUrl);
   const [owner, repo, __, branch, ...locations] = url.pathname.replace('/', '').split('/');
 
+  if (locations.length) {
+    for (let i = 0; i < locations.length; i++) {
+      locations[i] = decodeURIComponent(locations[i]);
+    }
+  }
+
   return {
     url: `${url.origin}/${owner}/${repo}`,
     owner,

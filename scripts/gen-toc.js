@@ -361,7 +361,8 @@ function parseHref(toc, tocFilePath, upstream) {
 
     // 远程 md 文件
     if (/https?:\/\/(?:gitcode|atomgit|gitee)\.com\/([^\/]+)\/([^\/]+)\/blob\/([^\/]+)\/(.+\.md)/.test(toc.href)) {
-      const mdPath = path.resolve(currentDir, toc.href.split('/').pop());
+      const { locations } = getGitUrlInfo(toc.href);
+      const mdPath = path.resolve(currentDir, ...locations.slice(locations.length > 3 ? 2 : locations.length - 1));
       toc.upstream = toc.href;
       toc.href = getDocsUrl(mdPath, toc.label || '');
       toc.type = 'page';
