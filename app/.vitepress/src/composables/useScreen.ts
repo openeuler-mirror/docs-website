@@ -13,7 +13,7 @@ export const ScreenConfig = {
   [Size.Phone]: 600,
   [Size.PadV]: 840,
   [Size.PadH]: 1200,
-  [Size.Laptop]: 1440,
+  [Size.Laptop]: 1680,
 };
 
 /**
@@ -37,7 +37,7 @@ const CompareHandler = {
 
 export const useScreen = () => {
   const screenSize = reactive({
-    width: 1440,
+    width: 1680,
     height: 0,
   });
 
@@ -93,11 +93,11 @@ export const useScreen = () => {
   /**
    * laptop
    */
-  const isLaptop = computed(() => compare('gt', Size.PadH) && compare('le', Size.Laptop)); // [1201, 1440]
-  const leLaptop = computed(() => compare('le', Size.Laptop)); // [0, 1440]
-  const gtLaptop = computed(() => compare('gt', Size.Laptop)); // [1441, -]
-  const isPadToLaptop = computed(() => compare('gt', Size.Phone) && compare('le', Size.Laptop)); // [601, 1440]
-  const isPadVToLaptop = computed(() => compare('gt', Size.PadV) && compare('le', Size.Laptop)); // [841, 1440]
+  const isLaptop = computed(() => compare('gt', Size.PadH) && compare('le', Size.Laptop)); // [1201, 1680]
+  const leLaptop = computed(() => compare('le', Size.Laptop)); // [0, 1680]
+  const gtLaptop = computed(() => compare('gt', Size.Laptop)); // [1681, -]
+  const isPadToLaptop = computed(() => compare('gt', Size.Phone) && compare('le', Size.Laptop)); // [601, 1680]
+  const isPadVToLaptop = computed(() => compare('gt', Size.PadV) && compare('le', Size.Laptop)); // [841, 1680]
 
   const onWindowResize = () => {
     const { innerWidth, innerHeight } = window;
@@ -141,10 +141,10 @@ export const useScreen = () => {
 
     isPadH, // [841, 1200]
 
-    isLaptop, // [1201, 1440]
-    leLaptop, // [0, 1440]
-    gtLaptop, // [1441, -]
-    isPadToLaptop, // [601, 1440]
-    isPadVToLaptop, // [841, 1440]
+    isLaptop, // [1201, 1680]
+    leLaptop, // [0, 1680]
+    gtLaptop, // [1681, -]
+    isPadToLaptop, // [601, 1680]
+    isPadVToLaptop, // [841, 1680]
   };
 };

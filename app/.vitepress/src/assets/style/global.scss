@@ -11,84 +11,21 @@ html {
   --el-color-primary: var(--o-color-primary1) !important;
 }
 
-// tag
-.tags-box {
-  display: flex;
-  margin: 12px 0 0;
-  :deep(.o-tag-icon) {
-    width: 16px;
-    height: 16px;
-  }
-  > a + a {
-    margin-left: 8px;
-  }
-  .o-tag {
-    cursor: pointer;
-    --tag-padding: 2px 4px;
-    --tag-bd-color: var(--o-color-control1-light);
-    &.image-icon .o-icon {
-      color: #007af0;
-    }
-    &.epkg-icon .o-icon {
-      color: #e00070;
-    }
-    &.rpm-icon .o-icon {
-      color: #00a7b3;
-    }
-    &:hover {
-      --tag-bg-color: var(--o-color-control2-light);
-    }
-    .o-tag-icon {
-      height: 16px;
-    }
-    svg {
-      width: 16px;
-      height: 16px;
-      color: currentColor;
-    }
-  }
-  .o-tag + .o-tag {
-    margin-left: 8px;
-  }
-}
-
 .o-icon {
   svg {
+    width: 1em;
+    height: 1em;
     fill: currentColor;
   }
 }
 
-.o-tab-nav-active {
-  font-weight: 500;
+.o-message-list {
+  z-index: 2147483647 !important;
+  --app-header-height: 64px;
+
+  --message-list-offset: calc(var(--app-header-height) + 32px);
 }
 
-.o-card-pkg {
-  .desc {
-    margin-top: 8px;
-    color: var(--o-color-info2);
-    overflow: hidden;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    position: relative;
-    word-break: break-all;
-    height: 48px;
-    --linear-gradient: var(--o-mixedgray-1);
-    &.dark {
-      --linear-gradient: var(--o-mixedgray-4);
-    }
-    @include text1;
-    &::after {
-      background-image: linear-gradient(90deg, rgba(var(--linear-gradient), 0), rgba(var(--linear-gradient), 0.8) 59%, var(--o-color-control-light) 100%);
-      bottom: 0;
-      content: '';
-      height: 24px;
-      pointer-events: none;
-      position: absolute;
-      right: 0;
-      width: 4em;
-    }
-    span {
-      color: var(--o-color-primary1);
-    }
-  }
+.o-popup {
+  --popup-shadow: var(--o-shadow-2);
 }

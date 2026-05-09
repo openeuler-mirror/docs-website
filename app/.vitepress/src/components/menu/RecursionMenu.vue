@@ -25,7 +25,7 @@ const expanded = useVModel(props, 'expanded', emits);
 </script>
 
 <template>
-  <OMenu v-model="menuValue" v-model:expanded="expanded" class="recursion-menu" :default-expanded="defaultExpanded">
+  <OMenu v-model="menuValue" v-model:expanded="expanded" class="recursion-menu" size="small" arrow-position="left" :default-expanded="defaultExpanded">
     <slot></slot>
   </OMenu>
 </template>
@@ -39,7 +39,7 @@ const expanded = useVModel(props, 'expanded', emits);
   --menu-secondary-padding-h: 8px;
   --menu-selected-gap-v: 0px;
 
-  @include respond-to('<=laptop') {
+  @include respond('<=laptop') {
     --menu-width: 207px;
   }
 }

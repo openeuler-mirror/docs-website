@@ -330,7 +330,7 @@ const change = (visible: boolean) => {
     height: 100%;
   }
 
-  @include respond-to('<=pad') {
+  @include respond('<=pad') {
     height: 114px;
   }
 }

@@ -74,7 +74,7 @@ const goToPage = (href: string) => {
 .breadcrumb {
   height: 24px;
   margin-bottom: 24px;
-  @include respond-to('<=laptop') {
+  @include respond('<=laptop') {
     height: 18px;
   }
 }

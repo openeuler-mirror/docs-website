@@ -110,7 +110,7 @@ const reportTocNodePath = (node: DocMenuNodeT) => {
           <template v-if="chapter.isManual || chapter.children?.length === 0">
             <a
               v-analytics.bubble="() => reportTocNodePath(chapter)"
-              class="o-menu-item chapter-menu-item2"
+              class="chapter-menu-item2"
               :value="chapter.href"
               target="_blank"
               rel="noopener noreferrer"
@@ -129,7 +129,7 @@ const reportTocNodePath = (node: DocMenuNodeT) => {
                 <template v-if="item.isManual || item.href?.startsWith('http')">
                   <a
                     v-analytics.bubble="() => reportTocNodePath(item)"
-                    class="o-menu-item chapter-menu-item"
+                    class="chapter-menu-item"
                     :value="item.href"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -140,13 +140,13 @@ const reportTocNodePath = (node: DocMenuNodeT) => {
                 </template>
                 <!-- 第四层-手册节点 -->
                 <template v-else-if="item.children.length > 0">
-                  <p class="o-menu-item chapter-menu-item4">{{ item.label }}</p>
+                  <p class="chapter-menu-item4">{{ item.label }}</p>
                   <div class="sub-menu-children">
                     <a
                       v-for="child in item.children"
                       :key="child.id"
                       v-analytics.bubble="() => reportTocNodePath(child)"
-                      class="o-menu-item child-chapter-menu-item"
+                      class="child-chapter-menu-item"
                       :value="child.href"
                       :href="getNodeHrefSafely(child)"
                       target="_blank"
@@ -187,7 +187,7 @@ const reportTocNodePath = (node: DocMenuNodeT) => {
       --menu-item-bg-color-hover: transparent;
     }
 
-    @include respond-to('<=laptop') {
+    @include respond('<=laptop') {
       margin-bottom: 12px;
     }
   }
@@ -197,12 +197,12 @@ const reportTocNodePath = (node: DocMenuNodeT) => {
   }
 
   .chapter-menu {
-    --menu-width: 272px;
+    width: 272px;
     --menu-padding-v: 8px;
     --menu-padding-h: 4px;
 
-    @include respond-to('<=laptop') {
-      --menu-width: 207px;
+    @include respond('<=laptop') {
+      width: 207px;
       --menu-padding-v: 5px;
     }
 
@@ -230,13 +230,26 @@ const reportTocNodePath = (node: DocMenuNodeT) => {
       }
     }
 
+    .chapter-menu-item {
+      padding: 8px 12px 8px 4px;
+      display: block;
+      border-radius: var(--o-radius-xs);
+
+      @include hover {
+        background-color: var(--o-color-control2-light);
+      }
+    }
+
     .chapter-menu-item2 {
-      --menu-item-color: var(--o-color-info2);
+      display: block;
+      padding: 8px 12px 8px 4px;
+      color: var(--o-color-info2);
+      border-radius: var(--o-radius-xs);
       @include text1;
 
       @include hover {
         --menu-item-bg-color-hover: transparent;
-        --menu-item-color: var(--o-color-primary2);
+        color: var(--o-color-primary2);
       }
     }
 
@@ -264,6 +277,7 @@ const reportTocNodePath = (node: DocMenuNodeT) => {
       background-color: var(--o-color-primary1-light);
       border-radius: var(--o-radius-xs);
       position: relative;
+      font-weight: 600;
 
       &::before {
         content: '';
@@ -278,7 +292,6 @@ const reportTocNodePath = (node: DocMenuNodeT) => {
     }
 
     .chapter-menu-item {
-      --menu-item-color: var(--o-color-info2);
       color: var(--o-color-info2);
 
       margin-left: 16px;
@@ -288,7 +301,7 @@ const reportTocNodePath = (node: DocMenuNodeT) => {
         color: var(--o-color-info2);
       }
 
-      @include respond-to('<=laptop') {
+      @include respond('<=laptop') {
         margin-left: 13px;
       }
     }
@@ -310,22 +323,19 @@ const reportTocNodePath = (node: DocMenuNodeT) => {
       }
     }
 
-    .o-menu-item + .o-menu-item {
-      margin-top: 0;
-    }
-
     .chapter-menu-item4 {
-      --menu-item-color: var(--o-color-info4);
+      display: block;
+      padding: 8px 12px 8px 0px;
+      color: var(--o-color-info4);
       margin-left: 16px;
       margin-top: 4px;
       cursor: auto;
       @include text1;
 
       @include hover {
-        --menu-item-bg-color-hover: transparent;
       }
 
-      @include respond-to('<=laptop') {
+      @include respond('<=laptop') {
         margin-left: 13px;
       }
     }
@@ -333,17 +343,19 @@ const reportTocNodePath = (node: DocMenuNodeT) => {
     .sub-menu-children {
       margin-left: 16px;
 
-      @include respond-to('<=laptop') {
+      @include respond('<=laptop') {
         margin-left: 13px;
       }
 
       .child-chapter-menu-item {
-        --menu-item-color: var(--o-color-info2);
+        display: block;
+        padding: 8px 12px 8px 4px;
+        color: var(--o-color-info2);
+        border-radius: var(--o-radius-xs);
         @include text1;
 
         @include hover {
-          --menu-item-bg-color-hover: transparent;
-          --menu-item-color: var(--o-color-primary2);
+          color: var(--o-color-primary2);
         }
       }
     }

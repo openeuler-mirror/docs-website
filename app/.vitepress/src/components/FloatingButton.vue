@@ -114,7 +114,7 @@ onMounted(() => {
     right: 64px;
   }
 
-  @include respond-to('<=laptop') {
+  @include respond('<=laptop') {
     right: 24px;
   }
 }

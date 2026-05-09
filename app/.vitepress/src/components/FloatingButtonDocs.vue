@@ -337,7 +337,7 @@ const submitArticleFeedback = () => {
               </ClientOnly>
             </div>
             <div class="submit-btn">
-              <OLink color="primary" :disabled="multiRate.every((item) => !item.isChange)" @click="submitArticleFeedback">{{ t('feedback.submit') }}</OLink>
+              <OLink color="primary" :disabled="multiRate.every((item) => !item.isChange)" round="pill" @click="submitArticleFeedback">{{ t('feedback.submit') }}</OLink>
             </div>
           </OPopup>
         </div>
@@ -364,6 +364,7 @@ const submitArticleFeedback = () => {
               :href="item.link"
               target="_blank"
               class="popup-item"
+              :hover-underline="false"
             >
               <OIcon><component :is="item.img"></component> </OIcon>
 
@@ -389,8 +390,22 @@ const submitArticleFeedback = () => {
       <div ref="scoreMbRef" id="feedbackMb" class="tips">
         <OIcon><IconTips /></OIcon>
       </div>
-      <OPopup position="rt" :target="scoreMbRef" wrapper="#feedbackMb" :body-class="`popup-feedback-mb ${locale === 'en' ? 'popup-feedback-mb-en' : ''}`" trigger="click">
-        <OLink v-for="item in floatDataMb" :key="item.id" :href="item?.link" target="_blank" class="feedback-item-mb" @click="openScoreDlg(item.id)">
+      <OPopup
+        position="rt"
+        :target="scoreMbRef"
+        wrapper="#feedbackMb"
+        :body-class="`popup-feedback-mb ${locale === 'en' ? 'popup-feedback-mb-en' : ''}`"
+        trigger="click"
+      >
+        <OLink
+          v-for="item in floatDataMb"
+          :key="item.id"
+          :href="item?.link"
+          target="_blank"
+          class="feedback-item-mb"
+          :hover-underline="false"
+          @click="openScoreDlg(item.id)"
+        >
           <OIcon><component :is="item.img"></component> </OIcon>
           <p class="text-name">{{ item.textMb }}</p>
         </OLink>
@@ -492,15 +507,15 @@ const submitArticleFeedback = () => {
     right: 64px;
   }
 
-  @include respond-to('<=laptop') {
+  @include respond('<=laptop') {
     right: 40px;
   }
 
-  @include respond-to('<=pad') {
+  @include respond('<=pad') {
     right: 32px;
   }
 
-  @include respond-to('phone') {
+  @include respond('phone') {
     right: 12px;
   }
 }
@@ -567,8 +582,7 @@ const submitArticleFeedback = () => {
 }
 :deep(.o-link-label) {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
 }
 .o-link {
   padding: 0;
@@ -727,7 +741,7 @@ const submitArticleFeedback = () => {
 :deep(.o-popup) {
   --popup-bd: none;
   .popup-feedback-mb {
-    width: 136px;
+    width: 144px;
     padding: 16px;
     background-color: var(--o-color-fill2);
     box-shadow: var(--o-shadow-2);

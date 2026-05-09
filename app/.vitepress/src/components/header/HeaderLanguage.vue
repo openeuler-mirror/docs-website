@@ -176,7 +176,9 @@ const getLang = (lang: string, simple?: boolean) => {
   height: 100%;
 }
 .o-dropdown-item {
-  background: var(--o-color-fill2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
   border-radius: var(--o-radius_control-xs);
   padding: var(--o-gap-1);
@@ -184,18 +186,11 @@ const getLang = (lang: string, simple?: boolean) => {
   height: 40px;
   color: var(--o-color-info1);
 
-  @include hover {
-    background: var(--o-color-control2-light);
-  }
-
   &.is-active {
     color: var(--o-color-primary1);
     background: var(--o-color-control3-light);
     font-weight: 500;
   }
-}
-.dropdown {
-  --dropdown-list-radius: var(--o-radius-xs);
 }
 
 .mobile-change-language {

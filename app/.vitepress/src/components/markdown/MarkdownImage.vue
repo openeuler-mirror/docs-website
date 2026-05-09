@@ -122,7 +122,7 @@ const onCloseZoom = () => {
     }
   }
 
-  @include respond-to('phone') {
+  @include respond('phone') {
     max-width: 100%;
     .img-expand-btn,
     .img-mask {
@@ -155,7 +155,7 @@ const onCloseZoom = () => {
     font-size: 24px;
   }
 
-  @include respond-to('phone') {
+  @include respond('phone') {
     display: none;
   }
 }

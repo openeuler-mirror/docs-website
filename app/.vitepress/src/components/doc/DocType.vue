@@ -159,7 +159,7 @@ const reportDocTypeClick = () => {
   @include text-truncate(1);
   @include text2;
 
-  @include respond-to('<=laptop') {
+  @include respond('<=laptop') {
     max-width: 170px;
   }
 }
@@ -181,7 +181,7 @@ const reportDocTypeClick = () => {
 .o-dropdown {
   display: inline-block;
   margin-bottom: 8px;
-  @include respond-to('<=laptop') {
+  @include respond('<=laptop') {
     margin-bottom: 0;
   }
 }

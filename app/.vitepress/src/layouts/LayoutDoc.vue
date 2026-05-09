@@ -553,7 +553,7 @@ onUnmounted(() => {
   // 文档右间距
   --layout-doc-offset-right: max(calc(140px + (var(--vw100) - 1920px) / 2), 140px);
 
-  @include respond-to('<=laptop') {
+  @include respond('<=laptop') {
     --layout-doc-content-padding: 24px 40px;
     --layout-doc-menu-offset-left: max(calc(40px + (var(--vw100) - 1920px) / 2), 40px);
     --layout-doc-menu-width: 206px;
@@ -561,7 +561,7 @@ onUnmounted(() => {
     --layout-doc-offset-right: 112px;
   }
 
-  @include respond-to('<=pad') {
+  @include respond('<=pad') {
     --layout-doc-content-padding: 12px 40px;
     --layout-doc-menu-offset-left: max(calc(2px + (var(--vw100) - 1920px) / 2), 32px);
     --layout-doc-menu-gap: 32px;
@@ -569,7 +569,7 @@ onUnmounted(() => {
     --layout-doc-width: min(1200px, calc(var(--vw100) - var(--layout-doc-menu-offset-left) - var(--layout-doc-offset-right)));
     --layout-doc-offset-right: 92px;
   }
-  @include respond-to('phone') {
+  @include respond('phone') {
     --layout-doc-content-padding: 12px;
     --layout-doc-menu-offset-left: max(calc(24px + (var(--vw100) - 1920px) / 2), 24px);
     --layout-doc-menu-gap: 24px;
@@ -594,7 +594,7 @@ onUnmounted(() => {
     height: calc(100% - 150px);
   }
 }
-@include respond-to('<=pad') {
+@include respond('<=pad') {
   .doc-sidebar {
     bottom: 0;
     background-color: var(--o-color-fill2);
@@ -643,12 +643,12 @@ onUnmounted(() => {
     }
   }
 }
-@include respond-to('>pad') {
+@include respond('>pad') {
   .menu-opener {
     display: none;
   }
 }
-@include respond-to('phone') {
+@include respond('phone') {
   .menu-opener {
     display: none;
   }
@@ -743,7 +743,7 @@ onUnmounted(() => {
   transition: var(--all-transition);
   z-index: 34;
 }
-@include respond-to('<=pad') {
+@include respond('<=pad') {
   .aside-mask {
     opacity: 1;
     pointer-events: auto;
@@ -756,7 +756,7 @@ onUnmounted(() => {
   margin-left: var(--layout-doc-offset-left);
   margin-right: var(--layout-doc-offset-right);
   width: var(--layout-doc-width);
-  @include respond-to('phone') {
+  @include respond('phone') {
     padding-top: calc(var(--layout-doc-padding-top) + 40px);
   }
 }
@@ -765,11 +765,11 @@ onUnmounted(() => {
   max-width: var(--layout-content-max-width);
   margin-left: max(calc(226px + (var(--vw100) - 1920px) / 2), 64px);
 
-  @include respond-to('<=laptop') {
+  @include respond('<=laptop') {
     margin-left: max(calc(64px + (var(--vw100) - 1920px) / 2), 64px);
   }
 
-  @include respond-to('phone') {
+  @include respond('phone') {
     padding-top: 24px;
     margin-left: var(--layout-doc-offset-left);
   }

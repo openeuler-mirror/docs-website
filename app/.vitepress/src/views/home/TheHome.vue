@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch, onUnmounted } from 'vue';
+import { ref, computed, watch, onUnmounted, onMounted } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 import axios, { type Canceler } from 'axios';
 import { OInput, OIcon, ORow, OCol, OLink, OPopup, ODropdownItem, OScroller } from '@opensig/opendesign';
@@ -102,7 +102,8 @@ const queryGetSearchRecommend = async (val: string) => {
     const res = await getSearchRecommend({ query: val }, cancelToken);
     lastRecommendCanceler = null;
     res.obj.word.forEach((e: SearchRecommendT) => {
-      e.keyHtml = e.key.replace(val, `<span class="found">${val}</span>`);
+      const escapedVal = val.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      e.keyHtml = e.key.replace(new RegExp(escapedVal, 'gi'), (match) => `<span class="found">${match}</span>`);
     });
 
     if (searchValue.value.trim() === val) {
@@ -124,9 +125,9 @@ onUnmounted(() => {
   timer = undefined;
 });
 
-const onInputValueInput = () => {
-  if (searchValue.value.trim()) {
-    searchRecommendDebounce(searchValue.value.trim());
+const onInputValueInput = (_: Event, val: string) => {
+  if (val.trim()) {
+    searchRecommendDebounce(val.trim());
   } else {
     recommendData.value = [];
     showSearchWord.value = false;
@@ -156,6 +157,22 @@ watch(searchValue, () => {
   }
 });
 
+const searchInputWidth = ref('100%');
+
+const setSearchInputWidth = () => {
+  const homeSearchInput = document.querySelector('.home-search-input') as HTMLElement;
+  searchInputWidth.value = homeSearchInput?.offsetWidth ? `${homeSearchInput.offsetWidth}px` : '100%';
+};
+
+onMounted(() => {
+  setSearchInputWidth();
+  window.addEventListener('resize', setSearchInputWidth);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', setSearchInputWidth);
+});
+
 // -------------------- banner card --------------------
 const bannerCardRatio = computed(() => {
   return (100 / (lePadV.value ? config.value.recommend.columns_mb : config.value.recommend.columns)).toFixed(2);
@@ -182,7 +199,7 @@ const getBannerCardBg = (item: HomeBannerItemT) => {
           :placeholder="t('home.searchPlaceholder')"
           :max-length="100"
           :input-on-outlimit="false"
-          class="search"
+          class="search home-search-input"
           clearable
           @keyup.enter="enterSearchDoc(searchValue)"
           @input="onInputValueInput"
@@ -202,6 +219,11 @@ const getBannerCardBg = (item: HomeBannerItemT) => {
                 '--dropdown-item-color-hover': 'var(--o-color-info2)',
                 '--dropdown-item-padding': '8px 12px',
                 '--dropdown-item-justify': 'start',
+                width: `calc(${searchInputWidth} - 8px)`,
+                display: 'block',
+                overflow: 'hidden',
+                'text-overflow': 'ellipsis',
+                'white-space': 'nowrap',
               }"
               @click="onClickWordItem(item)"
             />
@@ -261,11 +283,11 @@ const getBannerCardBg = (item: HomeBannerItemT) => {
     background-image: url('@/assets/category/home/home-banner-dark.png');
   }
 
-  @include respond-to('<=laptop') {
+  @include respond('<=laptop') {
     background-position: top -66px right 50%;
   }
 
-  @include respond-to('<=pad') {
+  @include respond('<=pad') {
     background-image: none;
   }
 }
@@ -320,15 +342,15 @@ const getBannerCardBg = (item: HomeBannerItemT) => {
   gap: 32px;
   margin-top: 24px;
 
-  @include respond-to('laptop') {
+  @include respond('laptop') {
     gap: 24px;
   }
 
-  @include respond-to('pad_h') {
+  @include respond('pad_h') {
     gap: 16px;
   }
 
-  @include respond-to('<=pad_v') {
+  @include respond('<=pad_v') {
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
   }
@@ -339,17 +361,19 @@ const getBannerCardBg = (item: HomeBannerItemT) => {
 }
 
 .search-scroller {
+  width: v-bind(searchInputWidth);
   max-height: 304px;
   padding: 4px;
   border-radius: var(--o-radius-xs);
   background-color: var(--o-color-fill2);
+  @include text-truncate(1);
 
   :deep(.found) {
     color: var(--o-color-primary1);
   }
 }
 
-@include respond-to('<=laptop') {
+@include respond('<=laptop') {
   .banner-search {
     margin-top: 12px;
   }
@@ -368,13 +392,13 @@ const getBannerCardBg = (item: HomeBannerItemT) => {
   }
 }
 
-@include respond-to('laptop') {
+@include respond('laptop') {
   .content-wrapper {
     --layout-content-padding: 98px;
   }
 }
 
-@include respond-to('<=pad') {
+@include respond('<=pad') {
   .banner-card {
     margin-top: 16px;
   }
@@ -387,13 +411,13 @@ const getBannerCardBg = (item: HomeBannerItemT) => {
   }
 }
 
-@include respond-to('<=pad_v') {
+@include respond('<=pad_v') {
   .search {
     width: 100%;
   }
 }
 
-@include respond-to('phone') {
+@include respond('phone') {
   .search {
     --input-height: 38px;
     --input-padding: 0 12px;

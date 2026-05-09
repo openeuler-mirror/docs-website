@@ -37,7 +37,7 @@ defineProps({
   align-items: center;
   --result-image-width: 230px;
   --result-image-height: 200px;
-  @include respond-to('<=laptop') {
+  @include respond('<=laptop') {
     --result-image-width: 160px;
     --result-image-height: 140px;
   }

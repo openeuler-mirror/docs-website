@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onUnmounted, ref, watch } from 'vue';
+import { computed, onUnmounted, ref, watch } from 'vue';
 import axios, { type Canceler } from 'axios';
 import { OInput, OIcon, OPopup, ODropdownItem, OScroller } from '@opensig/opendesign';
 
@@ -11,7 +11,7 @@ import { useLocale } from '@/composables/useLocale';
 
 import type { SearchRecommendT } from '@/@types/type-search';
 import { getSearchRecommend } from '@/api/api-search';
-import { onClickOutside } from '@vueuse/core';
+import { onClickOutside, useElementSize } from '@vueuse/core';
 
 const emit = defineEmits(['switchVisible']);
 
@@ -85,7 +85,8 @@ const queryGetSearchRecommend = async (val: string) => {
     const res = await getSearchRecommend({ query: val }, cancelToken);
     lastRecommendCanceler = null;
     res.obj.word.forEach((e: SearchRecommendT) => {
-      e.keyHtml = e.key.replace(val, `<span class="found">${val}</span>`);
+      const escapedVal = val.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      e.keyHtml = e.key.replace(new RegExp(escapedVal, 'gi'), (match) => `<span class="found">${match}</span>`);
     });
 
     if (searchValue.value.trim() === val) {
@@ -107,9 +108,9 @@ onUnmounted(() => {
   timer = undefined;
 });
 
-const onInputValueInput = () => {
-  if (searchValue.value.trim()) {
-    searchRecommendDebounce(searchValue.value.trim());
+const onInputValueInput = (_: Event, val: string) => {
+  if (val.trim()) {
+    searchRecommendDebounce(val.trim());
   } else {
     recommendData.value = [];
     showSearchWord.value = false;
@@ -139,10 +140,16 @@ watch(searchValue, () => {
     clearSearchDoc();
   }
 });
+
+const inputContainerRef = ref<HTMLElement>();
+const { width } = useElementSize(inputContainerRef);
+const inputWidth = computed(() => {
+  return width.value ? `${width.value - 8}px` : '100%';
+});
 </script>
 
 <template>
-  <div class="doc-search">
+  <div ref="inputContainerRef" class="doc-search">
     <OInput
       ref="inputRef"
       :style="{ width: '100%' }"
@@ -171,6 +178,11 @@ watch(searchValue, () => {
             '--dropdown-item-color-hover': 'var(--o-color-info2)',
             '--dropdown-item-padding': '8px 12px',
             '--dropdown-item-justify': 'start',
+            display: 'block',
+            width: inputWidth,
+            overflow: 'hidden',
+            'text-overflow': 'ellipsis',
+            'white-space': 'nowrap',
           }"
           @click="onClickWordItem(item)"
         />
@@ -190,7 +202,7 @@ watch(searchValue, () => {
   height: 40px;
   width: var(--layout-doc-menu-width);
 
-  @include respond-to('<=laptop') {
+  @include respond('<=laptop') {
     margin-bottom: 12px;
 
     .o-icon svg {
@@ -198,7 +210,7 @@ watch(searchValue, () => {
     }
   }
 
-  @include respond-to('phone') {
+  @include respond('phone') {
     height: 38px;
     margin-bottom: 8px;
 
@@ -244,7 +256,7 @@ watch(searchValue, () => {
 :deep(.search-empty) {
   --result-image-width: 120px;
   --result-image-height: 105px;
-  @include respond-to('<=laptop') {
+  @include respond('<=laptop') {
     --result-image-width: 80px;
     --result-image-height: 70px;
   }

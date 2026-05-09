@@ -91,19 +91,13 @@ const itemChange = (data: any) => {
   height: 100%;
 }
 .o-dropdown-item {
-  background: var(--o-color-fill2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
   border-radius: var(--o-radius_control-xs);
   padding: var(--o-gap-1);
   min-width: 144px;
   height: 40px;
-
-  @include hover {
-    color: var(--o-color-primary1);
-    background: var(--o-color-control2-light);
-  }
-}
-.dropdown {
-  --dropdown-list-radius: var(--o-radius-xs);
 }
 </style>

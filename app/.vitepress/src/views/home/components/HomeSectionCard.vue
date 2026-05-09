@@ -71,13 +71,13 @@ onMounted(() => {
   --card-content-text-height: var(--o-line_height-tip1);
   cursor: pointer;
 
-  @include respond-to('<=pad') {
+  @include respond('<=pad') {
     --card-main-padding: 12px 16px;
     --card-content-text-size: var(--o-font_size-tip2) !important;
     --card-content-text-height: var(--o-line_height-tip2) !important;
   }
 
-  @include respond-to('phone') {
+  @include respond('phone') {
     --card-main-padding: 12px;
   }
 
@@ -91,7 +91,7 @@ onMounted(() => {
 .section-icon {
   font-size: 40px;
 
-  @include respond-to('<=laptop') {
+  @include respond('<=laptop') {
     font-size: 32px;
   }
 }
@@ -102,7 +102,7 @@ onMounted(() => {
   margin-top: 8px;
   @include h4;
 
-  @include respond-to('<=laptop') {
+  @include respond('<=laptop') {
     margin-top: 0;
   }
 }
@@ -118,7 +118,7 @@ onMounted(() => {
   bottom: -8px;
   width: 70px;
 
-  @include respond-to('<=laptop') {
+  @include respond('<=laptop') {
     width: 50px;
   }
 }
