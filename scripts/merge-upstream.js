@@ -41,7 +41,7 @@ const copyMdFromDiskCache = async (upstream, storagePath) => {
 
     // 复制 md
     const sourceMd = path.join(cachePath, ...locations);
-    const destMd = path.join(storagePath, locations[locations.length - 1]);
+    const destMd = path.join(storagePath, ...locations.slice(locations.length > 3 ? 2 : locations.length - 1));
     copyFileSync(sourceMd, destMd);
 
     // 复制 md 可能关联的资源目录
@@ -49,7 +49,7 @@ const copyMdFromDiskCache = async (upstream, storagePath) => {
     for (const item of fs.readdirSync(sourceDir)) {
       const completeDir = path.join(sourceDir, item);
       if (fs.statSync(completeDir).isDirectory()) {
-        const destDir = path.join(storagePath, item);
+        const destDir = path.join(path.dirname(destMd), item);
         copyDirectorySync(completeDir, destDir);
       }
     }
