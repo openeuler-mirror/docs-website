@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import './setup';
 import { getCurrentLocale } from '../app/.vitepress/src/utils/locale';
 
 describe('locale', () => {
