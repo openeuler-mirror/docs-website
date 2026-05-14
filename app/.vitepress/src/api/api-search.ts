@@ -60,6 +60,22 @@ export function getSearchDocs(params: SearchDocQueryT) {
 }
 
 /**
+ * 搜索直达
+ * @param {Object} params 搜索参数
+ * @return  {Object}
+ */
+export function getOnestepSearch(params: { query: string; lang: string }): Promise<{
+  status: number;
+  obj: {
+    word: SearchRecommendT[];
+  };
+  msg: string;
+}> {
+  const url = `/api-search/search/webword?query=${params.query}`;
+  return request.post(url, params, { showError: false }).then((res: AxiosResponse) => res.data);
+}
+
+/**
  * 上传图片，获取OBS图片URL
  * @param {Object} params 包含image文件对象
  * @returns {Promise<ResponseT>} OBS图片URL

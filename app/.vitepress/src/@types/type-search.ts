@@ -4,6 +4,8 @@ export interface SearchRecommendT {
   key: string;
   count: number;
   keyHtml: string;
+  path?: string;
+  type?: string;
 }
 
 // 文档搜索参数
