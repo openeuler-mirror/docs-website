@@ -117,7 +117,7 @@ const floatData = ref([
         :offset="24"
         trigger="hover"
       >
-        <OLink v-for="item in floatData" :key="item.link" :href="item.link" target="_blank" class="popup-item">
+        <OLink v-for="item in floatData" :key="item.link" :href="item.link" target="_blank" :hover-underline="false" class="popup-item">
           <OIcon><component :is="item.img"></component> </OIcon>
 
           <div class="text">
@@ -159,8 +159,7 @@ const floatData = ref([
 
 :deep(.o-link-label) {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
 }
 
 :deep(.o-popup) {

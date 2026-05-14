@@ -148,7 +148,7 @@ const RATE_INDEX = Array(RATE_MAX_MB + 1)
         <span>{{ t('feedback.moreInfo3') }}</span>
       </p>
       <div v-if="gtPhone" class="submit-btn">
-        <OButton color="primary" size="medium" variant="solid" class="submit" :disabled="!inputText" @click="submitFeedback">
+        <OButton color="primary" size="medium" variant="solid" class="submit" round="pill" :disabled="!inputText" @click="submitFeedback">
           {{ t('feedback.submit') }}
         </OButton>
       </div>
@@ -169,7 +169,7 @@ const RATE_INDEX = Array(RATE_MAX_MB + 1)
   color: var(--o-color-info1);
   text-align: center;
   @include tip1;
-  @include respond-to('<=pad_v') {
+  @include respond('<=pad_v') {
     text-align: center;
     margin-bottom: 12px;
     @include text2;
@@ -180,11 +180,11 @@ const RATE_INDEX = Array(RATE_MAX_MB + 1)
   padding-top: 28px;
   position: relative;
   z-index: 3;
-  @include respond-to('<=pad_v') {
+  @include respond('<=pad_v') {
     margin: 0 4px;
   }
 
-  @include respond-to('phone') {
+  @include respond('phone') {
     padding-top: 0;
     margin-top: 36px;
   }
@@ -301,10 +301,10 @@ const RATE_INDEX = Array(RATE_MAX_MB + 1)
   color: var(--o-color-info3);
   margin-top: 12px;
   @include tip2;
-  @include respond-to('<=pad_v') {
+  @include respond('<=pad_v') {
     padding: 0 3px;
   }
-  @include respond-to('phone') {
+  @include respond('phone') {
     margin-top: 8px;
   }
 }
@@ -358,7 +358,7 @@ const RATE_INDEX = Array(RATE_MAX_MB + 1)
       }
     }
 
-    @include respond-to('<=pad_v') {
+    @include respond('<=pad_v') {
       display: flex;
       justify-content: space-evenly;
 

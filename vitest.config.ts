@@ -5,12 +5,12 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     globals: true,
-coverage: {
+    coverage: {
       enabled: true,
       provider: 'v8',
       reporter: ['text', 'json', 'clover'],
       include: ['**/utils/**'],
-      exclude: ['node_modules/**', 'dist/**', 'public/**', '**.test.ts'],
+      exclude: ['node_modules/**', 'dist/**', 'public/**', '**.test.ts', '.cache'],
     },
   },
   resolve: {

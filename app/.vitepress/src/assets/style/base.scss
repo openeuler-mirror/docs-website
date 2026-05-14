@@ -39,12 +39,12 @@ a {
   color: var(--o-color-link1);
   text-decoration: none;
   &:hover {
-    @include respond-to('>phone') {
+    @include respond('>phone') {
       color: var(--o-color-link2);
     }
   }
   &:active {
-    @include respond-to('>phone') {
+    @include respond('>phone') {
       color: var(--o-color-link3);
     }
   }

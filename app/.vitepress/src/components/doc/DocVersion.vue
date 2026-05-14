@@ -116,7 +116,7 @@ const changeVersion = async (item: { value: string; href?: string }) => {
 .o-dropdown {
   display: inline-block;
   margin-bottom: 24px;
-  @include respond-to('<=laptop') {
+  @include respond('<=laptop') {
     margin-bottom: 16px;
   }
 }

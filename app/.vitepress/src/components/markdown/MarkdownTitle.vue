@@ -119,7 +119,7 @@ const onClickCopyLink = (e: MouseEvent) => {
     margin-left: 6px;
     clear: both;
 
-    @include respond-to('<=laptop') {
+    @include respond('<=laptop') {
       margin-left: 4px;
     }
   }
@@ -141,19 +141,19 @@ const onClickCopyLink = (e: MouseEvent) => {
     transition: opacity var(--o-duration-l) var(--o-easing-standard-in);
     opacity: 0;
 
-    @include respond-to('laptop') {
+    @include respond('laptop') {
       left: -22px;
       padding-right: 2px;
     }
-    @include respond-to('pad_h') {
+    @include respond('pad_h') {
       left: -20px;
       padding-right: 2px;
     }
-    @include respond-to('pad_v') {
+    @include respond('pad_v') {
       left: -20px;
       padding-right: 2px;
     }
-    @include respond-to('phone') {
+    @include respond('phone') {
       display: none;
     }
   }
@@ -165,7 +165,7 @@ const onClickCopyLink = (e: MouseEvent) => {
 </style>
 
 <style lang="scss">
-[data-o-theme='dark'] {
+[data-o-theme='e.dark'] {
   .popover-copy {
     --popup-bg-color: var(--o-color-control1-light);
   }

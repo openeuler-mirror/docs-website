@@ -42,22 +42,22 @@ defineProps({
   height: 110px;
   border-radius: var(--o-radius-xs);
 
-  @include respond-to('<=laptop') {
+  @include respond('<=laptop') {
     height: 102px;
   }
 
-  @include respond-to('<=pad') {
+  @include respond('<=pad') {
     height: 86px;
   }
 
   .o-figure-main {
     padding: 24px;
 
-    @include respond-to('<=laptop') {
+    @include respond('<=laptop') {
       padding: 16px;
     }
 
-    @include respond-to('<=pad') {
+    @include respond('<=pad') {
       padding: 12px;
     }
   }
@@ -75,11 +75,11 @@ defineProps({
   margin-top: 8px;
   @include tip1;
 
-  @include respond-to('<=laptop') {
+  @include respond('<=laptop') {
     @include text1;
   }
 
-  @include respond-to('<=pad') {
+  @include respond('<=pad') {
     @include tip1;
   }
 }
@@ -88,7 +88,7 @@ defineProps({
   .o-figure {
     height: 130px;
 
-    @include respond-to('<=pad') {
+    @include respond('<=pad') {
       height: 110px;
     }
   }

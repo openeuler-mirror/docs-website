@@ -421,14 +421,14 @@ const handleDrop = (event: DragEvent) => {
     height: 32px;
     transition: width 0.3s;
     transform: translate(0);
-    @include respond-to('<=laptop') {
+    @include respond('<=laptop') {
       width: 120px;
     }
-    @include respond-to('<=pad_v') {
+    @include respond('<=pad_v') {
       display: none;
     }
   }
-  @include respond-to('<=pad_v') {
+  @include respond('<=pad_v') {
     margin-left: 0;
     z-index: 2;
     position: fixed;
@@ -458,7 +458,7 @@ const handleDrop = (event: DragEvent) => {
       background-color: var(--o-color-fill2);
       z-index: 200;
 
-      @include respond-to('<=pad_v') {
+      @include respond('<=pad_v') {
         display: none;
       }
     }
@@ -473,7 +473,7 @@ const handleDrop = (event: DragEvent) => {
       @include h3;
     }
 
-    @include respond-to('<=pad_v') {
+    @include respond('<=pad_v') {
       padding: 0;
       z-index: 200;
       background-color: var(--o-color-fill2);
@@ -505,7 +505,7 @@ const handleDrop = (event: DragEvent) => {
     background: var(--o-color-fill2);
     border-radius: 0 0 4px 4px;
 
-    @include respond-to('<=pad_v') {
+    @include respond('<=pad_v') {
       backdrop-filter: blur(0px);
       left: -16px;
       right: 0;
@@ -521,7 +521,7 @@ const handleDrop = (event: DragEvent) => {
         @include tip2;
         color: var(--o-color-info3);
 
-        @include respond-to('<=pad_v') {
+        @include respond('<=pad_v') {
           @include text2;
           margin-bottom: var(--o-gap-3);
         }
@@ -540,14 +540,14 @@ const handleDrop = (event: DragEvent) => {
           }
         }
 
-        @include respond-to('<=pad_v') {
+        @include respond('<=pad_v') {
           @include text1;
           display: block;
         }
       }
     }
 
-    @include respond-to('<=pad_v') {
+    @include respond('<=pad_v') {
       box-shadow: unset;
       padding-left: var(--o-gap-5);
       padding-right: var(--o-gap-5);
@@ -576,7 +576,7 @@ const handleDrop = (event: DragEvent) => {
     @include tip2;
     color: var(--o-color-info3);
 
-    @include respond-to('<=pad_v') {
+    @include respond('<=pad_v') {
       @include text2;
       color: var(--o-color-info1);
     }
@@ -620,7 +620,7 @@ const handleDrop = (event: DragEvent) => {
           width: 16px;
           height: 16px;
           border-radius: 50%;
-          background-color: rgb(var(--o-mixedgray-9));
+          background-color: rgb(var(--o-grey-9));
           right: -8px;
           top: -8px;
         }
@@ -633,7 +633,7 @@ const handleDrop = (event: DragEvent) => {
 
       &.dark {
         @include hover {
-          background-color: rgb(var(--o-mixedgray-7));
+          background-color: rgb(var(--o-grey-7));
         }
       }
 
@@ -644,12 +644,12 @@ const handleDrop = (event: DragEvent) => {
         white-space: nowrap;
         @include tip2;
 
-        @include respond-to('<=pad_v') {
+        @include respond('<=pad_v') {
           @include text1;
         }
       }
 
-      @include respond-to('<=pad_v') {
+      @include respond('<=pad_v') {
         height: 28px;
       }
     }
@@ -660,11 +660,11 @@ const handleDrop = (event: DragEvent) => {
     height: 1px;
     margin: var(--o-gap-4) 0;
 
-    @include respond-to('<=pad_v') {
+    @include respond('<=pad_v') {
       display: none;
     }
   }
-  @include respond-to('<=pad_v') {
+  @include respond('<=pad_v') {
     margin-bottom: var(--o-gap-5);
   }
 }
@@ -683,14 +683,14 @@ const handleDrop = (event: DragEvent) => {
       color: var(--o-color-primary1);
     }
 
-    @include respond-to('<=pad_v') {
+    @include respond('<=pad_v') {
       @include text1;
     }
   }
 }
 .search-icon {
   display: none;
-  @include respond-to('<=pad_v') {
+  @include respond('<=pad_v') {
     display: block;
     margin-right: 8px;
   }
@@ -710,18 +710,18 @@ const handleDrop = (event: DragEvent) => {
     display: flex;
     width: 480px;
 
-    @include respond-to('<=laptop') {
+    @include respond('<=laptop') {
       width: 240px;
     }
 
-    @include respond-to('<=pad_v') {
+    @include respond('<=pad_v') {
       width: 100%;
       :deep(.el-input__wrapper) {
         width: 100%;
       }
     }
   }
-  @include respond-to('<=pad_v') {
+  @include respond('<=pad_v') {
     box-shadow: unset;
   }
 }
@@ -826,7 +826,7 @@ const handleDrop = (event: DragEvent) => {
     :deep(svg) {
       width: 16px;
       height: 16px;
-      fill: rgb(var(--o-mixedgray-9));
+      fill: rgb(var(--o-grey-9));
     }
   }
 }

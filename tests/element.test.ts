@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import './setup';
 import { getOffsetTop, getScrollRemainingBottom, isDocument, isElementVisible, isOverlap } from '../app/.vitepress/src/utils/element';
 
 function mockRect(overrides: Partial<DOMRect>): DOMRect {

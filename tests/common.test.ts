@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import './setup';
 import {
   changeTimeStamp,
   disableTriggerScrollEvent,

@@ -91,13 +91,13 @@ onMounted(async () => {
     height: 32px;
     border-radius: 50%;
 
-     @include respond-to('<=pad_v') {
+     @include respond('<=pad_v') {
       width: 28px;
       height: 28px;
     }
   }
 
-  @include respond-to('<=pad_v') {
+  @include respond('<=pad_v') {
     height: 48px;
 
     img {

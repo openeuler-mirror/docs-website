@@ -97,7 +97,13 @@ if (inBrowser) {
       </main>
     </OScroller>
     <OPlusConfigProvider :locale="lang">
-      <OCookieNotice ref="cookieRef" v-model:visible="cookieNoticeVisible" community="openEuler" :detail-url="`${HOME_URL}/${lang}/other/cookies/`" :cookie-domain="COOKIE_DOMAIN" />
+      <OCookieNotice
+        ref="cookieRef"
+        v-model:visible="cookieNoticeVisible"
+        community="openEuler"
+        :detail-url="`${HOME_URL}/${lang}/other/cookies/`"
+        :cookie-domain="COOKIE_DOMAIN"
+      />
     </OPlusConfigProvider>
   </OConfigProvider>
 </template>
@@ -128,7 +134,7 @@ if (inBrowser) {
 
   --layout-content-min-height: calc(var(--layout-screen-height) - var(--layout-header-height));
 
-  @include respond-to('<=laptop') {
+  @include respond('<=laptop') {
     --layout-header-max-width: 100%;
     --layout-header-padding: 5%;
 
@@ -138,7 +144,7 @@ if (inBrowser) {
     --layout-footer-height: 438px;
   }
 
-  @include respond-to('<=pad') {
+  @include respond('<=pad') {
     --layout-header-padding: 32px;
 
     --layout-content-padding: 32px;
@@ -146,17 +152,21 @@ if (inBrowser) {
     --layout-footer-height: 434px;
   }
 
-  @include respond-to('<=pad_v') {
+  @include respond('<=pad_v') {
     --layout-header-height: 48px;
   }
 
-  @include respond-to('phone') {
+  @include respond('phone') {
     --layout-header-padding: 24px;
 
     --layout-content-padding: 24px;
 
     --layout-doc-padding-bottom: 24px;
   }
+}
+
+.cookie-notice-content {
+  background-color: rgba(var(--o-grey-1), .9) !important;
 }
 </style>
 

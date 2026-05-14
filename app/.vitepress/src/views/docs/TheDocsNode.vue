@@ -217,7 +217,7 @@ onUnmounted(() => {
   @include text2;
 }
 
-@include respond-to('<=laptop') {
+@include respond('<=laptop') {
   .docs-node {
     padding: 24px;
   }
@@ -238,7 +238,7 @@ onUnmounted(() => {
   }
 }
 
-@include respond-to('phone') {
+@include respond('phone') {
   .docs-node {
     padding: 12px;
   }

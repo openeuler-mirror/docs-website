@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, onMounted, watch } from 'vue';
-import { OIcon } from '@opensig/opendesign';
+import { isClient, OIcon } from '@opensig/opendesign';
 
 import { ElSwitch } from 'element-plus';
 
@@ -44,13 +44,19 @@ watch(
     return appearanceStore.theme;
   },
   (val) => {
+    if (!isClient) {
+      return;
+    }
+    
     const documentElement = document.documentElement;
     if (val === 'dark') {
-      documentElement.setAttribute('data-o-theme', 'dark');
+      documentElement.setAttribute('data-o-theme', 'e.dark');
+      documentElement.classList.remove('light');
       documentElement.classList.add('dark');
     } else {
-      documentElement.removeAttribute('data-o-theme');
+      documentElement.setAttribute('data-o-theme', 'e.light');
       documentElement.classList.remove('dark');
+      documentElement.classList.add('light');
     }
   },
   {
@@ -93,14 +99,14 @@ watch(
       color: var(--o-color-primary1);
     }
   }
-  @include respond-to('<=pad_v') {
+  @include respond('<=pad_v') {
     display: none;
   }
 }
 .theme-box-mobile {
   display: none;
 
-  @include respond-to('<=pad_v') {
+  @include respond('<=pad_v') {
     display: block;
   }
 }
