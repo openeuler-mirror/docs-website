@@ -72,7 +72,7 @@ type SearchItemClickType = 'history' | 'popular' | 'suggest' | 'onestep';
 
 const onTopSearchItemClick = (val: string, type: SearchItemClickType = 'history') => {
   if (type === 'onestep') {
-    const url = /^https?:\/\//.test(val) ? val : `/${lang.value}${val.startsWith('/') ? '' : '/'}${val}`;
+    const url = /^https?:\/\//.test(val) ? val : `${import.meta.env.VITE_MAIN_DOMAIN_URL}/${lang.value}${val.startsWith('/') ? '' : '/'}${val}`;
     window.open(url, '_blank');
   } else {
     searchInput.value = val;
