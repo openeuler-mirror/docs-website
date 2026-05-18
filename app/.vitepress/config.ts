@@ -1,11 +1,15 @@
-import { resolve } from 'node:path';
-import { existsSync, readFileSync } from 'node:fs';
+import { dirname, join, resolve } from 'node:path';
+import { createWriteStream, existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { execSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 
 import type Markdown from 'markdown-it';
 import type Token from 'markdown-it/lib/token.mjs';
 import llmstxt from 'vitepress-plugin-llms';
 
 import { getDomId } from './src/utils/common';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 function readEnvVar(key: string): string | undefined {
   const envFile = resolve(process.cwd(), '.env.production');
@@ -237,10 +241,105 @@ export default {
       };
     },
   },
+  async buildEnd() {
+    let logs = execSync('git ls-remote --heads https://gitcode.com/openeuler/docs.git', { encoding: 'utf-8' });
+    logs += execSync('git ls-remote --heads https://gitcode.com/openeuler/docs-centralized.git', { encoding: 'utf-8' });
+    let branches = logs
+      .split('\n')
+      .map((line) => line.slice(line.indexOf('refs/heads/') + 11))
+      .filter((line) => line.startsWith('stable'))
+      .map((br) => br.split('-')[1]);
+    branches = [...new Set(branches)];
+
+    // ============ write sitemap.xml
+    const sitemapIndex = join(__dirname, 'dist', 'sitemap_index.xml');
+    writeFileSync(
+      sitemapIndex,
+      `<?xml version="1.0" encoding="utf-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${branches
+  .filter((br) => !br.includes('common'))
+  .map((br) => {
+    return `  <sitemap>
+  <loc>https://docs.openeuler.org/docs/${br}/sitemap.xml</loc>
+</sitemap>`;
+  })
+  .join('\n')}
+</sitemapindex>`
+    );
+
+    // ============ write llms.txt
+    const llmstxtPath = join(__dirname, 'dist', 'llms.txt');
+    if (!existsSync(llmstxtPath)) {
+      console.log(`❌ llms.txt不存在`);
+      return;
+    }
+    const llmsWriteStream = createWriteStream(llmstxtPath, { flags: 'a' });
+    for (const br of branches) {
+      try {
+        const resp = await fetch(`https://docs.openeuler.org/docs/${br}/llms.txt`);
+        if (!resp.ok || !resp.body) {
+          console.log(`❌ ${br} llms.txt无法访问！！`);
+          continue;
+        }
+        console.log(`开始拼接 ${br} llms.txt`);
+        llmsWriteStream.write('\n');
+
+        let isFirstChunk = true;
+        for await (let chunk of resp.body.pipeThrough(new TextDecoderStream())) {
+          if (isFirstChunk) {
+            isFirstChunk = false;
+            const index = chunk.indexOf('## Table of Contents');
+            if (index >= 0) {
+              chunk = chunk.slice(index).replace('Table of Contents', `${br} documents`);
+            }
+          }
+          const ok = llmsWriteStream.write(chunk);
+          if (!ok) {
+            await new Promise<void>((resolve) => llmsWriteStream.once('drain', () => resolve()));
+          }
+        }
+        console.log(`✅ ${br} llms.txt 拼接完成`);
+      } catch {
+        console.log(`❌ ${br} llms.txt 拼接失败`);
+      }
+    }
+    llmsWriteStream.end(() => console.log('llms.txt拼接完成'));
+
+    // ============ write llms-full.txt
+    const llmsfulltxtPath = join(__dirname, 'dist', 'llms-full.txt');
+    if (!existsSync(llmsfulltxtPath)) {
+      console.log(`❌ llms-full.txt不存在`);
+      return;
+    }
+    const llmsFullWriteStream = createWriteStream(llmsfulltxtPath, { flags: 'a' });
+    for (const br of branches) {
+      try {
+        const resp = await fetch(`https://docs.openeuler.org/docs/${br}/llms-full.txt`);
+        if (!resp.ok || !resp.body) {
+          console.log(`❌ ${br} llms-full.txt无法访问！！`);
+          continue;
+        }
+        console.log(`开始拼接 ${br} llms-full.txt`);
+        llmsFullWriteStream.write('\n');
+
+        for await (const chunk of resp.body) {
+          const ok = llmsFullWriteStream.write(chunk);
+          if (!ok) {
+            await new Promise<void>((resolve) => llmsFullWriteStream.once('drain', () => resolve()));
+          }
+        }
+        console.log(`✅ ${br} llms-full.txt 拼接完成`);
+      } catch {
+        console.log(`❌ ${br} llms-full.txt 拼接失败`);
+      }
+    }
+    llmsFullWriteStream.end(() => console.log('llms-full.txt拼接完成'));
+  },
   vite: {
     plugins: [
       llmstxt({
-        ignoreFiles: ['!**/25.09/**']
+        ignoreFiles: ['!**/25.09/**'],
       }),
     ],
     ssr: {
