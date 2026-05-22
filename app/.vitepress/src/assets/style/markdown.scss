@@ -322,7 +322,7 @@
       --table-head-cell-padding: 9px 12px;
     }
 
-    @include respond('<=phone') {
+    @include respond('phone') {
       --table-head-cell-padding: 7px 12px;
     }
 

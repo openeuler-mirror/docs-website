@@ -1,0 +1,4 @@
+minimumReleaseAgeExclude:
+  - "@opendesign-plus/*"
+  - "@opendesign-plus-test/*"
+  - "@opensig/opendesign"
