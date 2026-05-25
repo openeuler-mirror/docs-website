@@ -19,8 +19,8 @@ importers:
         specifier: 0.0.1-rc.1
         version: 0.0.1-rc.1
       '@opensig/opendesign':
-        specifier: 1.2.3
-        version: 1.2.3(@vueuse/core@14.3.0(vue@3.5.34(typescript@5.2.2)))(vue@3.5.34(typescript@5.2.2))
+        specifier: 1.2.3-sp1
+        version: 1.2.3-sp1(@vueuse/core@14.3.0(vue@3.5.34(typescript@5.2.2)))(vue@3.5.34(typescript@5.2.2))
       '@opensig/opendesign-token':
         specifier: 0.0.11
         version: 0.0.11
@@ -1036,8 +1036,8 @@ packages:
     peerDependencies:
       vue: ^3.3.0
 
-  '@opensig/opendesign@1.2.3':
-    resolution: {integrity: sha512-vJ8hJxeg3H3JRD5Yd85saHtw6+CY+gXOh5ObIgEBYHjXgLuh+EupyePbylrcVlmritmdNO31qF929NsUvQ1nqw==}
+  '@opensig/opendesign@1.2.3-sp1':
+    resolution: {integrity: sha512-nPrgbpTH/WimwBQr0r9uzdK6l/lab9GNcaPxAtcjE3jdYhoVVCJOdkz7iUKu2crsb1RgMRCJ8yu0tUAwgl0klA==}
     peerDependencies:
       '@vueuse/core': 10.11.1
       vue: ^3.3.0
@@ -4529,7 +4529,7 @@ snapshots:
     dependencies:
       vue: 3.5.34(typescript@5.2.2)
 
-  '@opensig/opendesign@1.2.3(@vueuse/core@14.3.0(vue@3.5.34(typescript@5.2.2)))(vue@3.5.34(typescript@5.2.2))':
+  '@opensig/opendesign@1.2.3-sp1(@vueuse/core@14.3.0(vue@3.5.34(typescript@5.2.2)))(vue@3.5.34(typescript@5.2.2))':
     dependencies:
       '@vueuse/core': 14.3.0(vue@3.5.34(typescript@5.2.2))
       vue: 3.5.34(typescript@5.2.2)

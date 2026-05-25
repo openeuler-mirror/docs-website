@@ -24,7 +24,7 @@
   "dependencies": {
     "@opendesign-plus/components": "0.0.1-rc.6",
     "@opendesign-plus/plugins": "0.0.1-rc.1",
-    "@opensig/opendesign": "1.2.3",
+    "@opensig/opendesign": "1.2.3-sp1",
     "@opensig/opendesign-token": "0.0.11",
     "@vueuse/core": "14.3.0",
     "axios": "1.15.2",
