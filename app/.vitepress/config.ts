@@ -242,6 +242,10 @@ export default {
     },
   },
   async buildEnd() {
+    const branch = execSync('git rev-parse --abbrev-ref HEAD', { encoding: 'utf-8' });
+    if (branch !== 'stable-common') {
+      return;
+    }
     let logs = execSync('git ls-remote --heads https://gitcode.com/openeuler/docs.git', { encoding: 'utf-8' });
     logs += execSync('git ls-remote --heads https://gitcode.com/openeuler/docs-centralized.git', { encoding: 'utf-8' });
     let branches = logs
