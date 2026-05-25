@@ -5,8 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  axios: 1.15.2
-  ua-parser-js: 1.0.34
+  js-cookie: 3.0.7
 
 importers:
 
@@ -37,8 +36,8 @@ importers:
         specifier: 2.11.5
         version: 2.11.5(vue@3.5.34(typescript@5.2.2))
       js-cookie:
-        specifier: 3.0.5
-        version: 3.0.5
+        specifier: 3.0.7
+        version: 3.0.7
       pinia:
         specifier: 2.1.6
         version: 2.1.6(typescript@5.2.2)(vue@3.5.34(typescript@5.2.2))
@@ -87,7 +86,7 @@ importers:
         version: 4.0.18(vitest@4.0.18(@types/node@18.19.70)(jsdom@28.1.0)(sass@1.93.2))
       '@vue/eslint-config-prettier':
         specifier: ^10.2.0
-        version: 10.2.0(eslint@9.39.2)(prettier@3.4.2)
+        version: 10.2.0(eslint@9.39.2)(prettier@3.8.3)
       '@vue/eslint-config-typescript':
         specifier: ^14.2.0
         version: 14.2.0(eslint-plugin-vue@9.31.0(eslint@9.39.2))(eslint@9.39.2)(typescript@5.2.2)
@@ -129,7 +128,7 @@ importers:
         version: 4.3.2
       prettier:
         specifier: ^3.2.5
-        version: 3.4.2
+        version: 3.8.3
       sass:
         specifier: ^1.93.2
         version: 1.93.2
@@ -1425,8 +1424,8 @@ packages:
   '@standard-schema/spec@1.1.0':
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
 
-  '@sxzz/popperjs-es@2.11.7':
-    resolution: {integrity: sha512-Ccy0NlLkzr0Ex2FKvh2X+OyERHXJ88XJ1MXtsI9y9fGexlaXaVTPzBCRBwIxFkORuOb+uBqeu+RqnpgYTEZRUQ==}
+  '@sxzz/popperjs-es@2.11.8':
+    resolution: {integrity: sha512-wOwESXvvED3S8xBmcPWHs2dUuzrE4XiZeFu7e1hROIJkm02a49N120pmOXxY33sBb6hArItm5W5tcg1cBtV+HQ==}
 
   '@tsconfig/node18@18.2.4':
     resolution: {integrity: sha512-5xxU8vVs9/FNcvm3gE07fPbn9tl6tqGGWA9tSlwsUEkBxtRnTsNmwrV8gasZ9F/EobaSv9+nu8AxUKccw77JpQ==}
@@ -1748,7 +1747,7 @@ packages:
     resolution: {integrity: sha512-fbGYivgK5uBTRt7p5F3zy6VrETlV9RtZjBqd1/HxGdjdckBgBM4ugP8LHpjolqTj14TXTxSK1ZfgPbHYyGuH7g==}
     peerDependencies:
       async-validator: ^4
-      axios: 1.15.2
+      axios: ^1
       change-case: ^5
       drauu: ^0.4
       focus-trap: ^7
@@ -2577,9 +2576,9 @@ packages:
     resolution: {integrity: sha512-HGYWWS/ehqTV3xN10i23tkPkpH46MLCIMFNCaaKNavAXTF1RkqxawEPtnjnGZ6XKSInBKkiOA5BKS+aZiY3AvA==}
     engines: {node: '>=8'}
 
-  js-cookie@3.0.5:
-    resolution: {integrity: sha512-cEiJEAEoIbWfCZYKWhVwFuvPX1gETRYPw6LlaTKoxD3s2AkXzkCjnp6h0V77ozyqj0jakteJ4YqDJT830+lVGw==}
-    engines: {node: '>=14'}
+  js-cookie@3.0.7:
+    resolution: {integrity: sha512-z/wZZgDrkNV1eA0ULjM/F9/50Ya8fbzgKneSpoPsXSGd0KnpdtHfOZWK+GcwLk+EZbS4F9RBhU+K2RgzuDaItw==}
+    engines: {node: '>=20'}
 
   js-tokens@10.0.0:
     resolution: {integrity: sha512-lM/UBzQmfJRo9ABXbPWemivdCW8V2G8FHaHdypQaIy523snUjog0W71ayWXTjiR+ixeMyVHN2XcpnTd/liPg/Q==}
@@ -2727,6 +2726,7 @@ packages:
 
   mathjax-full@3.2.2:
     resolution: {integrity: sha512-+LfG9Fik+OuI8SLwsiR02IVdjcnRCy5MufYLi0C3TdMT56L/pjB0alMVGgoWJF8pN9Rc7FESycZB9BMNWIid5w==}
+    deprecated: Version 4 replaces this package with the scoped package @mathjax/src
 
   mdast-util-from-markdown@2.0.3:
     resolution: {integrity: sha512-W4mAWTvSlKvf8L6J+VN9yLSqQ9AOAAvHuoDAmPkz4dHf553m5gVj2ejadHJhoJmcmxEnOv6Pa8XJhpxE93kb8Q==}
@@ -3044,8 +3044,8 @@ packages:
     resolution: {integrity: sha512-SxToR7P8Y2lWmv/kTzVLC1t/GDI2WGjMwNhLLE9qtH8Q13C+aEmuRlzDst4Up4s0Wc8sF2M+J57iB3cMLqftfg==}
     engines: {node: '>=6.0.0'}
 
-  prettier@3.4.2:
-    resolution: {integrity: sha512-e9MewbtFo+Fevyuxn/4rrcDAaq0IYxPGLvObpQjiZBMAzB9IGmzlnG9RZy3FFas+eBMu2vA0CszMeduow5dIuQ==}
+  prettier@3.8.3:
+    resolution: {integrity: sha512-7igPTM53cGHMW8xWuVTydi2KO233VFiTNyF5hLJqpilHfmn8C8gPf+PS7dUT64YcXFbiMGZxS9pCSxL/Dxm/Jw==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -3340,8 +3340,8 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
-  ua-parser-js@1.0.34:
-    resolution: {integrity: sha512-K9mwJm/DaB6mRLZfw6q8IMXipcrmuT6yfhYmwhAkuh+81sChuYstYA+znlgaflUPaYUa3odxKPKGw6Vw/lANew==}
+  ua-parser-js@1.0.37:
+    resolution: {integrity: sha512-bhTyI94tZofjo+Dn8SN6Zv8nBDvyXTymAdM3LDI/0IboIUwTu1rEhW7v2TfiVsoYWgkQ4kOVqnI8APUFbIQIFQ==}
 
   uc.micro@2.1.0:
     resolution: {integrity: sha512-ARDJmphmdvUk6Glw7y9DQ2bFkKBHwQHLi2lsaH6PPmz/Ka9sFOBsBluozhDltWmnv9u/cF6Rt87znRTPV+yp/A==}
@@ -4502,7 +4502,7 @@ snapshots:
     dependencies:
       '@opensig/opendesign': 1.0.2(vue@3.5.34(typescript@5.2.2))
       '@vueuse/core': 14.3.0(vue@3.5.34(typescript@5.2.2))
-      js-cookie: 3.0.5
+      js-cookie: 3.0.7
       markdown-it-anchor: 9.2.0(@types/markdown-it@14.1.2)(markdown-it@14.1.1)
       markdown-it-async: 2.2.0
       shiki: 3.21.0
@@ -4519,7 +4519,7 @@ snapshots:
 
   '@opensig/open-analytics@1.0.1':
     dependencies:
-      ua-parser-js: 1.0.34
+      ua-parser-js: 1.0.37
       uuid: 11.1.0
       web-vitals: 3.5.2
 
@@ -4804,7 +4804,7 @@ snapshots:
 
   '@standard-schema/spec@1.1.0': {}
 
-  '@sxzz/popperjs-es@2.11.7': {}
+  '@sxzz/popperjs-es@2.11.8': {}
 
   '@tsconfig/node18@18.2.4': {}
 
@@ -5159,12 +5159,12 @@ snapshots:
     dependencies:
       rfdc: 1.4.1
 
-  '@vue/eslint-config-prettier@10.2.0(eslint@9.39.2)(prettier@3.4.2)':
+  '@vue/eslint-config-prettier@10.2.0(eslint@9.39.2)(prettier@3.8.3)':
     dependencies:
       eslint: 9.39.2
       eslint-config-prettier: 10.1.8(eslint@9.39.2)
-      eslint-plugin-prettier: 5.5.5(eslint-config-prettier@10.1.8(eslint@9.39.2))(eslint@9.39.2)(prettier@3.4.2)
-      prettier: 3.4.2
+      eslint-plugin-prettier: 5.5.5(eslint-config-prettier@10.1.8(eslint@9.39.2))(eslint@9.39.2)(prettier@3.8.3)
+      prettier: 3.8.3
     transitivePeerDependencies:
       - '@types/eslint'
 
@@ -5616,7 +5616,7 @@ snapshots:
       '@ctrl/tinycolor': 3.6.1
       '@element-plus/icons-vue': 2.3.2(vue@3.5.34(typescript@5.2.2))
       '@floating-ui/dom': 1.6.13
-      '@popperjs/core': '@sxzz/popperjs-es@2.11.7'
+      '@popperjs/core': '@sxzz/popperjs-es@2.11.8'
       '@types/lodash': 4.17.20
       '@types/lodash-es': 4.17.12
       '@vueuse/core': 9.12.0(vue@3.5.34(typescript@5.2.2))
@@ -5727,10 +5727,10 @@ snapshots:
     dependencies:
       eslint: 9.39.2
 
-  eslint-plugin-prettier@5.5.5(eslint-config-prettier@10.1.8(eslint@9.39.2))(eslint@9.39.2)(prettier@3.4.2):
+  eslint-plugin-prettier@5.5.5(eslint-config-prettier@10.1.8(eslint@9.39.2))(eslint@9.39.2)(prettier@3.8.3):
     dependencies:
       eslint: 9.39.2
-      prettier: 3.4.2
+      prettier: 3.8.3
       prettier-linter-helpers: 1.0.1
       synckit: 0.11.12
     optionalDependencies:
@@ -6121,7 +6121,7 @@ snapshots:
       html-escaper: 2.0.2
       istanbul-lib-report: 3.0.1
 
-  js-cookie@3.0.5: {}
+  js-cookie@3.0.7: {}
 
   js-tokens@10.0.0: {}
 
@@ -6696,7 +6696,7 @@ snapshots:
     dependencies:
       fast-diff: 1.3.0
 
-  prettier@3.4.2: {}
+  prettier@3.8.3: {}
 
   pretty-bytes@7.1.0: {}
 
@@ -7013,7 +7013,7 @@ snapshots:
 
   typescript@5.2.2: {}
 
-  ua-parser-js@1.0.34: {}
+  ua-parser-js@1.0.37: {}
 
   uc.micro@2.1.0: {}
 
