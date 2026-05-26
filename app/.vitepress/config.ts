@@ -251,7 +251,7 @@ export default {
     let branches = logs
       .split('\n')
       .map((line) => line.slice(line.indexOf('refs/heads/') + 11))
-      .filter((line) => line.startsWith('stable'))
+      .filter((line) => line.startsWith('stable') && !line.includes('common'))
       .map((br) => br.split('-')[1]);
     branches = [...new Set(branches)];
 
