@@ -8,6 +8,7 @@ import type Token from 'markdown-it/lib/token.mjs';
 import llmstxt from 'vitepress-plugin-llms';
 
 import { getDomId } from './src/utils/common';
+import { defineConfig } from 'vitepress';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -24,7 +25,7 @@ function readEnvVar(key: string): string | undefined {
 
 const sitemapHostname = readEnvVar('VITE_MAIN_DOMAIN_URL') || 'https://www.openeuler.org';
 
-export default {
+export default defineConfig({
   base: '/',
   assetsDir: '/assets',
   cleanUrls: false,
@@ -242,10 +243,11 @@ export default {
     },
   },
   async buildEnd() {
-    const packageConfig = JSON.parse(readFileSync(join(__dirname, '../../package.json')));
+    const packageConfig = JSON.parse(readFileSync(join(__dirname, '../../package.json'), 'utf-8'));
     if (!packageConfig.scripts.build.includes('common')) {
       return;
     }
+
     let logs = execSync('git ls-remote --heads https://gitcode.com/openeuler/docs.git', { encoding: 'utf-8' });
     logs += execSync('git ls-remote --heads https://gitcode.com/openeuler/docs-centralized.git', { encoding: 'utf-8' });
     let branches = logs
@@ -265,12 +267,21 @@ ${branches
   .filter((br) => !br.includes('common'))
   .map((br) => {
     return `  <sitemap>
-  <loc>https://docs.openeuler.org/docs/${br}/sitemap.xml</loc>
+  <loc>${sitemapHostname}/docs/${br}/sitemap.xml</loc>
 </sitemap>`;
   })
   .join('\n')}
 </sitemapindex>`
     );
+
+    // 写robots.txt
+    const robots = join(__dirname, 'public/robots.txt');
+    if (!existsSync(robots)) {
+      console.log(`❌ robots.txt不存在`);
+    } else {
+      const robotsContent = readFileSync(robots, 'utf-8');
+      writeFileSync(robots, `${robotsContent}\nSitemap:${sitemapHostname}/sitemap_index.xml`);
+    }
 
     // ============ write llms.txt
     const llmstxtPath = join(__dirname, 'dist', 'llms.txt');
@@ -350,4 +361,4 @@ ${branches
       noExternal: ['@opendesign-plus/components', 'element-plus'],
     },
   },
-};
+});
