@@ -275,7 +275,7 @@ ${branches
     );
 
     // 写robots.txt
-    const robots = join(__dirname, 'public/robots.txt');
+    const robots = join(__dirname, 'dist/robots.txt');
     if (!existsSync(robots)) {
       console.log(`❌ robots.txt不存在`);
     } else {
