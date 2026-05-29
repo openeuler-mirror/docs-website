@@ -267,7 +267,7 @@ ${branches
   .filter((br) => !br.includes('common'))
   .map((br) => {
     return `  <sitemap>
-  <loc>${sitemapHostname}/docs/${br}/sitemap.xml</loc>
+  <loc>${sitemapHostname.replace('www', 'docs')}/docs/${br}/sitemap.xml</loc>
 </sitemap>`;
   })
   .join('\n')}
