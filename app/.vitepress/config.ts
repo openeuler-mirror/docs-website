@@ -23,7 +23,7 @@ function readEnvVar(key: string): string | undefined {
   return match ? match[1].trim() : undefined;
 }
 
-const sitemapHostname = readEnvVar('VITE_MAIN_DOMAIN_URL') || 'https://www.openeuler.org';
+const sitemapHostname = readEnvVar('VITE_SERVICE_DOCS_URL') || 'https://docs.openeuler.org';
 
 export default defineConfig({
   base: '/',
@@ -267,7 +267,7 @@ ${branches
   .filter((br) => !br.includes('common'))
   .map((br) => {
     return `  <sitemap>
-  <loc>${sitemapHostname.replace('www', 'docs')}/docs/${br}/sitemap.xml</loc>
+  <loc>${sitemapHostname}/docs/${br}/sitemap.xml</loc>
 </sitemap>`;
   })
   .join('\n')}
