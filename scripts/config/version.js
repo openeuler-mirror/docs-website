@@ -1,7 +1,7 @@
 // 第一个为 common 分支
 // 后续的按照文档显示版本的顺序
 // 后续添加请按规则添加
-export const VITEPRESS_VERSION_CONFIG = {
+export const VITEPRESS_VERSIONS_CONFIG = {
   'stable-common': 'common',
   'stable-24.03_LTS_SP3': '24.03_LTS_SP3',
   'stable-25.09': '25.09',
@@ -11,7 +11,7 @@ export const VITEPRESS_VERSION_CONFIG = {
   'stable-22.03_LTS_SP4': '22.03_LTS_SP4',
 };
 
-export const VITEPRESS_HUGO_CONFIG = {
+export const HUGO_VERSIONS_CONFIG = {
   'stable2-24.03_LTS': '24.03_LTS',
   'stable2-22.03_LTS_SP3': '22.03_LTS_SP3',
   'stable2-20.03_LTS_SP4': '20.03_LTS_SP4',

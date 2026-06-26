@@ -31,7 +31,7 @@ import markdownIt from 'markdown-it';
 import markdownItAnchor from 'markdown-it-anchor';
 import yaml from 'js-yaml';
 
-import { VITEPRESS_VERSION_CONFIG } from './config/version.js';
+import { VITEPRESS_VERSIONS_CONFIG } from './config/version.js';
 import { getBranchName } from './utils/common.js';
 import { getGitUrlInfo } from './utils/git.js';
 import { getMdTitleId, getMdFilterContent } from './utils/markdown.js';
@@ -57,7 +57,7 @@ const globalHandledYaml = new Map();
   const outputEnPath = path.join(BUILD_PATH, './app/.vitepress/public/toc/toc-en.json');
 
   for (const item of versions) {
-    const version = VITEPRESS_VERSION_CONFIG[item] || getBranchName(item);
+    const version = VITEPRESS_VERSIONS_CONFIG[item] || getBranchName(item);
     console.log(`正在构建 ${version} toc 文件...`);
     if (version === 'common') {
       // common 分支处理

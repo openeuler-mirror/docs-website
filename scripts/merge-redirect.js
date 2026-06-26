@@ -3,7 +3,7 @@ import fs from 'fs';
 import yaml from 'js-yaml';
 import url from 'url';
 
-import { VITEPRESS_VERSION_CONFIG } from './config/version.js';
+import { VITEPRESS_VERSIONS_CONFIG } from './config/version.js';
 import { getBranchName } from './utils/common.js';
 import { getGitUrlInfo } from './utils/git.js';
 
@@ -46,7 +46,7 @@ function processSelfRedirect() {
   }
 
   versions.forEach((version) => {
-    const branchName = VITEPRESS_VERSION_CONFIG[version] || getBranchName(version);
+    const branchName = VITEPRESS_VERSIONS_CONFIG[version] || getBranchName(version);
     const yamlPath = path.join(CACHE_PATH, `_redirect-${branchName}.yaml`);
     if (!fs.existsSync(yamlPath)) {
       return;

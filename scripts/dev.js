@@ -36,14 +36,14 @@
 import { execSync } from 'child_process';
 import { select } from '@inquirer/prompts';
 
-import { VITEPRESS_VERSION_CONFIG } from './config/version.js';
+import { VITEPRESS_VERSIONS_CONFIG } from './config/version.js';
 
 (async () => {
   try {
-    const allBranches = Object.keys(VITEPRESS_VERSION_CONFIG);
+    const allBranches = Object.keys(VITEPRESS_VERSIONS_CONFIG);
     console.log(`构建必需的文档版本：`);
-    console.log(`- ${VITEPRESS_VERSION_CONFIG[allBranches[0]]}`); // common分支
-    console.log(`- ${VITEPRESS_VERSION_CONFIG[allBranches[1]]}`);
+    console.log(`- ${VITEPRESS_VERSIONS_CONFIG[allBranches[0]]}`); // common分支
+    console.log(`- ${VITEPRESS_VERSIONS_CONFIG[allBranches[1]]}`);
     console.log(``);
 
     const selectedBranches = await select({
@@ -51,7 +51,7 @@ import { VITEPRESS_VERSION_CONFIG } from './config/version.js';
       choices: [
         { name: '- 跳过', value: 'pass' },
         { name: '- 所有版本 (请谨慎选择)', value: 'all' },
-        ...allBranches.slice(2).map((item) => ({ name: `- ${VITEPRESS_VERSION_CONFIG[item]}`, value: item })),
+        ...allBranches.slice(2).map((item) => ({ name: `- ${VITEPRESS_VERSIONS_CONFIG[item]}`, value: item })),
       ],
     });
 

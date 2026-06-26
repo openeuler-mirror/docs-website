@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-import { VITEPRESS_VERSION_CONFIG } from './config/version.js';
+import { VITEPRESS_VERSIONS_CONFIG } from './config/version.js';
 import { getGitUrlInfo, isGitRepo, checkoutBranch } from './utils/git.js';
 import { copyDirectorySync, copyFileSync } from './utils/file.js';
 
@@ -136,7 +136,7 @@ if (args.length === 0) {
   console.error('请提供分支名称');
   process.exit(1);
 } else {
-  if (Object.keys(VITEPRESS_VERSION_CONFIG).includes(args[0])) {
+  if (Object.keys(VITEPRESS_VERSIONS_CONFIG).includes(args[0])) {
     merge(args[0]);
   } else {
     console.error('非新版本内容，跳过处理~');
