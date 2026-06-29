@@ -126,7 +126,7 @@ i {
   box-sizing: border-box;
 }
 #version-option.show{
-    max-height: 240px;
+    max-height: 280px;
 }
 @media screen and (max-width: 1100px) {
     #version-option{
