@@ -24,13 +24,13 @@ export default {
         {
           NAME: '获取openEuler',
           CHILDREN: [
-            {
+            /* {
               NAME: 'openEuler 24.03 LTS SP4',
               DESCRIPTION:
                 'openEuler 24.03 LTS SP4是基于6.6内核的24.03-LTS版本增强扩展版本，面向服务器、云、AI场景，持续提供更多新特性和功能扩展，包括内核优化、灵衢超节点可靠性&易用性、NPU算力切分、推理服务快恢、E2B沙箱、智能诊断&调优&运维、编译器、机密虚机等，给开发者和用户带来全新的体验，服务更多的领域和更多的用户。',
               TAG: TAG_TYPE.NEW,
               URL: '/download/#openEuler 24.03 LTS SP4',
-            },
+            }, */
             {
               NAME: 'openEuler 24.03 LTS SP3',
               DESCRIPTION:
