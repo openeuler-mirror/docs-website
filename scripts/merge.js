@@ -38,7 +38,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { VITEPRESS_VERSION_CONFIG } from './config/version.js';
+import { VITEPRESS_VERSIONS_CONFIG } from './config/version.js';
 import { getBranchName } from './utils/common.js';
 import { checkoutBranch, isGitRepo, pullRemoteBranch } from './utils/git.js';
 import { copyDirectorySync, removeSync, renameSync, copyFileSync, ensureDirSync } from './utils/file.js';
@@ -61,7 +61,7 @@ const DOCS_HUGO_PATH = path.join(REPO_PATH, 'docs-centralized'); // docs-central
   ensureDirSync(buildPath);
 
   // 处理文档内容
-  if (Object.keys(VITEPRESS_VERSION_CONFIG).includes(branch)) {
+  if (Object.keys(VITEPRESS_VERSIONS_CONFIG).includes(branch)) {
     normalizeVitepressDocsContent(buildPath, branch, source);
   } else {
     normalizeHugoDocsContent(buildPath, branch, source);
@@ -117,7 +117,7 @@ function normalizeVitepressDocsContent(buildPath, branch, source) {
     throw new Error(`docs 文档仓库不存在： ${DOCS_VITEPRESS_PATH}`);
   }
 
-  const branchName = VITEPRESS_VERSION_CONFIG[branch] || getBranchName(branch);
+  const branchName = VITEPRESS_VERSIONS_CONFIG[branch] || getBranchName(branch);
 
   // 复制website-vitepress内容到build目录
   copyDirectorySync(path.join(REPO_PATH, 'website-vitepress'), buildPath);

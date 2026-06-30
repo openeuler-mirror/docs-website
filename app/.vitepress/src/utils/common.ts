@@ -162,6 +162,7 @@ export function getSourceUrl(node: DocMenuNodeT | null) {
   const [_, lang, __, branch, ...others] = pathname.split('/');
   const map: Record<string, string> = {
     common: 'stable-common',
+    '24.03_LTS_SP4': 'stable-24.03_LTS_SP4',
     '25.09': 'stable-25.09',
     '25.03': 'stable-25.03',
     '24.03_LTS_SP1': 'stable-24.03_LTS_SP1',

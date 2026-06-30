@@ -40,7 +40,7 @@ import fs from 'fs';
 import path from 'path';
 import yaml from 'js-yaml';
 
-import { VITEPRESS_VERSION_CONFIG } from './config/version.js';
+import { VITEPRESS_VERSIONS_CONFIG } from './config/version.js';
 import { parseNamedArgs, sleep } from './utils/common.js';
 import { getGitUrlInfo, gitCloneAndCheckout } from './utils/git.js';
 import { copyDirectorySync, copyFileSync, removeSync } from './utils/file.js';
@@ -82,7 +82,7 @@ function syncDsl() {
  * @param {string} branch 分支名
  */
 function syncDocs(branch) {
-  const branchName = VITEPRESS_VERSION_CONFIG[branch];
+  const branchName = VITEPRESS_VERSIONS_CONFIG[branch];
   const zhSourcePath = `${CACHE_PATH}/docs/docs/zh`;
   const zhTargetPath = `${BUILD_PATH}/app/zh/docs/${branchName}/`;
   const enSourcePath = `${CACHE_PATH}/docs/docs/en`;
@@ -164,7 +164,7 @@ function syncSigDocs(branch) {
     }
   };
 
-  const branchName = VITEPRESS_VERSION_CONFIG[branch];
+  const branchName = VITEPRESS_VERSIONS_CONFIG[branch];
   scanDir(`${BUILD_PATH}/app/zh/docs/${branchName}`);
   scanDir(`${BUILD_PATH}/app/en/docs/${branchName}`);
 }

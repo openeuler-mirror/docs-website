@@ -5,6 +5,8 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
+  axios: 1.16.0
+  ua-parser-js: 1.0.34
   js-cookie: 3.0.7
 
 importers:
@@ -13,7 +15,7 @@ importers:
     dependencies:
       '@opendesign-plus/components':
         specifier: 0.0.1-rc.6
-        version: 0.0.1-rc.6(@types/markdown-it@14.1.2)(markdown-it@14.1.1)(vue@3.5.34(typescript@5.2.2))
+        version: 0.0.1-rc.6(@types/markdown-it@14.1.2)(markdown-it@14.2.0)(vue@3.5.34(typescript@5.2.2))
       '@opendesign-plus/plugins':
         specifier: 0.0.1-rc.1
         version: 0.0.1-rc.1
@@ -27,8 +29,8 @@ importers:
         specifier: 14.3.0
         version: 14.3.0(vue@3.5.34(typescript@5.2.2))
       axios:
-        specifier: 1.15.2
-        version: 1.15.2
+        specifier: 1.16.0
+        version: 1.16.0
       clipboard:
         specifier: 2.0.11
         version: 2.0.11
@@ -118,11 +120,11 @@ importers:
         specifier: ^28.1.0
         version: 28.1.0
       markdown-it:
-        specifier: ^14.1.1
-        version: 14.1.1
+        specifier: ^14.2.0
+        version: 14.2.0
       markdown-it-anchor:
         specifier: ^9.2.0
-        version: 9.2.0(@types/markdown-it@14.1.2)(markdown-it@14.1.1)
+        version: 9.2.0(@types/markdown-it@14.1.2)(markdown-it@14.2.0)
       markdown-it-mathjax3:
         specifier: ^4.3.2
         version: 4.3.2
@@ -143,7 +145,7 @@ importers:
         version: 0.17.4(@vue/compiler-sfc@3.5.34)(vue-template-compiler@2.7.16)
       vitepress:
         specifier: ^1.6.4
-        version: 1.6.4(@algolia/client-search@5.19.0)(@types/node@18.19.70)(async-validator@4.2.5)(axios@1.15.2)(markdown-it-mathjax3@4.3.2)(postcss@8.5.14)(sass@1.93.2)(search-insights@2.17.3)(typescript@5.2.2)
+        version: 1.6.4(@algolia/client-search@5.19.0)(@types/node@18.19.70)(async-validator@4.2.5)(axios@1.16.0)(markdown-it-mathjax3@4.3.2)(postcss@8.5.14)(sass@1.93.2)(search-insights@2.17.3)(typescript@5.2.2)
       vitepress-plugin-llms:
         specifier: ^1.12.0
         version: 1.12.0
@@ -1019,7 +1021,7 @@ packages:
     resolution: {integrity: sha512-Uvbcl6Omtu6FwaMWLUQJDbyPUuFyx3zgGJ2qwj3WkcKUUWQ8AuBFMw7Vs3lLDQCg37roBmqvrwnBJE4ST4xPNw==}
 
   '@opendesign-plus/plugins@0.0.1-rc.1':
-    resolution: {integrity: sha512-vtFzitCwNnxUaHkapw0lVYevZZSuPSZZyvL6t1tovuzHlKyTZAJzegwIXeewBrctOrpwIDPo3HWPZWq/aoyXQg==, tarball: https://registry.npmjs.org/@opendesign-plus/plugins/-/plugins-0.0.1-rc.1.tgz}
+    resolution: {integrity: sha512-vtFzitCwNnxUaHkapw0lVYevZZSuPSZZyvL6t1tovuzHlKyTZAJzegwIXeewBrctOrpwIDPo3HWPZWq/aoyXQg==}
 
   '@opendesign-plus/styles@0.0.1-rc.2':
     resolution: {integrity: sha512-mgjqcsMUDJjo+kMSjumll9MM+r5rOkFZu1W00FwIW2tu3GNbdo3VZTdb3Ax596rnT9e1+7fr7ksxmBdcAq254A==}
@@ -1747,7 +1749,7 @@ packages:
     resolution: {integrity: sha512-fbGYivgK5uBTRt7p5F3zy6VrETlV9RtZjBqd1/HxGdjdckBgBM4ugP8LHpjolqTj14TXTxSK1ZfgPbHYyGuH7g==}
     peerDependencies:
       async-validator: ^4
-      axios: ^1
+      axios: 1.16.0
       change-case: ^5
       drauu: ^0.4
       focus-trap: ^7
@@ -1861,8 +1863,8 @@ packages:
   asynckit@0.4.0:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
 
-  axios@1.15.2:
-    resolution: {integrity: sha512-wLrXxPtcrPTsNlJmKjkPnNPK2Ihe0hn0wGSaTEiHRPxwjvJwT3hKmXF4dpqxmPO9SoNb2FsYXj/xEo0gHN+D5A==}
+  axios@1.16.0:
+    resolution: {integrity: sha512-6hp5CwvTPlN2A31g5dxnwAX0orzM7pmCRDLnZSX772mv8WDqICwFjowHuPs04Mc8deIld1+ejhtaMn5vp6b+1w==}
 
   bail@2.0.2:
     resolution: {integrity: sha512-0xO6mYd7JB2YesxDKplafRpsiOzPt9V02ddPCLbY1xYGPOX24NTyN50qnUxgCPcSoYMhKpAuBTjQoRZCAkUDRw==}
@@ -2348,8 +2350,8 @@ packages:
   focus-trap@7.6.5:
     resolution: {integrity: sha512-7Ke1jyybbbPZyZXFxEftUtxFGLMpE2n6A+z//m4CRDlj0hW+o3iYSmh8nFlYMurOiJVDmJRilUQtJr08KfIxlg==}
 
-  follow-redirects@1.15.11:
-    resolution: {integrity: sha512-deG2P0JfjrTxl50XGCDyfI97ZGVCxIpfKYmfyrQ54n5FO/0gfIES8C/Psl6kWVDolizcaaxZJnTS0QSMxvnsBQ==}
+  follow-redirects@1.16.0:
+    resolution: {integrity: sha512-y5rN/uOsadFT/JfYwhxRS5R7Qce+g3zG97+JrtFZlC9klX/W5hD7iiLzScI4nZqUS7DNUdhPgw4xI8W2LuXlUw==}
     engines: {node: '>=4.0'}
     peerDependencies:
       debug: '*'
@@ -2644,8 +2646,8 @@ packages:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
     engines: {node: '>= 0.8.0'}
 
-  linkify-it@5.0.0:
-    resolution: {integrity: sha512-5aHCbzQRADcdP+ATqnDuhhJ/MRIqDkZX5pyjFHRRysS8vZ5AbqGEoFIb6pYHPZ+L/OC2Lc+xT8uHVVR5CAK/wQ==}
+  linkify-it@5.0.1:
+    resolution: {integrity: sha512-wVoTjP4Q6R0NW5hiZkVJaFZPWgtXfoGF+6LucL3/FtiNjmcHhYjEr5f1Kqjirc1nBW07J/ZuRFumqr2oqccEWg==}
 
   local-pkg@0.5.1:
     resolution: {integrity: sha512-9rrA30MRRP3gBD3HTGnC6cDFpaE1kVDWxWgqWJUN0RvDNAo+Nz/9GxB+nHOH0ifbVFy0hSA1V6vFDvnx54lTEQ==}
@@ -2712,8 +2714,8 @@ packages:
   markdown-it-mathjax3@4.3.2:
     resolution: {integrity: sha512-TX3GW5NjmupgFtMJGRauioMbbkGsOXAAt1DZ/rzzYmTHqzkO1rNAdiMD4NiruurToPApn2kYy76x02QN26qr2w==}
 
-  markdown-it@14.1.1:
-    resolution: {integrity: sha512-BuU2qnTti9YKgK5N+IeMubp14ZUKUUw7yeJbkjtosvHiP0AZ5c8IAgEMk79D0eC8F23r4Ac/q8cAIFdm2FtyoA==}
+  markdown-it@14.2.0:
+    resolution: {integrity: sha512-1TGiQiJVRQ3NPmZH6sx5Cfnmg6GQm9jvC1ch4TK511NjSJvjzKLzn5pPfZRNZkRPZP0HqCioSndqH8v2nRaWVQ==}
     hasBin: true
 
   markdown-title@1.0.2:
@@ -3340,8 +3342,8 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
-  ua-parser-js@1.0.37:
-    resolution: {integrity: sha512-bhTyI94tZofjo+Dn8SN6Zv8nBDvyXTymAdM3LDI/0IboIUwTu1rEhW7v2TfiVsoYWgkQ4kOVqnI8APUFbIQIFQ==}
+  ua-parser-js@1.0.34:
+    resolution: {integrity: sha512-K9mwJm/DaB6mRLZfw6q8IMXipcrmuT6yfhYmwhAkuh+81sChuYstYA+znlgaflUPaYUa3odxKPKGw6Vw/lANew==}
 
   uc.micro@2.1.0:
     resolution: {integrity: sha512-ARDJmphmdvUk6Glw7y9DQ2bFkKBHwQHLi2lsaH6PPmz/Ka9sFOBsBluozhDltWmnv9u/cF6Rt87znRTPV+yp/A==}
@@ -4485,9 +4487,9 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.18.0
 
-  '@opendesign-plus/components@0.0.1-rc.6(@types/markdown-it@14.1.2)(markdown-it@14.1.1)(vue@3.5.34(typescript@5.2.2))':
+  '@opendesign-plus/components@0.0.1-rc.6(@types/markdown-it@14.1.2)(markdown-it@14.2.0)(vue@3.5.34(typescript@5.2.2))':
     dependencies:
-      '@opendesign-plus/composables': 0.0.1-rc.6(@types/markdown-it@14.1.2)(markdown-it@14.1.1)(vue@3.5.34(typescript@5.2.2))
+      '@opendesign-plus/composables': 0.0.1-rc.6(@types/markdown-it@14.1.2)(markdown-it@14.2.0)(vue@3.5.34(typescript@5.2.2))
       '@opendesign-plus/styles': 0.0.1-rc.2
       '@opensig/opendesign': 1.0.2(vue@3.5.34(typescript@5.2.2))
       '@vueuse/core': 10.11.1(vue@3.5.34(typescript@5.2.2))
@@ -4498,12 +4500,12 @@ snapshots:
       - markdown-it
       - vue
 
-  '@opendesign-plus/composables@0.0.1-rc.6(@types/markdown-it@14.1.2)(markdown-it@14.1.1)(vue@3.5.34(typescript@5.2.2))':
+  '@opendesign-plus/composables@0.0.1-rc.6(@types/markdown-it@14.1.2)(markdown-it@14.2.0)(vue@3.5.34(typescript@5.2.2))':
     dependencies:
       '@opensig/opendesign': 1.0.2(vue@3.5.34(typescript@5.2.2))
       '@vueuse/core': 14.3.0(vue@3.5.34(typescript@5.2.2))
       js-cookie: 3.0.7
-      markdown-it-anchor: 9.2.0(@types/markdown-it@14.1.2)(markdown-it@14.1.1)
+      markdown-it-anchor: 9.2.0(@types/markdown-it@14.1.2)(markdown-it@14.2.0)
       markdown-it-async: 2.2.0
       shiki: 3.21.0
     transitivePeerDependencies:
@@ -4519,7 +4521,7 @@ snapshots:
 
   '@opensig/open-analytics@1.0.1':
     dependencies:
-      ua-parser-js: 1.0.37
+      ua-parser-js: 1.0.34
       uuid: 11.1.0
       web-vitals: 3.5.2
 
@@ -5258,14 +5260,14 @@ snapshots:
       - '@vue/composition-api'
       - vue
 
-  '@vueuse/integrations@12.8.2(async-validator@4.2.5)(axios@1.15.2)(focus-trap@7.6.5)(typescript@5.2.2)':
+  '@vueuse/integrations@12.8.2(async-validator@4.2.5)(axios@1.16.0)(focus-trap@7.6.5)(typescript@5.2.2)':
     dependencies:
       '@vueuse/core': 12.8.2(typescript@5.2.2)
       '@vueuse/shared': 12.8.2(typescript@5.2.2)
       vue: 3.5.34(typescript@5.2.2)
     optionalDependencies:
       async-validator: 4.2.5
-      axios: 1.15.2
+      axios: 1.16.0
       focus-trap: 7.6.5
     transitivePeerDependencies:
       - typescript
@@ -5363,9 +5365,9 @@ snapshots:
 
   asynckit@0.4.0: {}
 
-  axios@1.15.2:
+  axios@1.16.0:
     dependencies:
-      follow-redirects: 1.15.11
+      follow-redirects: 1.16.0
       form-data: 4.0.5
       proxy-from-env: 2.1.0
     transitivePeerDependencies:
@@ -5909,7 +5911,7 @@ snapshots:
     dependencies:
       tabbable: 6.2.0
 
-  follow-redirects@1.15.11: {}
+  follow-redirects@1.16.0: {}
 
   form-data@4.0.5:
     dependencies:
@@ -6202,7 +6204,7 @@ snapshots:
       prelude-ls: 1.2.1
       type-check: 0.4.0
 
-  linkify-it@5.0.0:
+  linkify-it@5.0.1:
     dependencies:
       uc.micro: 2.1.0
 
@@ -6255,15 +6257,15 @@ snapshots:
 
   mark.js@8.11.1: {}
 
-  markdown-it-anchor@9.2.0(@types/markdown-it@14.1.2)(markdown-it@14.1.1):
+  markdown-it-anchor@9.2.0(@types/markdown-it@14.1.2)(markdown-it@14.2.0):
     dependencies:
       '@types/markdown-it': 14.1.2
-      markdown-it: 14.1.1
+      markdown-it: 14.2.0
 
   markdown-it-async@2.2.0:
     dependencies:
       '@types/markdown-it': 14.1.2
-      markdown-it: 14.1.1
+      markdown-it: 14.2.0
 
   markdown-it-mathjax3@4.3.2:
     dependencies:
@@ -6272,11 +6274,11 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  markdown-it@14.1.1:
+  markdown-it@14.2.0:
     dependencies:
       argparse: 2.0.1
       entities: 4.5.0
-      linkify-it: 5.0.0
+      linkify-it: 5.0.1
       mdurl: 2.0.0
       punycode.js: 2.3.1
       uc.micro: 2.1.0
@@ -7013,7 +7015,7 @@ snapshots:
 
   typescript@5.2.2: {}
 
-  ua-parser-js@1.0.37: {}
+  ua-parser-js@1.0.34: {}
 
   uc.micro@2.1.0: {}
 
@@ -7142,7 +7144,7 @@ snapshots:
   vitepress-plugin-llms@1.12.0:
     dependencies:
       gray-matter: 4.0.3
-      markdown-it: 14.1.1
+      markdown-it: 14.2.0
       markdown-title: 1.0.2
       mdast-util-from-markdown: 2.0.3
       millify: 6.1.0
@@ -7158,7 +7160,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  vitepress@1.6.4(@algolia/client-search@5.19.0)(@types/node@18.19.70)(async-validator@4.2.5)(axios@1.15.2)(markdown-it-mathjax3@4.3.2)(postcss@8.5.14)(sass@1.93.2)(search-insights@2.17.3)(typescript@5.2.2):
+  vitepress@1.6.4(@algolia/client-search@5.19.0)(@types/node@18.19.70)(async-validator@4.2.5)(axios@1.16.0)(markdown-it-mathjax3@4.3.2)(postcss@8.5.14)(sass@1.93.2)(search-insights@2.17.3)(typescript@5.2.2):
     dependencies:
       '@docsearch/css': 3.8.2
       '@docsearch/js': 3.8.2(@algolia/client-search@5.19.0)(search-insights@2.17.3)
@@ -7171,7 +7173,7 @@ snapshots:
       '@vue/devtools-api': 7.7.0
       '@vue/shared': 3.5.13
       '@vueuse/core': 12.8.2(typescript@5.2.2)
-      '@vueuse/integrations': 12.8.2(async-validator@4.2.5)(axios@1.15.2)(focus-trap@7.6.5)(typescript@5.2.2)
+      '@vueuse/integrations': 12.8.2(async-validator@4.2.5)(axios@1.16.0)(focus-trap@7.6.5)(typescript@5.2.2)
       focus-trap: 7.6.5
       mark.js: 8.11.1
       minisearch: 7.1.1

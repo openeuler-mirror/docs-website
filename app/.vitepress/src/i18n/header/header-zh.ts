@@ -25,18 +25,18 @@ export default {
           NAME: '获取openEuler',
           CHILDREN: [
             {
-              NAME: 'openEuler 24.03 LTS SP3',
+              NAME: 'openEuler 24.03 LTS SP4',
               DESCRIPTION:
-                'openEuler首个支持超节点的版本正式发布。新版本openEuler 24.03 LTS SP3基于6.6内核的24.03-LTS版本增强扩展版本，面向服务器、云、AI场景，持续提供更多新特性和功能扩展，包括内核优化、异构协同推理、智能诊断、机密虚机、编译器、RISC-V架构优化、智能开发者桌面、安全加固、灵衢超节点、身份认证、虚拟化等，给开发者和用户带来全新的体验，服务更多的领域和更多的用户。',
+                'openEuler 24.03 LTS SP4是基于6.6内核的24.03-LTS版本增强扩展版本，面向服务器、云、AI场景，持续提供更多新特性和功能扩展，包括内核优化、灵衢超节点可靠性&易用性、NPU算力切分、推理服务快恢、E2B沙箱、智能诊断&调优&运维、编译器、机密虚机等，给开发者和用户带来全新的体验，服务更多的领域和更多的用户。',
               TAG: TAG_TYPE.NEW,
-              URL: '/download/#openEuler 24.03 LTS SP3',
+              URL: '/download/#openEuler 24.03 LTS SP4',
             },
             {
-              NAME: 'openEuler 24.03 LTS SP2',
+              NAME: 'openEuler 24.03 LTS SP3',
               DESCRIPTION:
-                '基于6.6内核的LTS版本，面向服务器、云、边缘计算和嵌入式场景，提供更多新特性和功能，给开发者和用户带来全新的体验，服务更多的领域和更多的用户。',
-              TAG: null,
-              URL: '/download/#openEuler 24.03 LTS SP2',
+                'openEuler首个支持超节点的版本正式发布。新版本openEuler 24.03 LTS SP3是基于6.6内核的24.03-LTS版本增强扩展版本，面向服务器、云、AI场景，持续提供更多新特性和功能扩展，包括内核优化、异构协同推理、智能诊断、机密虚机、编译器、RISC-V架构优化、智能开发者桌面、安全加固、灵衢超节点、身份认证、虚拟化等，给开发者和用户带来全新的体验，服务更多的领域和更多的用户。',
+              TAG: TAG_TYPE.NEW,
+              URL: '/download/#openEuler 24.03 LTS SP3',
             },
             {
               NAME: 'openEuler 24.03 LTS SP1',
@@ -91,11 +91,12 @@ export default {
         },
         {
           NAME: '版本生命周期',
-          URL: '/other/lifecycle/',
+          URL: '/zh/other/lifecycle/',
+          isBlank: true,
         },
         {
-          NAME: '24.03 LTS SP3安装指南',
-          URL: `${import.meta.env.VITE_SERVICE_DOCS_URL}/zh/docs/24.03_LTS_SP3/server/installation_upgrade/installation/installation_preparations.html`,
+          NAME: '24.03 LTS SP4安装指南',
+          URL: `${import.meta.env.VITE_SERVICE_DOCS_URL}/zh/docs/24.03_LTS_SP4/server/installation_upgrade/installation/installation_preparations.html`,
         },
         {
           NAME: '25.09安装指南',
@@ -270,12 +271,12 @@ export default {
               NAME: '新手入门',
               DESCRIPTION: '10分钟玩转社区，快速构建与成长',
               TAG: TAG_TYPE.HOT,
-              URL: `${import.meta.env.VITE_SERVICE_DOCS_URL}/zh/docs/24.03_LTS_SP3/server/quickstart/quickstart/quick_start.html`,
+              URL: `${import.meta.env.VITE_SERVICE_DOCS_URL}/zh/docs/24.03_LTS_SP4/server/quickstart/quickstart/quick_start.html`,
             },
             {
               NAME: '安装指南',
               DESCRIPTION: '指导用户顺利完成 openEuler 操作系统安装',
-              URL: `${import.meta.env.VITE_SERVICE_DOCS_URL}/zh/docs/24.03_LTS_SP3/server/installation_upgrade/installation/installation_preparations.html`,
+              URL: `${import.meta.env.VITE_SERVICE_DOCS_URL}/zh/docs/24.03_LTS_SP4/server/installation_upgrade/installation/installation_preparations.html`,
             },
             {
               NAME: '常见问题',
@@ -612,9 +613,10 @@ export default {
     SUGGEST: '搜索建议',
     NO_DATA: '暂无数据',
     PLEACHOLDER: '搜索',
-    PLEACHOLDER_EXTEND: '请输入搜索内容',
+    PLEACHOLDER_EXTEND: '按下回车立即搜索，或补充更多信息进行搜索',
     PLEACHOLDER_IMAGE: '输入文字搜索，支持粘贴或上传报错截图',
     UPLOAD_TOOLTIP: '报错截图搜索，支持jpg、png、jpeg等，最大10M',
+    UPLOAD_FAILED: '图片上传失败，请检查网络后重试',
     TEXT: '搜索',
   },
   SOURCE_CODE: [
