@@ -3,6 +3,7 @@
 // 后续添加请按规则添加
 export const VITEPRESS_VERSIONS_CONFIG = {
   'stable-common': 'common',
+  'stable-24.03_LTS_SP4': '24.03_LTS_SP4',
   'stable-24.03_LTS_SP3': '24.03_LTS_SP3',
   'stable-25.09': '25.09',
   'stable-24.03_LTS_SP2': '24.03_LTS_SP2',

@@ -1,6 +1,10 @@
 export const versions = {
   zh: [
     {
+      label: '24.03 LTS SP4',
+      value: '24.03_LTS_SP4',
+    },
+    {
       label: '24.03 LTS SP3',
       value: '24.03_LTS_SP3', 
     },
@@ -123,6 +127,10 @@ export const versions = {
     },
   ],
   en: [
+    {
+      label: '24.03 LTS SP4',
+      value: '24.03_LTS_SP4',
+    },
     {
       label: '24.03 LTS SP3',
       value: '24.03_LTS_SP3', 

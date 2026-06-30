@@ -23,16 +23,16 @@ export default {
           NAME: 'Get openEuler',
           CHILDREN: [
             {
+              NAME: 'openEuler 24.03 LTS SP4',
+              DESCRIPTION: 'Enhance server, cloud, and AI workloads with upgraded reliability, inference, O&M, and security.',
+              TAG: TAG_TYPE.NEW,
+              URL: '/download/#openEuler 24.03 LTS SP4',
+            },
+            {
               NAME: 'openEuler 24.03 LTS SP3',
               DESCRIPTION: 'Explore the UnifiedBus SuperPoD architecture on openEuler.',
               TAG: TAG_TYPE.NEW,
               URL: '/download/#openEuler 24.03 LTS SP3',
-            },
-            {
-              NAME: 'openEuler 24.03 LTS SP2',
-              DESCRIPTION: 'Enhanced 24.03 LTS SP2 on kernel 6.6. Better experience for users and devs.',
-              TAG: null,
-              URL: '/download/#openEuler 24.03 LTS SP2',
             },
             {
               NAME: 'openEuler 24.03 LTS SP1',
@@ -81,11 +81,12 @@ export default {
         },
         {
           NAME: 'openEuler Lifecycle',
-          URL: '/other/lifecycle/',
+          URL: '/en/other/lifecycle/',
+          isBlank: true,
         },
         {
-          NAME: 'openEuler 24.03 LTS SP3 Installation Guide',
-          URL: `${import.meta.env.VITE_SERVICE_DOCS_URL}/en/docs/24.03_LTS_SP3/server/installation_upgrade/installation/installation_preparations.html`,
+          NAME: 'openEuler 24.03 LTS SP4 Installation Guide',
+          URL: `${import.meta.env.VITE_SERVICE_DOCS_URL}/en/docs/24.03_LTS_SP4/server/installation_upgrade/installation/installation_preparations.html`,
         },
         {
           NAME: 'openEuler 25.09 Installation Guide',
@@ -211,12 +212,12 @@ export default {
               NAME: 'Quick Start',
               DESCRIPTION: 'Learn the community essentials in 10 minutes, build and grow quickly.',
               TAG: TAG_TYPE.HOT,
-              URL: `${import.meta.env.VITE_SERVICE_DOCS_URL}/en/docs/24.03_LTS_SP3/server/quickstart/quickstart/quick_start.html`,
+              URL: `${import.meta.env.VITE_SERVICE_DOCS_URL}/en/docs/24.03_LTS_SP4/server/quickstart/quickstart/quick_start.html`,
             },
             {
               NAME: 'Installation Guide',
               DESCRIPTION: 'Step-by-step instructions for installing openEuler.',
-              URL: `${import.meta.env.VITE_SERVICE_DOCS_URL}/en/docs/24.03_LTS_SP3/server/installation_upgrade/installation/installation_preparations.html`,
+              URL: `${import.meta.env.VITE_SERVICE_DOCS_URL}/en/docs/24.03_LTS_SP4/server/installation_upgrade/installation/installation_preparations.html`,
             },
             {
               NAME: 'Frequently Asked Questions',
@@ -447,17 +448,18 @@ export default {
   CODE: 'Code',
   QUICKLINK: 'Quick Link',
   SEARCH: {
-    BROWSEHISTORY: 'History',
+    BROWSEHISTORY: 'Recent',
     CLEAN: 'Clean up',
-    TOPSEARCH: 'Top search',
+    TOPSEARCH: 'Popular',
     CHANGE: 'Change',
     ONESTEP: 'Quick Navigation',
     SUGGEST: 'Suggestions',
     NO_DATA: 'No data',
     PLEACHOLDER: 'Please enter...',
-    PLEACHOLDER_EXTEND: 'Please enter the content',
+    PLEACHOLDER_EXTEND: 'Press Enter to start, or refine your search with more info',
     PLEACHOLDER_IMAGE: 'Search by text or upload image of any error',
     UPLOAD_TOOLTIP: 'JPG, PNG, JPEG supported (max 10 MB)',
+    UPLOAD_FAILED: 'Upload failed. Check connection and try again.',
     TEXT: 'Search',
   },
   SOURCE_CODE: [
