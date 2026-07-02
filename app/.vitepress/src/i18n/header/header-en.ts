@@ -22,16 +22,15 @@ export default {
         {
           NAME: 'Get openEuler',
           CHILDREN: [
-            /* {
+            {
               NAME: 'openEuler 24.03 LTS SP4',
               DESCRIPTION: 'Enhance server, cloud, and AI workloads with upgraded reliability, inference, O&M, and security.',
               TAG: TAG_TYPE.NEW,
               URL: '/download/#openEuler 24.03 LTS SP4',
-            }, */
+            },
             {
               NAME: 'openEuler 24.03 LTS SP3',
               DESCRIPTION: 'Explore the UnifiedBus SuperPoD architecture on openEuler.',
-              TAG: TAG_TYPE.NEW,
               URL: '/download/#openEuler 24.03 LTS SP3',
             },
             {
