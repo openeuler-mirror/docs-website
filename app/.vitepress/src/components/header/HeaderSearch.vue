@@ -821,7 +821,7 @@ const handleDrop = (event: DragEvent) => {
     display: flex;
     width: 480px;
 
-    @include respond('<=laptop') {
+    @media (max-width: 1440px) {
       width: 240px;
     }
 
