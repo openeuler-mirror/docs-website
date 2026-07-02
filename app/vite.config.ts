@@ -48,7 +48,7 @@ export default defineConfig({
     },
   },
   ssr: {
-    noExternal: ['@agconnect/api', '@agconnect/instance', '@hw-hmscore/analytics-web'],
+    noExternal: ['@agconnect/api', '@agconnect/instance', '@hw-hmscore/analytics-web', 'vue-i18n'],
   },
   server: {},
 });

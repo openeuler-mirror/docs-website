@@ -1,5 +1,7 @@
 import type { App } from 'vue';
 import { createPinia } from 'pinia';
+import i18n from '@/i18n';
+import { createTheme } from '@opendesign-plus/composables';
 
 import Layout from '@/App.vue';
 import NotFound from '@/NotFound.vue';
@@ -26,7 +28,16 @@ export default {
   Layout,
   NotFound,
   enhanceApp({ app }: { app: App }) {
+    app.use(i18n);
     app.use(createPinia());
+    app.use(
+      createTheme({
+        cookieKey: 'openEuler-theme-appearance',
+        cookieDomain: import.meta.env.VITE_COOKIE_DOMAIN,
+        attributeLightValue: 'e.light',
+        attributeDarkValue: 'e.dark',
+      })
+    );
     app.use(VueDOMPurifyHTML, {
       default: {
         ADD_ATTR: ['target'],

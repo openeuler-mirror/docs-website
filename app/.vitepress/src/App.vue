@@ -2,20 +2,16 @@
 import { inBrowser, useData, useRoute, useRouter } from 'vitepress';
 import { nextTick, ref, watch } from 'vue';
 
-import { OScroller, OConfigProvider } from '@opensig/opendesign';
+import { OScroller } from '@opensig/opendesign';
 import { OCookieNotice, OPlusConfigProvider } from '@opendesign-plus/components';
-import zhCN from '@opensig/opendesign/es/locale/lang/zh-cn';
-import enUS from '@opensig/opendesign/es/locale/lang/en-us';
 
-import AppHeader from '@/components/header/AppHeader.vue';
+import AppHeader from '@/components/AppHeader.vue';
 import LayoutDoc from '@/layouts/LayoutDoc.vue';
 
 import { scrollToTop } from '@/utils/common';
-import { useLocale } from '@/composables/useLocale';
 import { useViewStore } from '@/stores/view';
 
 const { lang } = useData();
-const { isZh } = useLocale();
 const viewStore = useViewStore();
 
 const router = useRouter();
@@ -88,7 +84,7 @@ if (inBrowser) {
 </script>
 
 <template>
-  <OConfigProvider :locale="isZh ? zhCN : enUS">
+  <OPlusConfigProvider :locale="lang">
     <AppHeader class="ly-header" />
     <OScroller show-type="hover" disabled-x auto-update-on-scroll-size>
       <main class="ly-main">
@@ -96,16 +92,15 @@ if (inBrowser) {
         <LayoutDoc v-else />
       </main>
     </OScroller>
-    <OPlusConfigProvider :locale="lang">
-      <OCookieNotice
-        ref="cookieRef"
-        v-model:visible="cookieNoticeVisible"
-        community="openEuler"
-        :detail-url="`${HOME_URL}/${lang}/other/cookies/`"
-        :cookie-domain="COOKIE_DOMAIN"
-      />
-    </OPlusConfigProvider>
-  </OConfigProvider>
+
+    <OCookieNotice
+      ref="cookieRef"
+      v-model:visible="cookieNoticeVisible"
+      community="openEuler"
+      :detail-url="`${HOME_URL}/${lang}/other/cookies/`"
+      :cookie-domain="COOKIE_DOMAIN"
+    />
+  </OPlusConfigProvider>
 </template>
 
 <style lang="scss">
@@ -117,7 +112,7 @@ if (inBrowser) {
 
   --vw100: 100vw;
 
-  --layout-header-height: 80px;
+  --layout-header-height: 72px;
   --layout-header-zIndex: 101;
   --layout-header-max-width: 1488px;
   --layout-header-padding: 12px;
@@ -134,6 +129,10 @@ if (inBrowser) {
 
   --layout-content-min-height: calc(var(--layout-screen-height) - var(--layout-header-height));
 
+  @include respond('<=laptop_s') {
+    --layout-header-height: 64px;
+  }
+
   @include respond('<=laptop') {
     --layout-header-max-width: 100%;
     --layout-header-padding: 5%;
@@ -145,15 +144,12 @@ if (inBrowser) {
   }
 
   @include respond('<=pad') {
+    --layout-header-height: 56px;
     --layout-header-padding: 32px;
 
     --layout-content-padding: 32px;
 
     --layout-footer-height: 434px;
-  }
-
-  @include respond('<=pad_v') {
-    --layout-header-height: 48px;
   }
 
   @include respond('phone') {
@@ -166,7 +162,7 @@ if (inBrowser) {
 }
 
 .cookie-notice-content {
-  background-color: rgba(var(--o-grey-1), .9) !important;
+  background-color: rgba(var(--o-grey-1), 0.9) !important;
 }
 </style>
 

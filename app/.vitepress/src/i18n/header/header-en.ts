@@ -16,427 +16,422 @@ const OutLink = markRaw(IconOutLink);
 export default {
   NAV_ROUTER: [
     {
-      NAME: 'Download',
-      ID: 'download',
-      CHILDREN: [
+      label: 'Download',
+      id: 'download',
+      children: [
         {
-          NAME: 'Get openEuler',
-          CHILDREN: [
+          label: 'Get openEuler',
+          children: [
             {
-              NAME: 'openEuler 24.03 LTS SP4',
-              DESCRIPTION: 'Enhance server, cloud, and AI workloads with upgraded reliability, inference, O&M, and security.',
-              TAG: TAG_TYPE.NEW,
-              URL: '/download/#openEuler 24.03 LTS SP4',
+              label: 'openEuler 24.03 LTS SP4',
+              description: 'Enhance server, cloud, and AI workloads with upgraded reliability, inference, O&M, and security.',
+              tag: TAG_TYPE.NEW,
+              href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/download/#openEuler 24.03 LTS SP4/`,
             },
             {
-              NAME: 'openEuler 24.03 LTS SP3',
-              DESCRIPTION: 'Explore the UnifiedBus SuperPoD architecture on openEuler.',
-              URL: '/download/#openEuler 24.03 LTS SP3',
+              label: 'openEuler 24.03 LTS SP3',
+              description: 'Explore the UnifiedBus SuperPoD architecture on openEuler.',
+              href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/download/#openEuler 24.03 LTS SP3/`,
             },
             {
-              NAME: 'openEuler 24.03 LTS SP1',
-              DESCRIPTION: 'Enhanced 24.03 LTS SP1 on kernel 6.6. Better experience for users and devs.',
-              TAG: null,
-              URL: '/download/#openEuler 24.03 LTS SP1',
+              label: 'openEuler 24.03 LTS SP1',
+              description: 'Enhanced 24.03 LTS SP1 on kernel 6.6. Better experience for users and devs.',
+              href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/download/#openEuler 24.03 LTS SP1/`,
             },
             {
-              NAME: 'More',
-              DESCRIPTION: 'Get openEuler from public clouds or container images.',
-              TAG: null,
-              URL: '/download/#get-openeuler',
+              label: 'More',
+              description: 'Get openEuler from public clouds or container images.',
+              href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/download/#get-openeuler/`,
             },
           ],
         },
         {
-          NAME: 'Other Releases',
-          CHILDREN: [
+          label: 'Other Releases',
+          children: [
             {
-              NAME: 'Commercial Releases',
-              DESCRIPTION: 'Commercial releases for x86, Arm, and RISC-V.',
-              URL: '/download/commercial-release/',
+              label: 'Commercial Releases',
+              description: 'Commercial releases for x86, Arm, and RISC-V.',
+              href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/download/commercial-release/`,
             },
           ],
         },
         {
-          NAME: 'Related Resources',
-          CHILDREN: [
+          label: 'Related Resources',
+          children: [
             {
-              NAME: 'Mirrors',
-              DESCRIPTION: 'All mirror sites of openEuler.',
-              URL: '/mirror/list/',
+              label: 'Mirrors',
+              description: 'All mirror sites of openEuler.',
+              href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/mirror/list/`,
             },
             {
-              NAME: 'Repo',
-              DESCRIPTION: "Repo of openEuler's community releases.",
-              URL: 'https://repo.openeuler.openatom.cn/',
+              label: 'Repo',
+              description: "Repo of openEuler's community releases.",
+              href: 'https://repo.openeuler.openatom.cn/',
             },
           ],
         },
       ],
-      SHORTCUT: [
+      shortcut: [
         {
-          NAME: 'Historical Releases',
-          URL: '/download/archive/',
+          label: 'Historical Releases',
+          href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/download/archive/`,
         },
         {
-          NAME: 'openEuler Lifecycle',
-          URL: '/en/other/lifecycle/',
-          isBlank: true,
+          label: 'openEuler Lifecycle',
+          href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/other/lifecycle/`,
         },
         {
-          NAME: 'openEuler 24.03 LTS SP4 Installation Guide',
-          URL: `${import.meta.env.VITE_SERVICE_DOCS_URL}/en/docs/24.03_LTS_SP4/server/installation_upgrade/installation/installation_preparations.html`,
+          label: 'openEuler 24.03 LTS SP4 Installation Guide',
+          href: `${import.meta.env.VITE_SERVICE_DOCS_URL}/en/docs/24.03_LTS_SP4/server/installation_upgrade/installation/installation_preparations.html`,
         },
         {
-          NAME: 'openEuler 25.09 Installation Guide',
-          URL: `${import.meta.env.VITE_SERVICE_DOCS_URL}/en/docs/25.09/server/installation_upgrade/installation/installation_preparations.html`,
+          label: 'openEuler 25.09 Installation Guide',
+          href: `${import.meta.env.VITE_SERVICE_DOCS_URL}/en/docs/25.09/server/installation_upgrade/installation/installation_preparations.html`,
         },
         {
-          NAME: 'Technical White Papers',
-          URL: '/showcase/technical-white-paper/',
+          label: 'Technical White Papers',
+          href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/showcase/technical-white-paper/`,
         },
       ],
     },
     {
-      NAME: 'Develop',
-      ID: 'development',
-      CHILDREN: [
+      label: 'Develop',
+      id: 'development',
+      children: [
         {
-          NAME: 'Contribute',
-          CHILDREN: [
+          label: 'Contribute',
+          children: [
             {
-              NAME: 'SIGs',
-              DESCRIPTION: 'Explore diverse SIGs.',
-              URL: '/sig/sig-list/',
+              label: 'SIGs',
+              description: 'Explore diverse SIGs.',
+              href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/sig/sig-list/`,
             },
             {
-              NAME: 'CLA',
-              DESCRIPTION: 'Sign the CLA to protect your work—multiple options available!',
-              URL: 'https://clasign.osinfra.cn/sign/6983225bdcbb19710248ccf0',
-              ICON: OutLink,
+              label: 'CLA',
+              description: 'Sign the CLA to protect your work—multiple options available!',
+              href: 'https://clasign.osinfra.cn/sign/6983225bdcbb19710248ccf0',
+              icon: OutLink,
             },
             {
-              NAME: 'Contribution Guide',
-              DESCRIPTION: 'See how to get involved and make an impact in our community.',
-              URL: '/community/contribution/',
+              label: 'Contribution Guide',
+              description: 'See how to get involved and make an impact in our community.',
+              href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/community/contribution/`,
             },
           ],
         },
         {
-          NAME: 'Build',
-          CHILDREN: [
+          label: 'Build',
+          children: [
             {
-              NAME: 'EulerMaker',
-              DESCRIPTION: 'An open, unified build service for streamlined development.',
-              URL: 'https://eulermaker.openeuler.openatom.cn/',
-              ANALYTICSNAME: 'eulermaker',
+              label: 'EulerMaker',
+              description: 'An open, unified build service for streamlined development.',
+              href: 'https://eulermaker.openeuler.openatom.cn/',
             },
             {
-              NAME: 'openEuler User Repo',
-              DESCRIPTION: 'An easy-to-use package hosting and distribution platform.',
-              URL: 'https://eur.openeuler.openatom.cn/coprs/',
+              label: 'openEuler User Repo',
+              description: 'An easy-to-use package hosting and distribution platform.',
+              href: 'https://eur.openeuler.openatom.cn/coprs/',
             },
             {
-              NAME: 'Submit Package',
-              DESCRIPTION: 'Contribute software packages efficiently to the community.',
-              URL: `${import.meta.env.VITE_SERVICE_SOFTWARE_PKG_URL}/en/package`,
-            },
-          ],
-        },
-        {
-          NAME: 'Release',
-          CHILDREN: [
-            {
-              NAME: 'OEPKGS',
-              DESCRIPTION: 'A third-party extension repository for openEuler.',
-              URL: 'https://oepkgs.net/en-CN',
-              ICON: OutLink,
+              label: 'Submit Package',
+              description: 'Contribute software packages efficiently to the community.',
+              href: `${import.meta.env.VITE_SERVICE_SOFTWARE_PKG_URL}/en/package`,
             },
           ],
         },
         {
-          NAME: 'Analyze',
-          CHILDREN: [
+          label: 'Release',
+          children: [
             {
-              NAME: 'Pkgship',
-              DESCRIPTION: 'A tool to query OS package information and dependencies with ease.',
-              URL: import.meta.env.VITE_SERVICE_PKGMANAGE_URL,
-              ANALYTICSNAME: 'pkgship',
+              label: 'OEPKGS',
+              description: 'OEPKGS software hosting platform.',
+              href: 'https://oepkgs.net/en-CN',
+              icon: OutLink,
             },
           ],
         },
         {
-          NAME: 'Projects',
-          CHILDREN: [
+          label: 'Analyze',
+          children: [
             {
-              NAME: 'A-Tune',
-              DESCRIPTION: 'An AI-powered intelligent tuning engine.',
-              URL: '/other/projects/atune/',
+              label: 'Pkgship',
+              description: 'A tool to query OS package information and dependencies with ease.',
+              href: import.meta.env.VITE_SERVICE_PKGMANAGE_URL,
+            },
+          ],
+        },
+        {
+          label: 'Projects',
+          children: [
+            {
+              label: 'A-Tune',
+              description: 'An AI-powered intelligent tuning engine.',
+              href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/other/projects/atune/`,
             },
             {
-              NAME: 'iSula',
-              DESCRIPTION: 'A container solution.',
-              URL: '/other/projects/isula/',
+              label: 'iSula',
+              description: 'A container solution.',
+              href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/other/projects/isula/`,
             },
             {
-              NAME: 'secGear',
-              DESCRIPTION: 'A confidential computing framework for building secure applications.',
-              URL: '/other/projects/secgear/',
+              label: 'secGear',
+              description: 'A confidential computing framework for building secure applications.',
+              href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/other/projects/secgear/`,
             },
             {
-              NAME: 'All projects',
-              DESCRIPTION: '',
-              URL: '/projects',
-              ICON: IconChevronRight,
+              label: 'All projects',
+              description: '',
+              href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/projects`,
+              icon: IconChevronRight,
             },
           ],
         },
       ],
-      SHORTCUT: [],
+      shortcut: [],
     },
     {
-      NAME: 'Document',
-      ID: 'document',
-      CHILDREN: [
+      label: 'Document',
+      id: 'document',
+      children: [
         {
-          NAME: 'Document',
-          CHILDREN: [
+          label: 'Document',
+          children: [
             {
-              NAME: 'Document Center',
-              DESCRIPTION: 'Your go-to resource for different service scenarios and tool usage.',
-              TAG: TAG_TYPE.HOT,
-              URL: `${import.meta.env.VITE_SERVICE_DOCS_URL}/en/`,
+              label: 'Document Center',
+              description: 'Your go-to resource for different service scenarios and tool usage.',
+              tag: TAG_TYPE.HOT,
+              href: `${import.meta.env.VITE_SERVICE_DOCS_URL}/en/`,
             },
             {
-              NAME: 'Quick Start',
-              DESCRIPTION: 'Learn the community essentials in 10 minutes, build and grow quickly.',
-              TAG: TAG_TYPE.HOT,
-              URL: `${import.meta.env.VITE_SERVICE_DOCS_URL}/en/docs/24.03_LTS_SP4/server/quickstart/quickstart/quick_start.html`,
+              label: 'Quick Start',
+              description: 'Learn the community essentials in 10 minutes, build and grow quickly.',
+              tag: TAG_TYPE.HOT,
+              href: `${import.meta.env.VITE_SERVICE_DOCS_URL}/en/docs/24.03_LTS_SP4/server/quickstart/quickstart/quick_start.html`,
             },
             {
-              NAME: 'Installation Guide',
-              DESCRIPTION: 'Step-by-step instructions for installing openEuler.',
-              URL: `${import.meta.env.VITE_SERVICE_DOCS_URL}/en/docs/24.03_LTS_SP4/server/installation_upgrade/installation/installation_preparations.html`,
+              label: 'Installation Guide',
+              description: 'Step-by-step instructions for installing openEuler.',
+              href: `${import.meta.env.VITE_SERVICE_DOCS_URL}/en/docs/24.03_LTS_SP4/server/installation_upgrade/installation/installation_preparations.html`,
             },
             {
-              NAME: 'Frequently Asked Questions',
-              DESCRIPTION: 'Get answers to common questions and troubleshooting tips.',
-              URL: `${import.meta.env.VITE_SERVICE_DOCS_URL}/en/docs/common/faq/general/general_faq.html`,
+              label: 'Frequently Asked Questions',
+              description: 'Get answers to common questions and troubleshooting tips.',
+              href: `${import.meta.env.VITE_SERVICE_DOCS_URL}/en/docs/common/faq/general/general_faq.html`,
             },
             {
-              NAME: 'Documentation Development Guide',
-              DESCRIPTION: 'Discover how you can contribute to document development.',
-              URL: `${import.meta.env.VITE_SERVICE_DOCS_URL}/en/docs/common/contribute/directory_structure_introductory.html`,
+              label: 'Documentation Development Guide',
+              description: 'Discover how you can contribute to document development.',
+              href: `${import.meta.env.VITE_SERVICE_DOCS_URL}/en/docs/common/contribute/directory_structure_introductory.html`,
             },
           ],
         },
       ],
-      SHORTCUT: [],
+      shortcut: [],
     },
     {
-      NAME: 'Learn',
-      ID: 'learn',
-      CHILDREN: [
+      label: 'Learn',
+      id: 'learn',
+      children: [
         {
-          NAME: 'Training',
-          CHILDREN: [
+          label: 'Training',
+          children: [
             {
-              NAME: 'Tutorials',
-              DESCRIPTION: 'Series of openEuler video tutorials to help you get started.',
-              URL: '/learn/mooc/',
+              label: 'Tutorials',
+              description: 'Series of openEuler video tutorials to help you get started.',
+              href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/learn/mooc/`,
             },
           ],
         },
       ],
-      SHORTCUT: [],
+      shortcut: [],
     },
     {
-      NAME: 'Support',
-      ID: 'approve',
-      CHILDREN: [
+      label: 'Support',
+      id: 'approve',
+      children: [
         {
-          NAME: 'Compatibility',
-          CHILDREN: [
+          label: 'Compatibility',
+          children: [
             {
-              NAME: 'Compatibility List',
-              DESCRIPTION: 'Check hardware and software compatibility with openEuler.',
-              URL: '/compatibility/',
+              label: 'Compatibility List',
+              description: 'Check hardware and software compatibility with openEuler.',
+              href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/compatibility/`,
             },
           ],
         },
         {
-          NAME: 'Migration',
-          CHILDREN: [
+          label: 'Migration',
+          children: [
             {
-              NAME: 'Migrate to openEuler',
-              DESCRIPTION: 'Guides for migrating to openEuler.',
-              URL: '/migration/',
+              label: 'Migrate to openEuler',
+              description: 'Guides for migrating to openEuler.',
+              href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/migration/`,
             },
           ],
         },
         {
-          NAME: 'Security',
-          CHILDREN: [
+          label: 'Security',
+          children: [
             {
-              NAME: 'Security Center',
-              DESCRIPTION: 'Track the latest vulnerabilities, security advisories, and more.',
-              URL: '/security/security-bulletins/',
+              label: 'Security Center',
+              description: 'Track the latest vulnerabilities, security advisories, and more.',
+              href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/security/security-bulletins/`,
             },
             {
-              NAME: 'Bug Center',
-              DESCRIPTION: 'Discover bug fixes.',
-              URL: '/security/bug-bulletins/',
-            },
-          ],
-        },
-      ],
-      SHORTCUT: [
-        {
-          NAME: 'Overall Introduction to the openEuler Hardware Compatibility Test',
-          URL: '/compatibility/hardware/',
-        },
-        {
-          NAME: 'Get x2openEuler',
-          URL: '/migration/download/',
-        },
-        {
-          NAME: 'Migration Practices',
-          URL: '/migration/user-cases/',
-        },
-        {
-          NAME: 'FAQs',
-          URL: '/faq/',
-        },
-      ],
-    },
-    {
-      NAME: 'Community',
-      ID: 'community',
-      CHILDREN: [
-        {
-          NAME: 'About',
-          CHILDREN: [
-            {
-              NAME: 'Governance',
-              DESCRIPTION: 'Members of openEuler committees.',
-              URL: '/community/organization/',
-            },
-            {
-              NAME: 'Code of Conduct',
-              DESCRIPTION: "openEuler's code of conduct.",
-              URL: '/community/conduct/',
-            },
-            {
-              NAME: 'Members',
-              DESCRIPTION: 'Companies and organizations contributing to openEuler.',
-              URL: '/community/member/',
-            },
-            {
-              NAME: 'Statistics',
-              DESCRIPTION: 'Find stats and see how the openEuler community thrives.',
-              URL: `${import.meta.env.VITE_SERVICE_DATASTAT_URL}/en/overview`,
-            },
-            {
-              NAME: 'Contact Us',
-              DESCRIPTION: 'Email us or follow us on social media.',
-              URL: '/contact-us/',
-            },
-            {
-              NAME: 'Success Stories',
-              DESCRIPTION: 'Explore how openEuler is used across various industries.',
-              URL: '/showcase/',
-            },
-            {
-              NAME: 'White Papers',
-              DESCRIPTION: 'Insights into the tech details and applications of each release.',
-              URL: '/showcase/technical-white-paper/',
-            },
-          ],
-        },
-        {
-          NAME: 'Engage with Us',
-          CHILDREN: [
-            {
-              NAME: 'Forum',
-              DESCRIPTION: 'Share knowledge, ask anything, and solve together.',
-              URL: `${import.meta.env.VITE_SERVICE_FORUM_URL}/?locale=en`,
-            },
-            {
-              NAME: 'Mailing Lists',
-              DESCRIPTION: 'Discuss openEuler tech and progress on our mailing lists.',
-              URL: '/community/mailing-list/',
-            },
-            {
-              NAME: 'QuickIssue',
-              DESCRIPTION: 'Submit and track community issues quickly and easily.',
-              URL: `${import.meta.env.VITE_SERVICE_QUICKISSUE_URL}/en/issues/`,
+              label: 'Bug Center',
+              description: 'Discover bug fixes.',
+              href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/security/bug-bulletins/`,
             },
           ],
         },
       ],
-      SHORTCUT: [
+      shortcut: [
         {
-          NAME: 'Featured in Linux Magazine: A Comprehensive Focus Guide on openEuler',
-          URL: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/category/technology/Linux Magazine Focus Guide-openEuler.pdf`,
+          label: 'Overall Introduction to the openEuler Hardware Compatibility Test',
+          href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/compatibility/hardware/`,
+        },
+        {
+          label: 'Get x2openEuler',
+          href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/migration/download/`,
+        },
+        {
+          label: 'Migration Practices',
+          href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/migration/user-cases/`,
+        },
+        {
+          label: 'FAQs',
+          href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/faq/`,
         },
       ],
     },
     {
-      NAME: 'Stay Updated',
-      ID: 'update',
-      WITH_PICTURE: true,
-      CHILDREN: [
+      label: 'Community',
+      id: 'community',
+      children: [
         {
-          NAME: 'Activities',
-          CHILDREN: [
+          label: 'About',
+          children: [
             {
-              NAME: 'Community Calendar',
-              DESCRIPTION: "Stay informed with openEuler's key events, conferences, and releases.",
-              URL: '/interaction/event-list/',
+              label: 'Governance',
+              description: 'Members of openEuler committees.',
+              href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/community/organization/`,
             },
             {
-              NAME: 'Events',
-              DESCRIPTION: 'Meet openEuler and connect with the community at every key event.',
-              URL: '/interaction/summit-list/summit2025/',
+              label: 'Code of Conduct',
+              description: "openEuler's code of conduct.",
+              href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/community/conduct/`,
             },
             {
-              NAME: 'Call for X Program',
-              DESCRIPTION: 'Become openEuler Valuable Professionals or contribute tech tutorials!',
-              URL: '/community/program/',
+              label: 'Members',
+              description: 'Companies and organizations contributing to openEuler.',
+              href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/community/member/`,
+            },
+            {
+              label: 'Statistics',
+              description: 'Find stats and see how the openEuler community thrives.',
+              href: `${import.meta.env.VITE_SERVICE_DATASTAT_URL}/en/overview`,
+            },
+            {
+              label: 'Contact Us',
+              description: 'Email us or follow us on social media.',
+              href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/contact-us/`,
+            },
+            {
+              label: 'Success Stories',
+              description: 'Explore how openEuler is used across various industries.',
+              href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/showcase/`,
+            },
+            {
+              label: 'White Papers',
+              description: 'Insights into the tech details and applications of each release.',
+              href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/showcase/technical-white-paper/`,
             },
           ],
         },
         {
-          NAME: 'News & Blogs',
-          CHILDREN: [
+          label: 'Engage with Us',
+          children: [
             {
-              NAME: 'News',
-              DESCRIPTION: 'Follow the latest developments, releases, and community updates.',
-              URL: '/interaction/news-list/',
+              label: 'Forum',
+              description: 'Share knowledge, ask anything, and solve together.',
+              href: `${import.meta.env.VITE_SERVICE_FORUM_URL}/?locale=en`,
             },
             {
-              NAME: 'Blogs',
-              DESCRIPTION: 'Gain in-depth knowledge and fresh perspectives on openEuler.',
-              URL: '/interaction/blog-list/',
+              label: 'Mailing Lists',
+              description: 'Discuss openEuler tech and progress on our mailing lists.',
+              href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/community/mailing-list/`,
             },
             {
-              NAME: 'Monthly Bulletins',
-              DESCRIPTION: "What's new in the openEuler community.",
-              URL: '/monthly-bulletins/',
+              label: 'QuickIssue',
+              description: 'Submit and track community issues quickly and easily.',
+              href: `${import.meta.env.VITE_SERVICE_QUICKISSUE_URL}/en/issues/`,
             },
           ],
         },
       ],
-      SHORTCUT: [
+      shortcut: [
         {
-          NAME: 'Operating System Confenrence & openEuler Summit 2025',
-          PICTURE: Summit,
-          PICTURE_PARK: SummitDark,
-          DESCRIPTION:
+          label: 'Featured in Linux Magazine: A Comprehensive Focus Guide on openEuler',
+          href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/category/technology/Linux Magazine Focus Guide-openEuler.pdf`,
+        },
+      ],
+    },
+    {
+      label: 'Stay Updated',
+      id: 'update',
+      withPicture: true,
+      children: [
+        {
+          label: 'Activities',
+          children: [
+            {
+              label: 'Community Calendar',
+              description: "Stay informed with openEuler's key events, conferences, and releases.",
+              href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/interaction/event-list/`,
+            },
+            {
+              label: 'Events',
+              description: 'Meet openEuler and connect with the community at every key event.',
+              href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/interaction/summit-list/summit2025/`,
+            },
+            {
+              label: 'Call for X Program',
+              description: 'Become openEuler Valuable Professionals or contribute tech tutorials!',
+              href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/community/program/`,
+            },
+          ],
+        },
+        {
+          label: 'News & Blogs',
+          children: [
+            {
+              label: 'News',
+              description: 'Follow the latest developments, releases, and community updates.',
+              href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/interaction/news-list/`,
+            },
+            {
+              label: 'Blogs',
+              description: 'Gain in-depth knowledge and fresh perspectives on openEuler.',
+              href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/interaction/blog-list/`,
+            },
+            {
+              label: 'Monthly Bulletins',
+              description: "What's new in the openEuler community.",
+              href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/monthly-bulletins/`,
+            },
+          ],
+        },
+      ],
+      shortcut: [
+        {
+          label: 'Operating System Conference & openEuler Summit 2025',
+          picture: Summit,
+          pictureDark: SummitDark,
+          description:
             'As AI transitions from exploration to real-world implementation, operating systems are crucial for unleashing massive AI computing power. Celebrating six years of open source excellence, openEuler has achieved holistic growth in business, technology, and its ecosystem. It now powers a diverse range of scenarios—from servers and cloud-native to edge computing and embedded systems—serving users across the globe and driving foundational software innovation.',
-          REMARK: 'November 14-15, 2025 | Beijing',
-          TYPE: 'PICTURE',
-          URL: '/interaction/summit-list/summit2025/',
+          remark: 'November 14-15, 2025 | Beijing',
+          type: 'PICTURE',
+          href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/interaction/summit-list/summit2025/`,
         },
       ],
     },
@@ -461,21 +456,24 @@ export default {
     UPLOAD_FAILED: 'Upload failed. Check connection and try again.',
     TEXT: 'Search',
   },
-  SOURCE_CODE: [
-    {
-      NAME: 'Code Sources',
-      PATH: 'https://atomgit.com/openeuler',
-      ICON: OutLink,
-    },
-    {
-      NAME: 'Package Sources',
-      PATH: 'https://atomgit.com/src-openeuler',
-      ICON: OutLink,
-    },
-    {
-      NAME: 'GitHub Mirror',
-      PATH: 'https://github.com/openeuler-mirror',
-      ICON: OutLink,
-    },
-  ],
+  SOURCE_CODE: {
+    label: 'Code',
+    children: [
+      {
+        label: 'Code Sources',
+        href: 'https://atomgit.com/openeuler',
+        icon: OutLink,
+      },
+      {
+        label: 'Package Sources',
+        href: 'https://atomgit.com/src-openeuler',
+        icon: OutLink,
+      },
+      {
+        label: 'GitHub Mirror',
+        href: 'https://github.com/openeuler-mirror',
+        icon: OutLink,
+      },
+    ],
+  },
 };

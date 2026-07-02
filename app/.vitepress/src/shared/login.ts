@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
-import { useLangStore } from '@/stores/common';
-import { useLoginStore, useUserInfoStore } from '@/stores/user';
+import { useUserInfoStore } from '@/stores/user';
 import { queryUserInfo } from '@/api/api-user';
+import { doLogout, doLogin, tryLogin } from '@opendesign-plus/composables';
 
 const LOGIN_URL = import.meta.env.VITE_LOGIN_URL;
 const XSRF_COOKIE_NAME = import.meta.env.VITE_XSRF_COOKIE_NAME;
@@ -27,15 +27,17 @@ export const LOGIN_KEYS = {
 export const getCsrfToken = () => Cookies.get(LOGIN_KEYS.CSRF_TOKEN) || '';
 
 // 退出登录
-export function logout() {
-  location.href = `${LOGIN_URL}/logout?redirect_uri=${encodeURIComponent(location.href)}`;
+export function logout(lang: string) {
+  const url = `${LOGIN_URL}/logout?redirect_uri=${encodeURIComponent(location.href)}&lang=${lang}`;
+  doLogout(url);
 }
 
 /**
  * 跳转登录页
  */
-export function doLogin() {
-  location.href = `${LOGIN_URL}/login?redirect_uri=${encodeURIComponent(location.href)}&lang=${useLangStore().lang}`;
+export function login(lang: string) {
+  const url = `${LOGIN_URL}/login?redirect_uri=${encodeURIComponent(location.href)}&lang=${lang}`;
+  doLogin(url);
 }
 
 // 清除用户认证凭据
@@ -54,25 +56,10 @@ export function clearUserAuth() {
  * 尝试登录
  * @returns 登录结果
  */
-export async function tryLogin() {
+export async function tryToLogin() {
   const userInfoStore = useUserInfoStore();
-  const loginStore = useLoginStore();
-  const csrfToken = getCsrfToken();
-  if (!csrfToken) {
-    userInfoStore.$reset();
-    loginStore.setLoginStatus(LOGIN_STATUS.NOT);
-    loginStore.setLoginStateChecked(true);
-    return;
-  }
-
-  try {
-    loginStore.setLoginStatus(LOGIN_STATUS.DOING);
-    userInfoStore.$patch(await queryUserInfo());
-    loginStore.setLoginStatus(LOGIN_STATUS.DONE);
-    (window as any).__OA_INSTANCE__?.setUserId(userInfoStore.username);
-  } catch {
-    loginStore.setLoginStatus(LOGIN_STATUS.FAILED);
-  } finally {
-    loginStore.setLoginStateChecked(true);
+  const userInfo = await tryLogin(queryUserInfo as any);
+  if (userInfo) {
+    userInfoStore.$patch(userInfo);
   }
 }
