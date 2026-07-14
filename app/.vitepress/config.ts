@@ -8,6 +8,7 @@ import type Token from 'markdown-it/lib/token.mjs';
 import llmstxt from 'vitepress-plugin-llms';
 
 import { getDomId } from './src/utils/common';
+import { buildPageJsonLd } from './src/config/jsonld';
 import { defineConfig } from 'vitepress';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -24,6 +25,8 @@ function readEnvVar(key: string): string | undefined {
 }
 
 const sitemapHostname = readEnvVar('VITE_SERVICE_DOCS_URL') || 'https://docs.openeuler.org';
+const mainDomainUrl = readEnvVar('VITE_MAIN_DOMAIN_URL') || 'https://www.openeuler.org';
+const srcDir = resolve(__dirname, '..');
 
 export default defineConfig({
   base: '/',
@@ -241,6 +244,14 @@ export default defineConfig({
         return renderContent;
       };
     },
+  },
+  transformPageData(pageData) {
+    const schema = buildPageJsonLd(pageData, { docsUrl: sitemapHostname, mainDomainUrl, srcDir });
+    if (schema) {
+      (pageData.frontmatter.head ??= []).push(
+        ['script', { type: 'application/ld+json' }, JSON.stringify(schema)]
+      );
+    }
   },
   async buildEnd() {
     const packageConfig = JSON.parse(readFileSync(join(__dirname, '../../package.json'), 'utf-8'));
