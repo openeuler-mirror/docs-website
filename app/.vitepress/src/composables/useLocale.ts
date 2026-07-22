@@ -1,4 +1,4 @@
-import { computed, onMounted } from 'vue';
+import { computed, watch } from 'vue';
 import { useData } from 'vitepress/client';
 import { isClient, isUndefined } from '@opensig/opendesign';
 
@@ -78,11 +78,14 @@ export const useLocale = () => {
 
   const $t = t;
 
-  onMounted(() => {
-    if (locale.value) {
-      localStorage.setItem('locale', locale.value);
+  watch(locale, (val) => {
+    if (val && i18n.global.locale.value !== val) {
+      i18n.global.locale.value = val;
     }
-  });
+    if (isClient) {
+      localStorage.setItem('locale', val);
+    }
+  }, { immediate: true });
 
   return {
     $t,
