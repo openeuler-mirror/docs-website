@@ -34,6 +34,8 @@ const viewStore = useViewStore();
 const { csrfCookie } = getUserAuth();
 const userInfoStore = useUserInfoStore();
 
+const isMounted = ref(false);
+
 const goHome = () => {
   window.location.href = `${import.meta.env.VITE_MAIN_DOMAIN_URL}/${lang.value}/`;
 };
@@ -60,6 +62,7 @@ const onChangeTheme = (val: string) => {
 };
 
 onMounted(() => {
+  isMounted.value = true;
   let theme;
   if (!getCustomCookie(APPEARANCE_KEY)) {
     const prefereDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -255,7 +258,7 @@ watch(
 
 <template>
   <OHeader
-    v-if="!lePadV"
+    v-if="isMounted && !lePadV"
     :logo="logoUrl"
     :nav-data="navData"
     community="openEuler"
@@ -318,7 +321,7 @@ watch(
     </template>
   </OHeader>
   <OHeaderMobile
-    v-else
+    v-if="isMounted && lePadV"
     :logo="logoUrl"
     :nav-data="navData"
     :code-data="sourceCode"
