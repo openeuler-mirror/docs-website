@@ -38,6 +38,7 @@
  * 4. --targetOwnerRepo 和 --targetBranch 只用于获取 CI 配置，与要检查的仓库名称和分支无关
  * 5. --detailUrl 是 | 检查项 | 检查结果 | 详情 | 这个表格中，详情这一列的链接回填项，不传递将没有详情这一列
  * 6. --ciConfigUrl 相关配置请查阅 https://atomgit.com/openeuler/docs/blob/stable-common/.doctools/%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E.md 配置说明
+ * 7. 非 --checkAll 模式下，若 PR 中存在文档删除变更（含重命名前的旧路径），且启用了 link-validity-check 或 resource-existence-check 中的任意一项，将在变更文件检查完成后单独对全量 md 文件执行删除文件引用扫描；命中的引用按节点类型分别归入 link-validity-check（link 节点、a 标签）与 resource-existence-check（image 节点、img/source/video/audio/image 标签、<<< 嵌入）；只启用一项时仅扫描对应类别的节点，避免污染未启用的检查项；--checkAll 全量模式下不进行该检查
  * 
  * 使用示例：
  * node docs-ci-v2.js \
@@ -84579,17 +84580,17 @@ var require_visit = __commonJS({
     visit3.BREAK = BREAK;
     visit3.SKIP = SKIP3;
     visit3.REMOVE = REMOVE;
-    function visit_(key, node2, visitor, path25) {
-      const ctrl = callVisitor(key, node2, visitor, path25);
+    function visit_(key, node2, visitor, path27) {
+      const ctrl = callVisitor(key, node2, visitor, path27);
       if (identity.isNode(ctrl) || identity.isPair(ctrl)) {
-        replaceNode(key, path25, ctrl);
-        return visit_(key, ctrl, visitor, path25);
+        replaceNode(key, path27, ctrl);
+        return visit_(key, ctrl, visitor, path27);
       }
       if (typeof ctrl !== "symbol") {
         if (identity.isCollection(node2)) {
-          path25 = Object.freeze(path25.concat(node2));
+          path27 = Object.freeze(path27.concat(node2));
           for (let i = 0; i < node2.items.length; ++i) {
-            const ci = visit_(i, node2.items[i], visitor, path25);
+            const ci = visit_(i, node2.items[i], visitor, path27);
             if (typeof ci === "number")
               i = ci - 1;
             else if (ci === BREAK)
@@ -84600,13 +84601,13 @@ var require_visit = __commonJS({
             }
           }
         } else if (identity.isPair(node2)) {
-          path25 = Object.freeze(path25.concat(node2));
-          const ck = visit_("key", node2.key, visitor, path25);
+          path27 = Object.freeze(path27.concat(node2));
+          const ck = visit_("key", node2.key, visitor, path27);
           if (ck === BREAK)
             return BREAK;
           else if (ck === REMOVE)
             node2.key = null;
-          const cv = visit_("value", node2.value, visitor, path25);
+          const cv = visit_("value", node2.value, visitor, path27);
           if (cv === BREAK)
             return BREAK;
           else if (cv === REMOVE)
@@ -84629,17 +84630,17 @@ var require_visit = __commonJS({
     visitAsync.BREAK = BREAK;
     visitAsync.SKIP = SKIP3;
     visitAsync.REMOVE = REMOVE;
-    async function visitAsync_(key, node2, visitor, path25) {
-      const ctrl = await callVisitor(key, node2, visitor, path25);
+    async function visitAsync_(key, node2, visitor, path27) {
+      const ctrl = await callVisitor(key, node2, visitor, path27);
       if (identity.isNode(ctrl) || identity.isPair(ctrl)) {
-        replaceNode(key, path25, ctrl);
-        return visitAsync_(key, ctrl, visitor, path25);
+        replaceNode(key, path27, ctrl);
+        return visitAsync_(key, ctrl, visitor, path27);
       }
       if (typeof ctrl !== "symbol") {
         if (identity.isCollection(node2)) {
-          path25 = Object.freeze(path25.concat(node2));
+          path27 = Object.freeze(path27.concat(node2));
           for (let i = 0; i < node2.items.length; ++i) {
-            const ci = await visitAsync_(i, node2.items[i], visitor, path25);
+            const ci = await visitAsync_(i, node2.items[i], visitor, path27);
             if (typeof ci === "number")
               i = ci - 1;
             else if (ci === BREAK)
@@ -84650,13 +84651,13 @@ var require_visit = __commonJS({
             }
           }
         } else if (identity.isPair(node2)) {
-          path25 = Object.freeze(path25.concat(node2));
-          const ck = await visitAsync_("key", node2.key, visitor, path25);
+          path27 = Object.freeze(path27.concat(node2));
+          const ck = await visitAsync_("key", node2.key, visitor, path27);
           if (ck === BREAK)
             return BREAK;
           else if (ck === REMOVE)
             node2.key = null;
-          const cv = await visitAsync_("value", node2.value, visitor, path25);
+          const cv = await visitAsync_("value", node2.value, visitor, path27);
           if (cv === BREAK)
             return BREAK;
           else if (cv === REMOVE)
@@ -84685,24 +84686,24 @@ var require_visit = __commonJS({
       return visitor;
     }
     __name(initVisitor, "initVisitor");
-    function callVisitor(key, node2, visitor, path25) {
+    function callVisitor(key, node2, visitor, path27) {
       if (typeof visitor === "function")
-        return visitor(key, node2, path25);
+        return visitor(key, node2, path27);
       if (identity.isMap(node2))
-        return visitor.Map?.(key, node2, path25);
+        return visitor.Map?.(key, node2, path27);
       if (identity.isSeq(node2))
-        return visitor.Seq?.(key, node2, path25);
+        return visitor.Seq?.(key, node2, path27);
       if (identity.isPair(node2))
-        return visitor.Pair?.(key, node2, path25);
+        return visitor.Pair?.(key, node2, path27);
       if (identity.isScalar(node2))
-        return visitor.Scalar?.(key, node2, path25);
+        return visitor.Scalar?.(key, node2, path27);
       if (identity.isAlias(node2))
-        return visitor.Alias?.(key, node2, path25);
+        return visitor.Alias?.(key, node2, path27);
       return void 0;
     }
     __name(callVisitor, "callVisitor");
-    function replaceNode(key, path25, node2) {
-      const parent = path25[path25.length - 1];
+    function replaceNode(key, path27, node2) {
+      const parent = path27[path27.length - 1];
       if (identity.isCollection(parent)) {
         parent.items[key] = node2;
       } else if (identity.isPair(parent)) {
@@ -85332,10 +85333,10 @@ var require_Collection = __commonJS({
     var createNode = require_createNode();
     var identity = require_identity();
     var Node3 = require_Node();
-    function collectionFromPath(schema, path25, value2) {
+    function collectionFromPath(schema, path27, value2) {
       let v = value2;
-      for (let i = path25.length - 1; i >= 0; --i) {
-        const k = path25[i];
+      for (let i = path27.length - 1; i >= 0; --i) {
+        const k = path27[i];
         if (typeof k === "number" && Number.isInteger(k) && k >= 0) {
           const a = [];
           a[k] = v;
@@ -85355,7 +85356,7 @@ var require_Collection = __commonJS({
       });
     }
     __name(collectionFromPath, "collectionFromPath");
-    var isEmptyPath = /* @__PURE__ */ __name((path25) => path25 == null || typeof path25 === "object" && !!path25[Symbol.iterator]().next().done, "isEmptyPath");
+    var isEmptyPath = /* @__PURE__ */ __name((path27) => path27 == null || typeof path27 === "object" && !!path27[Symbol.iterator]().next().done, "isEmptyPath");
     var Collection = class extends Node3.NodeBase {
       static {
         __name(this, "Collection");
@@ -85388,11 +85389,11 @@ var require_Collection = __commonJS({
        * be a Pair instance or a `{ key, value }` object, which may not have a key
        * that already exists in the map.
        */
-      addIn(path25, value2) {
-        if (isEmptyPath(path25))
+      addIn(path27, value2) {
+        if (isEmptyPath(path27))
           this.add(value2);
         else {
-          const [key, ...rest] = path25;
+          const [key, ...rest] = path27;
           const node2 = this.get(key, true);
           if (identity.isCollection(node2))
             node2.addIn(rest, value2);
@@ -85406,8 +85407,8 @@ var require_Collection = __commonJS({
        * Removes a value from the collection.
        * @returns `true` if the item was found and removed.
        */
-      deleteIn(path25) {
-        const [key, ...rest] = path25;
+      deleteIn(path27) {
+        const [key, ...rest] = path27;
         if (rest.length === 0)
           return this.delete(key);
         const node2 = this.get(key, true);
@@ -85421,8 +85422,8 @@ var require_Collection = __commonJS({
        * scalar values from their surrounding node; to disable set `keepScalar` to
        * `true` (collections are always returned intact).
        */
-      getIn(path25, keepScalar) {
-        const [key, ...rest] = path25;
+      getIn(path27, keepScalar) {
+        const [key, ...rest] = path27;
         const node2 = this.get(key, true);
         if (rest.length === 0)
           return !keepScalar && identity.isScalar(node2) ? node2.value : node2;
@@ -85440,8 +85441,8 @@ var require_Collection = __commonJS({
       /**
        * Checks if the collection includes a value with the key `key`.
        */
-      hasIn(path25) {
-        const [key, ...rest] = path25;
+      hasIn(path27) {
+        const [key, ...rest] = path27;
         if (rest.length === 0)
           return this.has(key);
         const node2 = this.get(key, true);
@@ -85451,8 +85452,8 @@ var require_Collection = __commonJS({
        * Sets a value in this collection. For `!!set`, `value` needs to be a
        * boolean to add/remove the item from the set.
        */
-      setIn(path25, value2) {
-        const [key, ...rest] = path25;
+      setIn(path27, value2) {
+        const [key, ...rest] = path27;
         if (rest.length === 0) {
           this.set(key, value2);
         } else {
@@ -88025,9 +88026,9 @@ var require_Document = __commonJS({
           this.contents.add(value2);
       }
       /** Adds a value to the document. */
-      addIn(path25, value2) {
+      addIn(path27, value2) {
         if (assertCollection(this.contents))
-          this.contents.addIn(path25, value2);
+          this.contents.addIn(path27, value2);
       }
       /**
        * Create a new `Alias` node, ensuring that the target `node` has the required anchor.
@@ -88102,14 +88103,14 @@ var require_Document = __commonJS({
        * Removes a value from the document.
        * @returns `true` if the item was found and removed.
        */
-      deleteIn(path25) {
-        if (Collection.isEmptyPath(path25)) {
+      deleteIn(path27) {
+        if (Collection.isEmptyPath(path27)) {
           if (this.contents == null)
             return false;
           this.contents = null;
           return true;
         }
-        return assertCollection(this.contents) ? this.contents.deleteIn(path25) : false;
+        return assertCollection(this.contents) ? this.contents.deleteIn(path27) : false;
       }
       /**
        * Returns item at `key`, or `undefined` if not found. By default unwraps
@@ -88124,10 +88125,10 @@ var require_Document = __commonJS({
        * scalar values from their surrounding node; to disable set `keepScalar` to
        * `true` (collections are always returned intact).
        */
-      getIn(path25, keepScalar) {
-        if (Collection.isEmptyPath(path25))
+      getIn(path27, keepScalar) {
+        if (Collection.isEmptyPath(path27))
           return !keepScalar && identity.isScalar(this.contents) ? this.contents.value : this.contents;
-        return identity.isCollection(this.contents) ? this.contents.getIn(path25, keepScalar) : void 0;
+        return identity.isCollection(this.contents) ? this.contents.getIn(path27, keepScalar) : void 0;
       }
       /**
        * Checks if the document includes a value with the key `key`.
@@ -88138,10 +88139,10 @@ var require_Document = __commonJS({
       /**
        * Checks if the document includes a value at `path`.
        */
-      hasIn(path25) {
-        if (Collection.isEmptyPath(path25))
+      hasIn(path27) {
+        if (Collection.isEmptyPath(path27))
           return this.contents !== void 0;
-        return identity.isCollection(this.contents) ? this.contents.hasIn(path25) : false;
+        return identity.isCollection(this.contents) ? this.contents.hasIn(path27) : false;
       }
       /**
        * Sets a value in this document. For `!!set`, `value` needs to be a
@@ -88158,13 +88159,13 @@ var require_Document = __commonJS({
        * Sets a value in this document. For `!!set`, `value` needs to be a
        * boolean to add/remove the item from the set.
        */
-      setIn(path25, value2) {
-        if (Collection.isEmptyPath(path25)) {
+      setIn(path27, value2) {
+        if (Collection.isEmptyPath(path27)) {
           this.contents = value2;
         } else if (this.contents == null) {
-          this.contents = Collection.collectionFromPath(this.schema, Array.from(path25), value2);
+          this.contents = Collection.collectionFromPath(this.schema, Array.from(path27), value2);
         } else if (assertCollection(this.contents)) {
-          this.contents.setIn(path25, value2);
+          this.contents.setIn(path27, value2);
         }
       }
       /**
@@ -90173,9 +90174,9 @@ var require_cst_visit = __commonJS({
     visit3.BREAK = BREAK;
     visit3.SKIP = SKIP3;
     visit3.REMOVE = REMOVE;
-    visit3.itemAtPath = (cst, path25) => {
+    visit3.itemAtPath = (cst, path27) => {
       let item = cst;
-      for (const [field, index2] of path25) {
+      for (const [field, index2] of path27) {
         const tok = item?.[field];
         if (tok && "items" in tok) {
           item = tok.items[index2];
@@ -90184,23 +90185,23 @@ var require_cst_visit = __commonJS({
       }
       return item;
     };
-    visit3.parentCollection = (cst, path25) => {
-      const parent = visit3.itemAtPath(cst, path25.slice(0, -1));
-      const field = path25[path25.length - 1][0];
+    visit3.parentCollection = (cst, path27) => {
+      const parent = visit3.itemAtPath(cst, path27.slice(0, -1));
+      const field = path27[path27.length - 1][0];
       const coll = parent?.[field];
       if (coll && "items" in coll)
         return coll;
       throw new Error("Parent collection not found");
     };
-    function _visit(path25, item, visitor) {
-      let ctrl = visitor(item, path25);
+    function _visit(path27, item, visitor) {
+      let ctrl = visitor(item, path27);
       if (typeof ctrl === "symbol")
         return ctrl;
       for (const field of ["key", "value"]) {
         const token = item[field];
         if (token && "items" in token) {
           for (let i = 0; i < token.items.length; ++i) {
-            const ci = _visit(Object.freeze(path25.concat([[field, i]])), token.items[i], visitor);
+            const ci = _visit(Object.freeze(path27.concat([[field, i]])), token.items[i], visitor);
             if (typeof ci === "number")
               i = ci - 1;
             else if (ci === BREAK)
@@ -90211,10 +90212,10 @@ var require_cst_visit = __commonJS({
             }
           }
           if (typeof ctrl === "function" && field === "key")
-            ctrl = ctrl(item, path25);
+            ctrl = ctrl(item, path27);
         }
       }
-      return typeof ctrl === "function" ? ctrl(item, path25) : ctrl;
+      return typeof ctrl === "function" ? ctrl(item, path27) : ctrl;
     }
     __name(_visit, "_visit");
     exports2.visit = visit3;
@@ -92862,14 +92863,14 @@ var require_util = __commonJS({
         }
         const port = url2.port != null ? url2.port : url2.protocol === "https:" ? 443 : 80;
         let origin = url2.origin != null ? url2.origin : `${url2.protocol || ""}//${url2.hostname || ""}:${port}`;
-        let path25 = url2.path != null ? url2.path : `${url2.pathname || ""}${url2.search || ""}`;
+        let path27 = url2.path != null ? url2.path : `${url2.pathname || ""}${url2.search || ""}`;
         if (origin[origin.length - 1] === "/") {
           origin = origin.slice(0, origin.length - 1);
         }
-        if (path25 && path25[0] !== "/") {
-          path25 = `/${path25}`;
+        if (path27 && path27[0] !== "/") {
+          path27 = `/${path27}`;
         }
-        return new URL(`${origin}${path25}`);
+        return new URL(`${origin}${path27}`);
       }
       if (!isHttpOrHttpsPrefixed(url2.origin || url2.protocol)) {
         throw new InvalidArgumentError("Invalid URL protocol: the URL must start with `http:` or `https:`.");
@@ -93353,39 +93354,39 @@ var require_diagnostics = __commonJS({
       });
       diagnosticsChannel.channel("undici:client:sendHeaders").subscribe((evt) => {
         const {
-          request: { method, path: path25, origin }
+          request: { method, path: path27, origin }
         } = evt;
-        debuglog("sending request to %s %s/%s", method, origin, path25);
+        debuglog("sending request to %s %s/%s", method, origin, path27);
       });
       diagnosticsChannel.channel("undici:request:headers").subscribe((evt) => {
         const {
-          request: { method, path: path25, origin },
+          request: { method, path: path27, origin },
           response: { statusCode }
         } = evt;
         debuglog(
           "received response to %s %s/%s - HTTP %d",
           method,
           origin,
-          path25,
+          path27,
           statusCode
         );
       });
       diagnosticsChannel.channel("undici:request:trailers").subscribe((evt) => {
         const {
-          request: { method, path: path25, origin }
+          request: { method, path: path27, origin }
         } = evt;
-        debuglog("trailers received from %s %s/%s", method, origin, path25);
+        debuglog("trailers received from %s %s/%s", method, origin, path27);
       });
       diagnosticsChannel.channel("undici:request:error").subscribe((evt) => {
         const {
-          request: { method, path: path25, origin },
+          request: { method, path: path27, origin },
           error
         } = evt;
         debuglog(
           "request to %s %s/%s errored - %s",
           method,
           origin,
-          path25,
+          path27,
           error.message
         );
       });
@@ -93434,9 +93435,9 @@ var require_diagnostics = __commonJS({
         });
         diagnosticsChannel.channel("undici:client:sendHeaders").subscribe((evt) => {
           const {
-            request: { method, path: path25, origin }
+            request: { method, path: path27, origin }
           } = evt;
-          debuglog("sending request to %s %s/%s", method, origin, path25);
+          debuglog("sending request to %s %s/%s", method, origin, path27);
         });
       }
       diagnosticsChannel.channel("undici:websocket:open").subscribe((evt) => {
@@ -93502,7 +93503,7 @@ var require_request = __commonJS({
         __name(this, "Request");
       }
       constructor(origin, {
-        path: path25,
+        path: path27,
         method,
         body,
         headers,
@@ -93517,11 +93518,11 @@ var require_request = __commonJS({
         expectContinue,
         servername
       }, handler2) {
-        if (typeof path25 !== "string") {
+        if (typeof path27 !== "string") {
           throw new InvalidArgumentError("path must be a string");
-        } else if (path25[0] !== "/" && !(path25.startsWith("http://") || path25.startsWith("https://")) && method !== "CONNECT") {
+        } else if (path27[0] !== "/" && !(path27.startsWith("http://") || path27.startsWith("https://")) && method !== "CONNECT") {
           throw new InvalidArgumentError("path must be an absolute URL or start with a slash");
-        } else if (invalidPathRegex.test(path25)) {
+        } else if (invalidPathRegex.test(path27)) {
           throw new InvalidArgumentError("invalid request path");
         }
         if (typeof method !== "string") {
@@ -93587,7 +93588,7 @@ var require_request = __commonJS({
         this.completed = false;
         this.aborted = false;
         this.upgrade = upgrade || null;
-        this.path = query ? buildURL(path25, query) : path25;
+        this.path = query ? buildURL(path27, query) : path27;
         this.origin = origin;
         this.idempotent = idempotent == null ? method === "HEAD" || method === "GET" : idempotent;
         this.blocking = blocking == null ? false : blocking;
@@ -98358,7 +98359,7 @@ var require_client_h1 = __commonJS({
     }
     __name(shouldSendContentLength, "shouldSendContentLength");
     function writeH1(client, request) {
-      const { method, path: path25, host, upgrade, blocking, reset: reset2 } = request;
+      const { method, path: path27, host, upgrade, blocking, reset: reset2 } = request;
       let { body, headers, contentLength } = request;
       const expectsPayload = method === "PUT" || method === "POST" || method === "PATCH" || method === "QUERY" || method === "PROPFIND" || method === "PROPPATCH";
       if (util.isFormDataLike(body)) {
@@ -98425,7 +98426,7 @@ var require_client_h1 = __commonJS({
       if (blocking) {
         socket[kBlocking] = true;
       }
-      let header = `${method} ${path25} HTTP/1.1\r
+      let header = `${method} ${path27} HTTP/1.1\r
 `;
       if (typeof host === "string") {
         header += `host: ${host}\r
@@ -98968,7 +98969,7 @@ var require_client_h2 = __commonJS({
     __name(shouldSendContentLength, "shouldSendContentLength");
     function writeH2(client, request) {
       const session = client[kHTTP2Session];
-      const { method, path: path25, host, upgrade, expectContinue, signal, headers: reqHeaders } = request;
+      const { method, path: path27, host, upgrade, expectContinue, signal, headers: reqHeaders } = request;
       let { body } = request;
       if (upgrade) {
         util.errorRequest(client, request, new Error("Upgrade not supported for H2"));
@@ -99035,7 +99036,7 @@ var require_client_h2 = __commonJS({
         });
         return true;
       }
-      headers[HTTP2_HEADER_PATH] = path25;
+      headers[HTTP2_HEADER_PATH] = path27;
       headers[HTTP2_HEADER_SCHEME] = "https";
       const expectsPayload = method === "PUT" || method === "POST" || method === "PATCH";
       if (body && typeof body.read === "function") {
@@ -99402,9 +99403,9 @@ var require_redirect_handler = __commonJS({
           return this.handler.onHeaders(statusCode, headers, resume, statusText);
         }
         const { origin, pathname, search: search2 } = util.parseURL(new URL(this.location, this.opts.origin && new URL(this.opts.path, this.opts.origin)));
-        const path25 = search2 ? `${pathname}${search2}` : pathname;
+        const path27 = search2 ? `${pathname}${search2}` : pathname;
         this.opts.headers = cleanRequestHeaders(this.opts.headers, statusCode === 303, this.opts.origin !== origin);
-        this.opts.path = path25;
+        this.opts.path = path27;
         this.opts.origin = origin;
         this.opts.maxRedirections = 0;
         this.opts.query = null;
@@ -100683,10 +100684,10 @@ var require_proxy_agent = __commonJS({
         };
         const {
           origin,
-          path: path25 = "/",
+          path: path27 = "/",
           headers = {}
         } = opts;
-        opts.path = origin + path25;
+        opts.path = origin + path27;
         if (!("host" in headers) && !("Host" in headers)) {
           const { host } = new URL3(origin);
           headers.host = host;
@@ -102673,21 +102674,21 @@ var require_mock_utils = __commonJS({
       return true;
     }
     __name(matchHeaders, "matchHeaders");
-    function safeUrl(path25) {
-      if (typeof path25 !== "string") {
-        return path25;
+    function safeUrl(path27) {
+      if (typeof path27 !== "string") {
+        return path27;
       }
-      const pathSegments = path25.split("?");
+      const pathSegments = path27.split("?");
       if (pathSegments.length !== 2) {
-        return path25;
+        return path27;
       }
       const qp = new URLSearchParams(pathSegments.pop());
       qp.sort();
       return [...pathSegments, qp.toString()].join("?");
     }
     __name(safeUrl, "safeUrl");
-    function matchKey(mockDispatch2, { path: path25, method, body, headers }) {
-      const pathMatch = matchValue(mockDispatch2.path, path25);
+    function matchKey(mockDispatch2, { path: path27, method, body, headers }) {
+      const pathMatch = matchValue(mockDispatch2.path, path27);
       const methodMatch = matchValue(mockDispatch2.method, method);
       const bodyMatch = typeof mockDispatch2.body !== "undefined" ? matchValue(mockDispatch2.body, body) : true;
       const headersMatch = matchHeaders(mockDispatch2, headers);
@@ -102711,7 +102712,7 @@ var require_mock_utils = __commonJS({
     function getMockDispatch(mockDispatches, key) {
       const basePath = key.query ? buildURL(key.path, key.query) : key.path;
       const resolvedPath = typeof basePath === "string" ? safeUrl(basePath) : basePath;
-      let matchedMockDispatches = mockDispatches.filter(({ consumed }) => !consumed).filter(({ path: path25 }) => matchValue(safeUrl(path25), resolvedPath));
+      let matchedMockDispatches = mockDispatches.filter(({ consumed }) => !consumed).filter(({ path: path27 }) => matchValue(safeUrl(path27), resolvedPath));
       if (matchedMockDispatches.length === 0) {
         throw new MockNotMatchedError(`Mock dispatch not matched for path '${resolvedPath}'`);
       }
@@ -102752,9 +102753,9 @@ var require_mock_utils = __commonJS({
     }
     __name(deleteMockDispatch, "deleteMockDispatch");
     function buildKey(opts) {
-      const { path: path25, method, body, headers, query } = opts;
+      const { path: path27, method, body, headers, query } = opts;
       return {
-        path: path25,
+        path: path27,
         method,
         body,
         headers,
@@ -103245,10 +103246,10 @@ var require_pending_interceptors_formatter = __commonJS({
       }
       format(pendingInterceptors) {
         const withPrettyHeaders = pendingInterceptors.map(
-          ({ method, path: path25, data: { statusCode }, persist, times, timesInvoked, origin }) => ({
+          ({ method, path: path27, data: { statusCode }, persist, times, timesInvoked, origin }) => ({
             Method: method,
             Origin: origin,
-            Path: path25,
+            Path: path27,
             "Status code": statusCode,
             Persistent: persist ? PERSISTENT : NOT_PERSISTENT,
             Invocations: timesInvoked,
@@ -108226,9 +108227,9 @@ var require_util6 = __commonJS({
       }
     }
     __name(validateCookieValue, "validateCookieValue");
-    function validateCookiePath(path25) {
-      for (let i = 0; i < path25.length; ++i) {
-        const code4 = path25.charCodeAt(i);
+    function validateCookiePath(path27) {
+      for (let i = 0; i < path27.length; ++i) {
+        const code4 = path27.charCodeAt(i);
         if (code4 < 32 || // exclude CTLs (0-31)
         code4 === 127 || // DEL
         code4 === 59) {
@@ -110992,11 +110993,11 @@ var require_undici = __commonJS({
           if (typeof opts.path !== "string") {
             throw new InvalidArgumentError("invalid opts.path");
           }
-          let path25 = opts.path;
+          let path27 = opts.path;
           if (!opts.path.startsWith("/")) {
-            path25 = `/${path25}`;
+            path27 = `/${path27}`;
           }
-          url2 = new URL(util.parseOrigin(url2).origin + path25);
+          url2 = new URL(util.parseOrigin(url2).origin + path27);
         } else {
           if (!opts) {
             opts = typeof url2 === "object" ? url2 : {};
@@ -121006,7 +121007,7 @@ var require_ini = __commonJS({
 var require_resolve_from = __commonJS({
   "../../node_modules/resolve-from/index.js"(exports2, module2) {
     "use strict";
-    var path25 = require("path");
+    var path27 = require("path");
     var Module = require("module");
     var fs9 = require("fs");
     var resolveFrom2 = /* @__PURE__ */ __name((fromDirectory, moduleId, silent) => {
@@ -121020,14 +121021,14 @@ var require_resolve_from = __commonJS({
         fromDirectory = fs9.realpathSync(fromDirectory);
       } catch (error) {
         if (error.code === "ENOENT") {
-          fromDirectory = path25.resolve(fromDirectory);
+          fromDirectory = path27.resolve(fromDirectory);
         } else if (silent) {
           return;
         } else {
           throw error;
         }
       }
-      const fromFile = path25.join(fromDirectory, "noop.js");
+      const fromFile = path27.join(fromDirectory, "noop.js");
       const resolveFileName = /* @__PURE__ */ __name(() => Module._resolveFilename(moduleId, {
         id: fromFile,
         filename: fromFile,
@@ -121299,8 +121300,8 @@ var require_utils2 = __commonJS({
       }
       return output;
     };
-    exports2.basename = (path25, { windows: windows2 } = {}) => {
-      const segs = path25.split(windows2 ? /[\\/]/ : "/");
+    exports2.basename = (path27, { windows: windows2 } = {}) => {
+      const segs = path27.split(windows2 ? /[\\/]/ : "/");
       const last = segs[segs.length - 1];
       if (last === "") {
         return segs[segs.length - 2];
@@ -130648,12 +130649,12 @@ var require_parent_module = __commonJS({
 var require_clear_module = __commonJS({
   "../../node_modules/clear-module/index.js"(exports2, module2) {
     "use strict";
-    var path25 = require("path");
+    var path27 = require("path");
     var resolveFrom2 = require_resolve_from();
     var parentModule = require_parent_module();
     var resolve3 = /* @__PURE__ */ __name((moduleId) => {
       try {
-        return resolveFrom2(path25.dirname(parentModule(__filename)), moduleId);
+        return resolveFrom2(path27.dirname(parentModule(__filename)), moduleId);
       } catch (_) {
       }
     }, "resolve");
@@ -130682,7 +130683,7 @@ var require_clear_module = __commonJS({
       }
     }, "clear");
     clear.all = () => {
-      const directory = path25.dirname(parentModule(__filename));
+      const directory = path27.dirname(parentModule(__filename));
       for (const moduleId of Object.keys(require.cache)) {
         delete require.cache[resolveFrom2(directory, moduleId)];
       }
@@ -130708,7 +130709,7 @@ var require_clear_module = __commonJS({
 var require_resolve_from2 = __commonJS({
   "../../node_modules/import-fresh/node_modules/resolve-from/index.js"(exports2, module2) {
     "use strict";
-    var path25 = require("path");
+    var path27 = require("path");
     var Module = require("module");
     var fs9 = require("fs");
     var resolveFrom2 = /* @__PURE__ */ __name((fromDir, moduleId, silent) => {
@@ -130722,14 +130723,14 @@ var require_resolve_from2 = __commonJS({
         fromDir = fs9.realpathSync(fromDir);
       } catch (err) {
         if (err.code === "ENOENT") {
-          fromDir = path25.resolve(fromDir);
+          fromDir = path27.resolve(fromDir);
         } else if (silent) {
           return null;
         } else {
           throw err;
         }
       }
-      const fromFile = path25.join(fromDir, "noop.js");
+      const fromFile = path27.join(fromDir, "noop.js");
       const resolveFileName = /* @__PURE__ */ __name(() => Module._resolveFilename(moduleId, {
         id: fromFile,
         filename: fromFile,
@@ -130785,7 +130786,7 @@ var require_parent_module2 = __commonJS({
 var require_import_fresh = __commonJS({
   "../../node_modules/import-fresh/index.js"(exports2, module2) {
     "use strict";
-    var path25 = require("path");
+    var path27 = require("path");
     var resolveFrom2 = require_resolve_from2();
     var parentModule = require_parent_module2();
     module2.exports = (moduleId) => {
@@ -130793,7 +130794,7 @@ var require_import_fresh = __commonJS({
         throw new TypeError("Expected a string");
       }
       const parentPath = parentModule(__filename);
-      const cwd = parentPath ? path25.dirname(parentPath) : __dirname;
+      const cwd = parentPath ? path27.dirname(parentPath) : __dirname;
       const filePath = resolveFrom2(cwd, moduleId);
       const oldModule = require.cache[filePath];
       if (oldModule && oldModule.parent) {
@@ -130812,7 +130813,7 @@ var require_import_fresh = __commonJS({
 });
 
 // src/docs-ci-v2.ts
-var import_path11 = __toESM(require("path"));
+var import_path13 = __toESM(require("path"));
 var import_fs4 = __toESM(require("fs"));
 
 // ../../node_modules/@isaacs/balanced-match/dist/esm/index.js
@@ -135001,12 +135002,12 @@ var PathBase = class {
   /**
    * Get the Path object referenced by the string path, resolved from this Path
    */
-  resolve(path25) {
-    if (!path25) {
+  resolve(path27) {
+    if (!path27) {
       return this;
     }
-    const rootPath = this.getRootString(path25);
-    const dir = path25.substring(rootPath.length);
+    const rootPath = this.getRootString(path27);
+    const dir = path27.substring(rootPath.length);
     const dirParts = dir.split(this.splitSep);
     const result = rootPath ? this.getRoot(rootPath).#resolveParts(dirParts) : this.#resolveParts(dirParts);
     return result;
@@ -135761,8 +135762,8 @@ var PathWin32 = class _PathWin32 extends PathBase {
   /**
    * @internal
    */
-  getRootString(path25) {
-    return import_node_path.win32.parse(path25).root;
+  getRootString(path27) {
+    return import_node_path.win32.parse(path27).root;
   }
   /**
    * @internal
@@ -135811,8 +135812,8 @@ var PathPosix = class _PathPosix extends PathBase {
   /**
    * @internal
    */
-  getRootString(path25) {
-    return path25.startsWith("/") ? "/" : "";
+  getRootString(path27) {
+    return path27.startsWith("/") ? "/" : "";
   }
   /**
    * @internal
@@ -135904,11 +135905,11 @@ var PathScurryBase = class {
   /**
    * Get the depth of a provided path, string, or the cwd
    */
-  depth(path25 = this.cwd) {
-    if (typeof path25 === "string") {
-      path25 = this.cwd.resolve(path25);
+  depth(path27 = this.cwd) {
+    if (typeof path27 === "string") {
+      path27 = this.cwd.resolve(path27);
     }
-    return path25.depth();
+    return path27.depth();
   }
   /**
    * Return the cache of child entries.  Exposed so subclasses can create
@@ -136395,9 +136396,9 @@ var PathScurryBase = class {
     process5();
     return results;
   }
-  chdir(path25 = this.cwd) {
+  chdir(path27 = this.cwd) {
     const oldCwd = this.cwd;
-    this.cwd = typeof path25 === "string" ? this.cwd.resolve(path25) : path25;
+    this.cwd = typeof path27 === "string" ? this.cwd.resolve(path27) : path27;
     this.cwd[setAsCwd](oldCwd);
   }
 };
@@ -136774,8 +136775,8 @@ var MatchRecord = class {
   }
   // match, absolute, ifdir
   entries() {
-    return [...this.store.entries()].map(([path25, n]) => [
-      path25,
+    return [...this.store.entries()].map(([path27, n]) => [
+      path27,
       !!(n & 2),
       !!(n & 1)
     ]);
@@ -136989,9 +136990,9 @@ var GlobUtil = class {
   signal;
   maxDepth;
   includeChildMatches;
-  constructor(patterns, path25, opts) {
+  constructor(patterns, path27, opts) {
     this.patterns = patterns;
-    this.path = path25;
+    this.path = path27;
     this.opts = opts;
     this.#sep = !opts.posix && opts.platform === "win32" ? "\\" : "/";
     this.includeChildMatches = opts.includeChildMatches !== false;
@@ -137010,11 +137011,11 @@ var GlobUtil = class {
       });
     }
   }
-  #ignored(path25) {
-    return this.seen.has(path25) || !!this.#ignore?.ignored?.(path25);
+  #ignored(path27) {
+    return this.seen.has(path27) || !!this.#ignore?.ignored?.(path27);
   }
-  #childrenIgnored(path25) {
-    return !!this.#ignore?.childrenIgnored?.(path25);
+  #childrenIgnored(path27) {
+    return !!this.#ignore?.childrenIgnored?.(path27);
   }
   // backpressure mechanism
   pause() {
@@ -137232,8 +137233,8 @@ var GlobWalker = class extends GlobUtil {
     __name(this, "GlobWalker");
   }
   matches = /* @__PURE__ */ new Set();
-  constructor(patterns, path25, opts) {
-    super(patterns, path25, opts);
+  constructor(patterns, path27, opts) {
+    super(patterns, path27, opts);
   }
   matchEmit(e) {
     this.matches.add(e);
@@ -137273,8 +137274,8 @@ var GlobStream = class extends GlobUtil {
     __name(this, "GlobStream");
   }
   results;
-  constructor(patterns, path25, opts) {
-    super(patterns, path25, opts);
+  constructor(patterns, path27, opts) {
+    super(patterns, path27, opts);
     this.results = new Minipass({
       signal: this.signal,
       objectMode: true
@@ -143154,8 +143155,8 @@ async function existsAsync(targetPath) {
   }
 }
 __name(existsAsync, "existsAsync");
-function readFileByAutoDecode(path25) {
-  const buf = import_fs2.default.readFileSync(path25);
+function readFileByAutoDecode(path27) {
+  const buf = import_fs2.default.readFileSync(path27);
   try {
     const result = import_jschardet.default.detect(buf);
     const encoding = result?.encoding ?? "utf-8";
@@ -143206,7 +143207,7 @@ async function getLinkStatus(link3, prefixPath = "", whitelist = [], proxy, sign
     return 200;
   }
   if (link3.startsWith("http")) {
-    if (/https:\/\/(gitcode|atomgit)\.com\/.+?\/.+?\/blob\/.+?\/.+/i.test(link3) && /\.\w+$/.test(link3)) {
+    if (/https:\/\/(gitcode|atomgit)\.com\/.+?\/.+?\/blob\/.+?\/.+/i.test(link3) && /\.[\w+.-]+$/.test(link3)) {
       const sp = link3.split("/");
       sp[2] = `raw.${sp[2]}`;
       sp[5] = "raw";
@@ -143302,6 +143303,39 @@ function getPRChangedFiles(repoPath, baseBranch = "main") {
   }
 }
 __name(getPRChangedFiles, "getPRChangedFiles");
+function getPRDeletedFiles(repoPath, baseBranch = "main") {
+  try {
+    const output = (0, import_child_process.execSync)(`git -c core.quotepath=false diff --diff-filter=DR --name-status ${baseBranch}...HEAD`, {
+      cwd: repoPath,
+      encoding: "utf-8"
+    }).trim();
+    if (!output) {
+      return [];
+    }
+    const deleted = [];
+    for (const line of output.split("\n")) {
+      if (!line.trim()) {
+        continue;
+      }
+      const parts = line.split(/\t/);
+      if (parts.length < 2) {
+        continue;
+      }
+      const status = parts[0].trim();
+      const filePath = status.startsWith("R") ? parts[1]?.trim() : parts[1].trim();
+      if (!filePath) {
+        continue;
+      }
+      deleted.push(filePath.replace(/\\/g, "/"));
+    }
+    return deleted;
+  } catch (err) {
+    console.error("[error]: getPRDeletedFiles");
+    console.error(err);
+    return [];
+  }
+}
+__name(getPRDeletedFiles, "getPRDeletedFiles");
 
 // ../shared/src/node/arg.ts
 function parseNamedArgs() {
@@ -143312,7 +143346,7 @@ function parseNamedArgs() {
       const arg = args[i];
       if (arg.startsWith("--")) {
         const [key, ...values] = arg.slice(2).split("=");
-        if (Array.isArray(values)) {
+        if (values.length > 0) {
           namedArgs[key] = values.join("=");
         } else if (i + 1 < args.length && !args[i + 1].startsWith("--")) {
           namedArgs[key] = args[i + 1];
@@ -144122,13 +144156,13 @@ var VFile = class {
    * @returns {undefined}
    *   Nothing.
    */
-  set path(path25) {
-    if (isUrl(path25)) {
-      path25 = (0, import_node_url3.fileURLToPath)(path25);
+  set path(path27) {
+    if (isUrl(path27)) {
+      path27 = (0, import_node_url3.fileURLToPath)(path27);
     }
-    assertNonEmpty(path25, "path");
-    if (this.path !== path25) {
-      this.history.push(path25);
+    assertNonEmpty(path27, "path");
+    if (this.path !== path27) {
+      this.history.push(path27);
     }
   }
   /**
@@ -144397,8 +144431,8 @@ function assertNonEmpty(part, name2) {
   }
 }
 __name(assertNonEmpty, "assertNonEmpty");
-function assertPath(path25, name2) {
-  if (!path25) {
+function assertPath(path27, name2) {
+  if (!path27) {
     throw new Error("Setting `" + name2 + "` requires `path` to be set too");
   }
 }
@@ -146480,7 +146514,7 @@ function transformGfmAutolinkLiterals(tree) {
   );
 }
 __name(transformGfmAutolinkLiterals, "transformGfmAutolinkLiterals");
-function findUrl(_, protocol, domain2, path25, match4) {
+function findUrl(_, protocol, domain2, path27, match4) {
   let prefix = "";
   if (!previous2(match4)) {
     return false;
@@ -146493,7 +146527,7 @@ function findUrl(_, protocol, domain2, path25, match4) {
   if (!isCorrectDomain(domain2)) {
     return false;
   }
-  const parts = splitUrl(domain2 + path25);
+  const parts = splitUrl(domain2 + path27);
   if (!parts[0]) return false;
   const result = {
     type: "link",
@@ -180257,10 +180291,10 @@ function urlParent(url2) {
   return new URL(hasTrailingSlash ? ".." : ".", url2);
 }
 __name(urlParent, "urlParent");
-function basenameOfUrlPathname(path25) {
-  const adj = path25.endsWith("/") ? 2 : 0;
-  const idx2 = path25.lastIndexOf("/", path25.length - adj);
-  return idx2 >= 0 ? path25.slice(idx2 + 1) : path25;
+function basenameOfUrlPathname(path27) {
+  const adj = path27.endsWith("/") ? 2 : 0;
+  const idx2 = path27.lastIndexOf("/", path27.length - adj);
+  return idx2 >= 0 ? path27.slice(idx2 + 1) : path27;
 }
 __name(basenameOfUrlPathname, "basenameOfUrlPathname");
 function isUrlLike(filename) {
@@ -180534,8 +180568,8 @@ var FileUrlBuilder = class {
     return new URL(this.normalizeFilePathForUrl(pathname), relativeToURL || this.cwd);
   }
   rootFileURL(filePath) {
-    const path25 = this.path;
-    const p = path25.parse(path25.normalize(path25.resolve(filePath ?? ".")));
+    const path27 = this.path;
+    const p = path27.parse(path27.normalize(path27.resolve(filePath ?? ".")));
     return new URL(this.normalizeFilePathForUrl(p.root), this.#getFsRootURL());
   }
   #getFsRootURL() {
@@ -180698,8 +180732,8 @@ codes2.ERR_INVALID_PACKAGE_CONFIG = createError(
    * @param {string} [base]
    * @param {string} [message]
    */
-  (path25, base, message) => {
-    return `Invalid package config ${path25}${base ? ` while importing ${base}` : ""}${message ? `. ${message}` : ""}`;
+  (path27, base, message) => {
+    return `Invalid package config ${path27}${base ? ` while importing ${base}` : ""}${message ? `. ${message}` : ""}`;
   },
   Error
 );
@@ -180731,8 +180765,8 @@ codes2.ERR_MODULE_NOT_FOUND = createError(
    * @param {string} base
    * @param {boolean} [exactUrl]
    */
-  (path25, base, exactUrl = false) => {
-    return `Cannot find ${exactUrl ? "module" : "package"} '${path25}' imported from ${base}`;
+  (path27, base, exactUrl = false) => {
+    return `Cannot find ${exactUrl ? "module" : "package"} '${path27}' imported from ${base}`;
   },
   Error
 );
@@ -180783,8 +180817,8 @@ codes2.ERR_UNKNOWN_FILE_EXTENSION = createError(
    * @param {string} extension
    * @param {string} path
    */
-  (extension2, path25) => {
-    return `Unknown file extension "${extension2}" for ${path25}`;
+  (extension2, path27) => {
+    return `Unknown file extension "${extension2}" for ${path27}`;
   },
   TypeError
 );
@@ -181207,9 +181241,9 @@ Default "index" lookups for the main are deprecated for ES modules.`,
   }
 }
 __name(emitLegacyIndexDeprecation, "emitLegacyIndexDeprecation");
-function tryStatSync(path25) {
+function tryStatSync(path27) {
   try {
-    return (0, import_node_fs4.statSync)(path25);
+    return (0, import_node_fs4.statSync)(path27);
   } catch {
   }
 }
@@ -184347,10 +184381,10 @@ var DictionaryLoader = class {
     return createInlineSpellingDictionary({ name: def.name, words: [] }, def.__source || "memory");
   }
   calcKey(def) {
-    const path25 = def.path;
-    const loaderType = determineType(toFileURL(path25), def);
+    const path27 = def.path;
+    const loaderType = determineType(toFileURL(path27), def);
     const optValues = importantOptionKeys.map((k) => def[k]?.toString() || "");
-    const parts = [path25, loaderType, ...optValues];
+    const parts = [path27, loaderType, ...optValues];
     return parts.join("|");
   }
 };
@@ -185382,8 +185416,8 @@ function uriToFilePath(uri) {
   return toFilePathOrHref(url2);
 }
 __name(uriToFilePath, "uriToFilePath");
-function normalizeDriveLetter(path25) {
-  return hasDriveLetter.test(path25) ? path25[0].toUpperCase() + path25.slice(1) : path25;
+function normalizeDriveLetter(path27) {
+  return hasDriveLetter.test(path27) ? path27[0].toUpperCase() + path27.slice(1) : path27;
 }
 __name(normalizeDriveLetter, "normalizeDriveLetter");
 function isHRef(url2) {
@@ -185418,20 +185452,20 @@ var UriImpl = class _UriImpl extends URI {
     super(uri.scheme, uri.authority, uri.path, uri.query, uri.fragment);
   }
   toString() {
-    const path25 = encodeURI(this.path || "").replaceAll(/[#?]/g, (c) => `%${(c.codePointAt(0) || 0).toString(16)}`);
-    const base = `${this.scheme}://${this.authority || ""}${path25}`;
+    const path27 = encodeURI(this.path || "").replaceAll(/[#?]/g, (c) => `%${(c.codePointAt(0) || 0).toString(16)}`);
+    const base = `${this.scheme}://${this.authority || ""}${path27}`;
     const query = this.query && `?${this.query}` || "";
     const fragment = this.fragment && `#${this.fragment}` || "";
     const url2 = base + query + fragment;
     return url2;
   }
   toJSON() {
-    const { scheme, authority, path: path25, query, fragment } = this;
-    return { scheme, authority, path: path25, query, fragment };
+    const { scheme, authority, path: path27, query, fragment } = this;
+    return { scheme, authority, path: path27, query, fragment };
   }
   with(change) {
-    const { scheme, authority, path: path25, query, fragment } = this;
-    const u = { scheme, authority, path: path25, query, fragment };
+    const { scheme, authority, path: path27, query, fragment } = this;
+    const u = { scheme, authority, path: path27, query, fragment };
     for (const key of keys2) {
       if (change[key] && typeof change[key] === "string") {
         u[key] = change[key];
@@ -185467,8 +185501,8 @@ var UriImpl = class _UriImpl extends URI {
     return _UriImpl.from(_UriImpl.file(filePath), { scheme: "stdin" });
   }
 };
-function normalizeFilePath(path25) {
-  return normalizeDriveLetter(path25.replaceAll("\\", "/"));
+function normalizeFilePath(path27) {
+  return normalizeDriveLetter(path27.replaceAll("\\", "/"));
 }
 __name(normalizeFilePath, "normalizeFilePath");
 function parseStdinUri(uri) {
@@ -185483,13 +185517,13 @@ function parseStdinUri(uri) {
   const iQ = uri.indexOf("?", pathStart);
   const idxQ = iQ > 0 && iQ < idxHash ? iQ : idxHash;
   const pathEnd = idxQ;
-  const path25 = uri.slice(pathStart, pathEnd);
+  const path27 = uri.slice(pathStart, pathEnd);
   const query = idxQ < idxHash ? uri.slice(idxQ + 1, idxHash) : "";
   const hash = uri.slice(idxHash + 1);
   const pathPrefix = idxSlashEnd - idxSlash > 2 ? "/" : "";
   return {
     scheme: "stdin",
-    path: pathPrefix + normalizeFilePath(decodeURI(path25)),
+    path: pathPrefix + normalizeFilePath(decodeURI(path27)),
     query: decodeURI(query),
     fragment: decodeURI(hash)
   };
@@ -185941,8 +185975,8 @@ function isGlobPatternNormalizedToRoot(g, options) {
   return g.root === options.root;
 }
 __name(isGlobPatternNormalizedToRoot, "isGlobPatternNormalizedToRoot");
-function urlBuilder(path25 = Path3) {
-  return path25 === Path3 ? fileUrlBuilder2 : new FileUrlBuilder({ path: path25 });
+function urlBuilder(path27 = Path3) {
+  return path27 === Path3 ? fileUrlBuilder2 : new FileUrlBuilder({ path: path27 });
 }
 __name(urlBuilder, "urlBuilder");
 function normalizePattern(pattern, nested) {
@@ -185992,9 +186026,9 @@ function normalizeGlobPatterns(patterns, options) {
 }
 __name(normalizeGlobPatterns, "normalizeGlobPatterns");
 function normalizeGlobPattern(g, options) {
-  const { root: root2, nodePath: path25 = Path3, nested } = options;
-  const builder = urlBuilder(path25);
-  const cwd = options.cwd ?? path25.resolve();
+  const { root: root2, nodePath: path27 = Path3, nested } = options;
+  const builder = urlBuilder(path27);
+  const cwd = options.cwd ?? path27.resolve();
   const cwdUrl = builder.toFileDirURL(cwd);
   const rootUrl2 = builder.toFileDirURL(root2, cwdUrl);
   const gIsGlobalPattern = isGlobPatternWithRoot(g) ? g.isGlobalPattern : void 0;
@@ -186019,8 +186053,8 @@ function normalizeGlobPattern(g, options) {
   return globs.map((glob2) => ({ ...gr, glob: glob2, rawGlob, rawRoot, isGlobalPattern }));
 }
 __name(normalizeGlobPattern, "normalizeGlobPattern");
-function normalizeGlobToRoot(glob2, root2, path25) {
-  const builder = urlBuilder(path25);
+function normalizeGlobToRoot(glob2, root2, path27) {
+  const builder = urlBuilder(path27);
   glob2 = { ...glob2 };
   fixPatternRoot(glob2, builder);
   const rootURL = builder.toFileDirURL(root2);
@@ -186553,14 +186587,14 @@ var CwdUrlResolver = class {
     this.#lastPath = this.#cwd;
     this.#lastUrl = this.#cwdUrl;
   }
-  resolveUrl(path25) {
-    path25 = path25 || this.#cwd;
-    if (path25 === this.#lastPath)
+  resolveUrl(path27) {
+    path27 = path27 || this.#cwd;
+    if (path27 === this.#lastPath)
       return this.#lastUrl;
-    if (path25 === this.#cwd)
+    if (path27 === this.#cwd)
       return this.#cwdUrl;
-    this.#lastPath = path25;
-    this.#lastUrl = toFileURL(path25);
+    this.#lastPath = path27;
+    this.#lastUrl = toFileURL(path27);
     return this.#lastUrl;
   }
   reset(cwd = process.cwd()) {
@@ -188855,8 +188889,8 @@ var CSpellConfigFileReaderWriterImpl = class {
   }
 };
 function isTrusted(url2, trustedUrls, untrustedExtensions) {
-  const path25 = url2.pathname;
-  const ext2 = (0, import_posix.extname)(path25).toLowerCase();
+  const path27 = url2.pathname;
+  const ext2 = (0, import_posix.extname)(path27).toLowerCase();
   if (!untrustedExtensions.has(ext2))
     return true;
   const href = url2.href;
@@ -190269,9 +190303,9 @@ function createIO(fs9) {
   };
 }
 __name(createIO, "createIO");
-async function isDirectory(fs9, path25) {
+async function isDirectory(fs9, path27) {
   try {
-    return (await fs9.stat(path25)).isDirectory();
+    return (await fs9.stat(path27)).isDirectory();
   } catch {
     return false;
   }
@@ -192788,25 +192822,25 @@ function splitIntoWords(lineSeg, breaks, has2) {
     return results;
   }
   __name(pathToWords, "pathToWords");
-  function addToKnownPaths(candidate, path25) {
+  function addToKnownPaths(candidate, path27) {
     for (let can = candidate; can !== void 0; can = can.p) {
       const t = can.text;
       const i = can.i;
-      const cost = (!t || t.isFound ? 0 : t.text.length) + (path25?.c ?? 0);
+      const cost = (!t || t.isFound ? 0 : t.text.length) + (path27?.c ?? 0);
       const exitingPath = knownPathsByIndex.get(i);
       if (exitingPath && exitingPath.c <= cost) {
         return void 0;
       }
       const node2 = {
-        n: path25,
+        n: path27,
         i,
         c: cost,
         text: t
       };
       knownPathsByIndex.set(i, node2);
-      path25 = node2;
+      path27 = node2;
     }
-    return path25;
+    return path27;
   }
   __name(addToKnownPaths, "addToKnownPaths");
   let maxCost = lineSeg.relEnd - lineSeg.relStart;
@@ -195098,8 +195132,204 @@ async function execCheckFileNamingConsistency(mdPath, nameWhiteList = []) {
 }
 __name(execCheckFileNamingConsistency, "execCheckFileNamingConsistency");
 
-// src/ci/check-toc.ts
+// ../checkers/src/core/check-deleted-file-reference.ts
 var import_path7 = __toESM(require("path"));
+var SOURCE_TAG2 = /* @__PURE__ */ new Set(["img", "source", "video", "audio", "image"]);
+var LINK_TAG = /* @__PURE__ */ new Set(["a"]);
+function createResult2(params2) {
+  const { name: name2, content: content3, start: start2, end } = params2;
+  return {
+    name: name2,
+    type: "error",
+    content: content3,
+    start: start2,
+    end,
+    message: {
+      zh: "\u5F15\u7528\u7684\u6587\u4EF6\u5DF2\u88AB\u5220\u9664",
+      en: "Referenced file has been deleted."
+    }
+  };
+}
+__name(createResult2, "createResult");
+function execCheckDeletedFileReference(depthNodes, opts) {
+  const { content: content3, prefixPath, enableLinkCheck = true, enableResourceCheck = true, remoteDeletedPatterns = [] } = opts;
+  const deletedSet = new Set(
+    opts.deletedFiles.map((deletedFile) => import_path7.default.normalize(deletedFile).replace(/\\/g, "/"))
+  );
+  const isDeletedRef = /* @__PURE__ */ __name((url2) => {
+    if (!url2) {
+      return false;
+    }
+    if (url2.startsWith("http")) {
+      return remoteDeletedPatterns.some((pattern) => pattern.test(url2));
+    }
+    if (url2.startsWith("#")) {
+      return false;
+    }
+    let link3 = url2.split("#")[0].split("?")[0];
+    if (!link3) {
+      return false;
+    }
+    if (link3.endsWith("/")) {
+      link3 = link3.slice(0, -1);
+    }
+    const resolved = import_path7.default.normalize(import_path7.default.join(prefixPath, decodeURI(link3))).replace(/\\/g, "/");
+    const asMd = resolved.replace(/\.html$/, ".md");
+    return deletedSet.has(resolved) || deletedSet.has(asMd);
+  }, "isDeletedRef");
+  const results = [];
+  for (let nodeIndex = 0; nodeIndex < depthNodes.length; nodeIndex++) {
+    const node2 = depthNodes[nodeIndex].node;
+    if (node2.type === "link") {
+      if (!enableLinkCheck) {
+        continue;
+      }
+      const linkNode = node2;
+      const url2 = linkNode.url.trim();
+      if (isDeletedRef(url2)) {
+        let start2 = linkNode.position?.start.offset || 0;
+        let end = linkNode.position?.end.offset || 0;
+        const matchStr = content3.substring(start2, end);
+        const lastIndex = matchStr.lastIndexOf(url2);
+        if (lastIndex > -1) {
+          start2 = start2 + lastIndex;
+          end = start2 + url2.length;
+        }
+        results.push(createResult2({ name: LINK_VALIDITY_CHECK, content: url2, start: start2, end }));
+      }
+      continue;
+    }
+    if (node2.type === "image") {
+      if (!enableResourceCheck) {
+        continue;
+      }
+      const imgNode = node2;
+      const url2 = imgNode.url.trim();
+      if (isDeletedRef(url2)) {
+        const startOffset = (imgNode.alt?.length || 0) + 4;
+        results.push(
+          createResult2({
+            name: RESOURCE_EXISTENCE_CHECK,
+            content: url2,
+            start: (imgNode.position?.start.offset || 0) + startOffset,
+            end: (imgNode.position?.end.offset || 0) - 1
+          })
+        );
+      }
+      continue;
+    }
+    if (node2.type === "html:tagstart") {
+      const htmlNode = node2;
+      const isSource = SOURCE_TAG2.has(htmlNode.tagName);
+      const isAnchor = LINK_TAG.has(htmlNode.tagName);
+      if (!isSource && !isAnchor) {
+        continue;
+      }
+      if (isAnchor && !enableLinkCheck) {
+        continue;
+      }
+      if (isSource && !enableResourceCheck) {
+        continue;
+      }
+      const attrName = isSource ? "src" : "href";
+      const attr = htmlNode.attrs.find((attrItem) => attrItem.name === attrName);
+      if (!attr || !attr.value) {
+        continue;
+      }
+      const url2 = attr.value.trim();
+      if (isDeletedRef(url2)) {
+        const offset2 = htmlNode.tagName.length + (htmlNode.position?.start.offset || 0) + 1;
+        const raw = attr.raw.trim();
+        const blankSpaces = attr.raw.length - raw.length;
+        const quoteLength = attr.quote.length;
+        const start2 = offset2 + attr.index + blankSpaces + quoteLength + attrName.length + 1;
+        const end = start2 + attr.value.length;
+        results.push(
+          createResult2({
+            name: isAnchor ? LINK_VALIDITY_CHECK : RESOURCE_EXISTENCE_CHECK,
+            content: url2,
+            start: start2,
+            end
+          })
+        );
+      }
+      continue;
+    }
+    if (node2.type === "mdxJsxFlowElement") {
+      const mdxNode = node2;
+      const isSource = SOURCE_TAG2.has(mdxNode.name || "");
+      const isAnchor = LINK_TAG.has(mdxNode.name || "");
+      if (!isSource && !isAnchor) {
+        continue;
+      }
+      if (isAnchor && !enableLinkCheck) {
+        continue;
+      }
+      if (isSource && !enableResourceCheck) {
+        continue;
+      }
+      const attrName = isSource ? "src" : "href";
+      const attr = mdxNode.attributes.find((attrItem) => attrItem.name === attrName);
+      if (!attr || !attr.value) {
+        continue;
+      }
+      const url2 = attr.value.trim();
+      if (isDeletedRef(url2)) {
+        const start2 = (attr.position?.start.offset || 0) + attrName.length + 2;
+        const end = (attr.position?.end.offset || 0) - 1;
+        results.push(
+          createResult2({
+            name: isAnchor ? LINK_VALIDITY_CHECK : RESOURCE_EXISTENCE_CHECK,
+            content: url2,
+            start: start2,
+            end
+          })
+        );
+      }
+      continue;
+    }
+    if (node2.type === "text") {
+      if (!enableResourceCheck) {
+        continue;
+      }
+      const textNode = node2;
+      const text6 = textNode.value.trim();
+      if (!text6.startsWith("<<<")) {
+        continue;
+      }
+      let parentNode;
+      let parentIndex = nodeIndex - 1;
+      while (parentIndex >= 0) {
+        if (depthNodes[parentIndex].depth < depthNodes[nodeIndex].depth) {
+          parentNode = depthNodes[parentIndex].node;
+          break;
+        }
+        parentIndex--;
+      }
+      if (parentNode && parentNode.type !== "paragraph") {
+        continue;
+      }
+      const rawPathRegexp = /^(.+?(?:(?:\.([a-z0-9]+))?))(?:(#[\w-]+))?(?: ?(?:{(\d+(?:[,-]\d+)*)? ?(\S+)? ?(\S+)?}))?(?: \[(.+)\])?$/;
+      const [rawFilepath = ""] = (rawPathRegexp.exec(text6.replace("<<<", "")) || []).slice(1);
+      const filepath = rawFilepath.trim();
+      if (isDeletedRef(filepath)) {
+        results.push(
+          createResult2({
+            name: RESOURCE_EXISTENCE_CHECK,
+            content: filepath,
+            start: textNode.position?.start.offset || 0,
+            end: textNode.position?.end.offset || 0
+          })
+        );
+      }
+    }
+  }
+  return results;
+}
+__name(execCheckDeletedFileReference, "execCheckDeletedFileReference");
+
+// src/ci/check-toc.ts
+var import_path8 = __toESM(require("path"));
 
 // src/utils/output.ts
 function formatLog(output) {
@@ -195142,7 +195372,7 @@ __name(createOutputItem, "createOutputItem");
 
 // src/ci/check-toc.ts
 async function execCheckTocCi(content3, basePath, filePath, proxy) {
-  const results = await execCheckToc(content3, import_path7.default.dirname(import_path7.default.join(basePath, filePath)), proxy);
+  const results = await execCheckToc(content3, import_path8.default.dirname(import_path8.default.join(basePath, filePath)), proxy);
   return results.map((item) => {
     const output = createOutputItem({
       fileContent: content3,
@@ -195159,7 +195389,7 @@ async function execCheckTocCi(content3, basePath, filePath, proxy) {
 }
 __name(execCheckTocCi, "execCheckTocCi");
 async function execCheckMdInTocCi(basePath, filePath) {
-  const [isInToc] = await execCheckMdInToc(import_path7.default.join(basePath, filePath));
+  const [isInToc] = await execCheckMdInToc(import_path8.default.join(basePath, filePath));
   if (!isInToc) {
     const output = createOutputItem({
       filePath,
@@ -195194,9 +195424,9 @@ async function execMarkdownlintCi(depthNodes, content3, filePath, remoteConfigUr
 __name(execMarkdownlintCi, "execMarkdownlintCi");
 
 // src/ci/check-file-naming-consistency.ts
-var import_path8 = __toESM(require("path"));
+var import_path9 = __toESM(require("path"));
 async function execCheckFileNamingConsistencyCi(repoPath, filePath) {
-  const completedPath = import_path8.default.join(repoPath, filePath);
+  const completedPath = import_path9.default.join(repoPath, filePath);
   const [isFileNamingConsistency, similarfilePath] = await execCheckFileNamingConsistency(completedPath, DEFAULT_WHITELIST_NAMES);
   if (!isFileNamingConsistency) {
     if (!similarfilePath && filePath.includes("/zh/")) {
@@ -195251,12 +195481,12 @@ function execCheckFileNamingCi(filePath) {
 __name(execCheckFileNamingCi, "execCheckFileNamingCi");
 
 // src/ci/check-link-validity.ts
-var import_path9 = __toESM(require("path"));
+var import_path10 = __toESM(require("path"));
 async function execCheckLinkValidityCi(depthNodes, content3, basePath, filePath, tempWhiteList, remoteConfigUrl, disableCheckExternalUrl, disableCheckInternalUrl, disableCheckAnchor, disableCheckOnly404Status, proxy) {
   const whiteList = await getWhitelistUrlsConfig(remoteConfigUrl, proxy);
   const results = await execCheckLinkValidity(depthNodes, {
     content: content3,
-    prefixPath: import_path9.default.dirname(import_path9.default.join(basePath, filePath)),
+    prefixPath: import_path10.default.dirname(import_path10.default.join(basePath, filePath)),
     whiteList: [...tempWhiteList, ...whiteList],
     disableCheckExternalUrl,
     disableCheckInternalUrl,
@@ -195282,11 +195512,11 @@ async function execCheckLinkValidityCi(depthNodes, content3, basePath, filePath,
 __name(execCheckLinkValidityCi, "execCheckLinkValidityCi");
 
 // src/ci/check-resource-existence.ts
-var import_path10 = __toESM(require("path"));
+var import_path11 = __toESM(require("path"));
 async function execCheckResourceExistenceCi(depthNodes, content3, basePath, filePath, tempWhiteList, remoteConfigUrl, disableCheckExternalUrl, disableCheckInternalUrl, disableCheckOnly404Status, proxy) {
   const whiteList = await getWhitelistUrlsConfig(remoteConfigUrl, proxy);
   const results = await execCheckResourceExistence(depthNodes, {
-    prefixPath: import_path10.default.dirname(import_path10.default.join(basePath, filePath)),
+    prefixPath: import_path11.default.dirname(import_path11.default.join(basePath, filePath)),
     whiteList: [...tempWhiteList, ...whiteList],
     disableCheckExternalUrl,
     disableCheckInternalUrl,
@@ -195330,6 +195560,33 @@ async function execCheckCodespellCi(depthNodes, content3, filePath, remoteConfig
 }
 __name(execCheckCodespellCi, "execCheckCodespellCi");
 
+// src/ci/check-deleted-file-reference.ts
+var import_path12 = __toESM(require("path"));
+async function execCheckDeletedFileReferenceCi(depthNodes, content3, basePath, filePath, deletedFiles, enableLinkCheck, enableResourceCheck, remoteDeletedPatterns) {
+  const results = execCheckDeletedFileReference(depthNodes, {
+    content: content3,
+    prefixPath: import_path12.default.dirname(import_path12.default.join(basePath, filePath)),
+    deletedFiles: deletedFiles.map((f) => import_path12.default.join(basePath, f)),
+    enableLinkCheck,
+    enableResourceCheck,
+    remoteDeletedPatterns
+  });
+  return results.map((item) => {
+    const output = createOutputItem({
+      fileContent: content3,
+      filePath,
+      checkType: item.name,
+      message: item.message.zh,
+      errorContent: item.content,
+      errorContentStartIndex: item.start,
+      errorContentEndIndex: item.end
+    });
+    formatLog(output);
+    return output;
+  });
+}
+__name(execCheckDeletedFileReferenceCi, "execCheckDeletedFileReferenceCi");
+
 // src/docs-ci-v2.ts
 (async () => {
   const args = parseNamedArgs();
@@ -195360,17 +195617,17 @@ __name(execCheckCodespellCi, "execCheckCodespellCi");
     return;
   }
   if (!outputPath.endsWith(".md")) {
-    outputPath = import_path11.default.join(outputPath, "output.md");
+    outputPath = import_path13.default.join(outputPath, "output.md");
   }
-  const outputDir = import_path11.default.dirname(outputPath);
+  const outputDir = import_path13.default.dirname(outputPath);
   if (!import_fs4.default.existsSync(outputDir)) {
     import_fs4.default.mkdirSync(outputDir, { recursive: true });
   }
   if (outputJson) {
     if (!outputJsonPath.endsWith(".json")) {
-      outputJsonPath = import_path11.default.join(outputJsonPath, "result.json");
+      outputJsonPath = import_path13.default.join(outputJsonPath, "result.json");
     }
-    const outputJsonDir = import_path11.default.dirname(outputJsonPath);
+    const outputJsonDir = import_path13.default.dirname(outputJsonPath);
     if (!import_fs4.default.existsSync(outputJsonDir)) {
       import_fs4.default.mkdirSync(outputJsonDir, { recursive: true });
     }
@@ -195378,7 +195635,7 @@ __name(execCheckCodespellCi, "execCheckCodespellCi");
   console.log(`\u68C0\u67E5\u76EE\u5F55: ${repoPath}`);
   console.log(`\u76EE\u6807\u4ED3\u5E93: ${targetOwnerRepo}`);
   console.log(`\u76EE\u6807\u5206\u652F: ${targetBranch}`);
-  console.log(`\u91CD\u547D\u540D\u7684 owner/name: ${targetOwnerName} || '\u672A\u4F20\u53C2'`);
+  console.log(`\u91CD\u547D\u540D\u7684 owner/name: ${targetOwnerName || "\u672A\u4F20\u53C2"}`);
   console.log(`\u68C0\u67E5\u6240\u6709\u6587\u4EF6: ${checkAll || "\u672A\u4F20\u53C2"}`);
   console.log(`\u8F93\u51FA\u6761\u6570: ${outputCount || "\u672A\u4F20\u53C2"}`);
   console.log(`\u8BE6\u60C5\u94FE\u63A5: ${detailUrl || "\u672A\u4F20\u53C2"}`);
@@ -195462,6 +195719,21 @@ __name(execCheckCodespellCi, "execCheckCodespellCi");
     tempLinkWhiteList.push(`https:\\/\\/(gitcode|atomgit|github|gitee)\\.com\\/${regexOwnerRepo}\\/blob\\/${regexBranch}\\/${regexFp}`);
     tempLinkWhiteList.push(`https:\\/\\/(raw\\.)?(gitcode|atomgit|gitee)\\.com\\/${regexOwnerRepo}\\/raw\\/${regexBranch}\\/${regexFp}`);
   }
+  const deletedFiles = checkAll ? [] : getPRDeletedFiles(repoPath, targetBranch);
+  let hasDeletedDocFiles = false;
+  const deletedDocFiles = [];
+  for (const item of deletedFiles) {
+    const filePath = item.replace(/\\/g, "/");
+    if (docsPathRegex.test(filePath)) {
+      deletedDocFiles.push(filePath);
+      hasDeletedDocFiles = true;
+    }
+  }
+  if (hasDeletedDocFiles) {
+    console.log("");
+    console.log(`\u68C0\u6D4B\u5230\u5220\u9664\u7684\u6587\u6863\u6587\u4EF6\uFF1A`);
+    console.log(deletedDocFiles.join("\n"));
+  }
   console.log("\u4E34\u65F6\u767D\u540D\u5355\u5730\u5740: ");
   console.log(tempLinkWhiteList.join("\n"));
   console.log("");
@@ -195472,6 +195744,8 @@ __name(execCheckCodespellCi, "execCheckCodespellCi");
     console.log(checkFiles.join("\n"));
     console.log("");
     console.log(`\u5F00\u59CB\u68C0\u67E5...`);
+  } else if (hasDeletedDocFiles && (checkItems[LINK_VALIDITY_CHECK] || checkItems[RESOURCE_EXISTENCE_CHECK])) {
+    console.log(`[info]: \u6CA1\u6709\u9700\u8981\u68C0\u67E5\u7684\u53D8\u66F4\u6587\u4EF6\uFF0C\u4EC5\u6267\u884C\u5220\u9664\u6587\u4EF6\u5F15\u7528\u68C0\u67E5`);
   } else {
     console.log(`[info]: \u2705 \u8DF3\u8FC7 docs ci \u68C0\u67E5\uFF0C\u6CA1\u6709\u9700\u8981\u68C0\u67E5\u7684\u6587\u6863\u6587\u4EF6`);
     import_fs4.default.writeFileSync(outputPath, `\u2705 \u8DF3\u8FC7 docs ci \u68C0\u67E5\uFF0C\u6CA1\u6709\u9700\u8981\u68C0\u67E5\u7684\u6587\u6863\u6587\u4EF6`);
@@ -195481,7 +195755,7 @@ __name(execCheckCodespellCi, "execCheckCodespellCi");
   const processFile = /* @__PURE__ */ __name(async (filePath) => {
     const items = [];
     try {
-      const completeFilePath = import_path11.default.join(repoPath, filePath);
+      const completeFilePath = import_path13.default.join(repoPath, filePath);
       const content3 = readFileByAutoDecode(completeFilePath);
       if (completeFilePath.endsWith(".md") || completeFilePath.endsWith(".mdx")) {
         const [tree, error] = MarkdownAst.createAstTree(content3, {
@@ -195578,17 +195852,87 @@ __name(execCheckCodespellCi, "execCheckCodespellCi");
     }
     return items;
   }, "processFile");
-  const taskResults = new Array(checkFiles.length).fill([]);
-  let cursor = 0;
-  const workers = Array.from({ length: Math.min(concurrency, checkFiles.length) }, async () => {
-    while (cursor < checkFiles.length) {
-      const idx2 = cursor++;
-      taskResults[idx2] = await processFile(checkFiles[idx2]);
+  if (checkFiles.length > 0) {
+    const taskResults = new Array(checkFiles.length).fill([]);
+    let cursor = 0;
+    const workers = Array.from({ length: Math.min(concurrency, checkFiles.length) }, async () => {
+      while (cursor < checkFiles.length) {
+        const idx2 = cursor++;
+        taskResults[idx2] = await processFile(checkFiles[idx2]);
+      }
+    });
+    await Promise.all(workers);
+    for (const items of taskResults) {
+      outputItems.push(...items);
     }
-  });
-  await Promise.all(workers);
-  for (const items of taskResults) {
-    outputItems.push(...items);
+  }
+  if (!checkAll && hasDeletedDocFiles && (checkItems[LINK_VALIDITY_CHECK] || checkItems[RESOURCE_EXISTENCE_CHECK])) {
+    const enableLinkCheck = !!checkItems[LINK_VALIDITY_CHECK];
+    const enableResourceCheck = !!checkItems[RESOURCE_EXISTENCE_CHECK];
+    const remoteDeletedPatterns = [];
+    for (const deletedFile of deletedDocFiles) {
+      const relPath = deletedFile.startsWith("/") ? deletedFile.slice(1) : deletedFile;
+      const regexFp = escapeRegExp(relPath);
+      remoteDeletedPatterns.push(new RegExp(`^https:\\/\\/(gitcode|atomgit)\\.com\\/${regexOwnerRepo}\\/blob\\/${regexBranch}\\/${regexFp}([?#]|$)`));
+      remoteDeletedPatterns.push(new RegExp(`^https:\\/\\/raw\\.(gitcode|atomgit)\\.com\\/${regexOwnerRepo}\\/raw\\/${regexBranch}\\/${regexFp}([?#]|$)`));
+    }
+    console.log("");
+    console.log(`\u5F00\u59CB\u68C0\u67E5\u5220\u9664\u6587\u4EF6\u5F15\u7528...`);
+    const allMdFiles = await glob(["**/*.md", "**/*.mdx"], {
+      cwd: repoPath
+    });
+    const deletedRefFiles = [];
+    for (const f of allMdFiles) {
+      const filePath = f.replace(/\\/g, "/");
+      if (docsPathRegex.test(filePath)) {
+        deletedRefFiles.push(filePath);
+      }
+    }
+    console.log(`\u5F85\u68C0\u67E5\u5220\u9664\u5F15\u7528\u7684\u6587\u4EF6\u6570\u91CF\uFF1A${deletedRefFiles.length}`);
+    const processDeletedRefFile = /* @__PURE__ */ __name(async (filePath) => {
+      const items = [];
+      try {
+        const completeFilePath = import_path13.default.join(repoPath, filePath);
+        const content3 = readFileByAutoDecode(completeFilePath);
+        if (completeFilePath.endsWith(".md") || completeFilePath.endsWith(".mdx")) {
+          const [tree, error] = MarkdownAst.createAstTree(content3, {
+            isMdx: completeFilePath.endsWith(".mdx")
+          });
+          if (error) {
+            return items;
+          }
+          const depthNodes = MarkdownAst.createFlatDepthNodes(tree);
+          items.push(
+            ...await execCheckDeletedFileReferenceCi(
+              depthNodes,
+              content3,
+              repoPath,
+              filePath,
+              deletedDocFiles,
+              enableLinkCheck,
+              enableResourceCheck,
+              remoteDeletedPatterns
+            )
+          );
+        }
+      } catch (err) {
+        console.error(`[error]\uFF1Acheck deleted reference ${filePath} failed\uFF01`);
+        console.error(err);
+      }
+      return items;
+    }, "processDeletedRefFile");
+    const deletedTaskResults = new Array(deletedRefFiles.length).fill([]);
+    let deletedCursor = 0;
+    const deletedWorkers = Array.from({ length: Math.min(concurrency, deletedRefFiles.length) }, async () => {
+      while (deletedCursor < deletedRefFiles.length) {
+        const idx2 = deletedCursor++;
+        deletedTaskResults[idx2] = await processDeletedRefFile(deletedRefFiles[idx2]);
+      }
+    });
+    await Promise.all(deletedWorkers);
+    for (const items of deletedTaskResults) {
+      outputItems.push(...items);
+    }
   }
   if (outputItems.length === 0) {
     const outputCheckItemsTable2 = detailUrl ? ["| \u68C0\u67E5\u9879 | \u68C0\u67E5\u7ED3\u679C | \u8BE6\u60C5 |", "| --- | --- | --- |"] : ["| \u68C0\u67E5\u9879 | \u68C0\u67E5\u7ED3\u679C |", "| --- | --- |"];
