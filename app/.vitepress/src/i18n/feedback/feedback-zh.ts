@@ -26,8 +26,6 @@ export default {
   submitAs: '提交类型',
   bugType: '问题类型',
   bugDescriptionPlaceholder: '点击输入详细问题描述，以帮助我们快速定位问题',
-  bugPostPrivacyPolicy: '您理解并同意，您填写并提交的内容，即视为您已充分阅读并同意openEuler的',
-  privacyPolicy: '《隐私声明》',
   input: '请输入',
 
   wantSubmitMark: '我要评分',

@@ -11,8 +11,6 @@ import {
   ORadioGroup,
   ORadio,
   OToggle,
-  OCheckbox,
-  OLink,
   useMessage,
 } from '@opensig/opendesign';
 
@@ -26,7 +24,6 @@ import { useLocale } from '@/composables/useLocale';
 import { useNodeStore } from '@/stores/node';
 import { useViewStore } from '@/stores/view';
 
-const VITE_MAIN_DOMAIN_URL = import.meta.env.VITE_MAIN_DOMAIN_URL;
 const message = useMessage(null);
 const { t, locale } = useLocale();
 const { page } = useData();
@@ -136,9 +133,6 @@ const questionTypeOptions = [
   },
 ];
 
-const isAgree = ref<(string | number)[]>([]);
-const onAgree = () => {};
-
 const issueTemplate = (data: DocsBugParamsT) => {
   let problem = '';
   if (data.existProblem.length == 0) {
@@ -184,7 +178,7 @@ const submitBug = (results: FieldResultT[]) => {
           emit('update:modelValue', false);
           if (submitType.value === 'issue') {
             const issueBaseUrl = nodeStore.pageNode?.upstream ? nodeStore.pageNode.upstream.split('/blob')[0] : 'https://atomgit.com/openeuler/docs';
-            window.open(`${issueBaseUrl}/issues/new?title=文档捉虫&body=${body}`);
+            window.open(`${issueBaseUrl}/issues/new?title=文档捉虫&body=${body}`, '_blank', 'noopener noreferrer');
           } else {
             let pathname = window.location.pathname;
             if (pathname.endsWith('.html')) {
@@ -198,12 +192,12 @@ const submitBug = (results: FieldResultT[]) => {
             const [_, lang, __, branch, ...others] = pathname.split('/');
             if (viewStore.isOverview && nodeStore.pageNode?.href) {
               const arr = nodeStore.pageNode.href.replace('index.html', '_toc.yaml').split('/');
-              window.open(`https://atomgit.com/openeuler/docs/edit/stable-${arr[3]}/docs/${lang}/${arr.slice(4).join('/')}?search=${first}&title=文档捉虫-openEuler ${branch}-${page.value.title}&description=${formData.description}&message=${formData.description}&label_names=文档捉虫`);
+              window.open(`https://atomgit.com/openeuler/docs/edit/stable-${arr[3]}/docs/${lang}/${arr.slice(4).join('/')}?search=${first}&title=文档捉虫-openEuler ${branch}-${page.value.title}&description=${formData.description}&message=${formData.description}&label_names=文档捉虫`, '_blank', 'noopener noreferrer');
             } else if (nodeStore.pageNode?.upstream) {
               const arr = nodeStore.pageNode.upstream.split('/');
-              window.open(`https://atomgit.com/${arr[3]}/${arr[4]}/edit/${arr[6]}/${arr.slice(7).join('/')}?search=${first}&title=文档捉虫-openEuler ${branch}-${page.value.title}&description=${formData.description}&message=${formData.description}&label_names=文档捉虫`);
+              window.open(`https://atomgit.com/${arr[3]}/${arr[4]}/edit/${arr[6]}/${arr.slice(7).join('/')}?search=${first}&title=文档捉虫-openEuler ${branch}-${page.value.title}&description=${formData.description}&message=${formData.description}&label_names=文档捉虫`, '_blank', 'noopener noreferrer');
             } else {
-              window.open(`https://atomgit.com/openeuler/docs/edit/stable-${branch}/docs/${lang}/${others.join('/')}?search=${first}&title=文档捉虫-openEuler ${branch}-${page.value.title}&description=${formData.description}&message=${formData.description}&label_names=文档捉虫`);
+              window.open(`https://atomgit.com/openeuler/docs/edit/stable-${branch}/docs/${lang}/${others.join('/')}?search=${first}&title=文档捉虫-openEuler ${branch}-${page.value.title}&description=${formData.description}&message=${formData.description}&label_names=文档捉虫`, '_blank', 'noopener noreferrer');
             }
            
           }
@@ -276,14 +270,8 @@ const change = (visible: boolean) => {
         </div>
         <OTextarea v-model="formData.description" :placeholder="t('feedback.bugDescriptionPlaceholder')" size="large" resize="none" />
       </OFormItem>
-      <div class="agree-box">
-        <OCheckbox v-model="isAgree" :value="1" @change="onAgree">
-          {{ t('feedback.bugPostPrivacyPolicy') }}
-          <OLink color="primary" hover-underline :href="`${VITE_MAIN_DOMAIN_URL}/zh/other/privacy/`" target="_blank"> {{ t('feedback.privacyPolicy') }} </OLink>
-        </OCheckbox>
-      </div>
       <div class="btn">
-        <OButton color="primary" variant="solid" size="large" :disabled="!isAgree?.length" type="submit">{{ t('feedback.submit') }}</OButton>
+        <OButton color="primary" variant="solid" size="large" type="submit">{{ t('feedback.submit') }}</OButton>
       </div>
     </OForm>
   </ODialog>

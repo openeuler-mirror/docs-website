@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { ref, computed, reactive, onMounted, onUnmounted, type CSSProperties, watch, markRaw } from 'vue';
-import { OIcon, OPopup, OLink, ODialog, ODivider, OButton, useMessage } from '@opensig/opendesign';
-import { ElSlider } from 'element-plus';
+import { ref, computed, reactive, onMounted, onUnmounted, watch, markRaw } from 'vue';
+import { OIcon, OPopup, OLink, ODivider } from '@opensig/opendesign';
+import { OFeedbackDoc, OFeedbackDocDialog } from '@opendesign-plus/components';
 
 import DocBugDialog from '@/components/doc/DocBugDialog.vue';
 
 import IconSmile from '~icons/footer/icon-smile.svg';
-import IconClose from '~icons/app/icon-close.svg';
 
 import IconQuickIssue_light from '~icons/footer/icon-quickissue_light.svg';
 import IconQuickIssue_dark from '~icons/footer/icon-quickissue_dark.svg';
@@ -20,16 +19,15 @@ import IconTop from '~icons/app/icon-top.svg';
 import { scrollToTop } from '@/utils/common';
 
 import { useAppearance } from '@/stores/common';
-import { useThrottleFn } from '@vueuse/core';
 import { useScreen } from '@/composables/useScreen';
 import { useLocale } from '@/composables/useLocale';
 import { useNodeStore } from '@/stores/node';
-import { postArticleFeedback, type FeedBackDataT } from '@/api/api-feedback';
+import { useFeedbackDocStore } from '@/stores/feedback';
 
 const { t, locale } = useLocale();
 const { isPhone, gtPhone } = useScreen();
-const message = useMessage(null);
 const nodeStore = useNodeStore();
+const feedbackDocStore = useFeedbackDocStore();
 
 const isDark = computed(() => {
   return useAppearance().theme === 'dark' ? true : false;
@@ -38,22 +36,7 @@ const isDark = computed(() => {
 const docBugVisible = ref(false);
 
 // -------------------- 评分 --------------------
-const scoreRef = ref();
-
 const showPopup = ref(false); // 显示评分详细
-
-// 鼠标进入图标区域
-const onMouseEnter = () => {
-  showPopup.value = true;
-};
-// 鼠标离开图标区域
-const onMouseLeave = () => {
-  showPopup.value = false;
-};
-
-const closePopup = () => {
-  showPopup.value = false;
-};
 
 watch(
   () => showPopup.value,
@@ -64,9 +47,6 @@ watch(
     });
   }
 );
-
-const STEP = 1;
-const RATE_MAX = 10;
 
 const multiRate = reactive([
   {
@@ -107,29 +87,6 @@ const multiRate = reactive([
   },
 ]);
 
-interface Mark {
-  style: CSSProperties;
-  label: string;
-}
-type Marks = Record<number, Mark | string>;
-const marks: Marks = Array(RATE_MAX + 1)
-  .fill(0)
-  .map((_, i) => i)
-  .reduce((acc, cur) => {
-    acc[cur] = '';
-    return acc;
-  }, Object.create(null));
-
-const updateItemScore = () => {
-  showPopup.value = true;
-};
-
-const updateItemScoreAfter = (index: number) => {
-  if (multiRate[index]) {
-    multiRate[index].isChange = true;
-  }
-};
-
 // -------------------- 论坛、issues --------------------
 const issuebackRef = ref();
 
@@ -165,28 +122,16 @@ const floatData = reactive([
 
 // -------------------- 移动端 --------------------
 const scoreMbRef = ref();
-const scoreVisible = ref(false);
-
-const STEP_MB = 1;
-const RATE_MAX_MB = 10;
-
-const RATE_INDEX = Array(RATE_MAX_MB + 1)
-  .fill(0)
-  .map((_, index) => index);
-
-const marks_mb: Marks = Array(RATE_MAX_MB + 1)
-  .fill(0)
-  .map((_, i) => i)
-  .reduce((acc, cur) => {
-    acc[cur] = '';
-    return acc;
-  }, Object.create(null));
+const showDocsFeedbackDlg = ref(false);
 
 const floatDataMb = reactive([
   {
     img: markRaw(IconSmile as any),
     id: 'score',
     textMb: computed(() => t('feedback.wantSubmitMark')),
+    click: () => {
+      showDocsFeedbackDlg.value = true;
+    }
   },
   {
     img: markRaw(IconChat as any),
@@ -217,24 +162,10 @@ const floatDataMb = reactive([
   },
 ]);
 
-const openScoreDlg = (val: string) => {
-  if (val === 'score') {
-    scoreVisible.value = true;
-  }
-};
-
-const change = (visible: boolean) => {
-  if (!visible) {
-    scoreVisible.value = false;
-  }
-};
-
-const cancelScore = () => {
-  scoreVisible.value = false;
-  multiRate.forEach((item) => {
-    item.value = 0;
-  });
-};
+const onDocsFeedbackDlgClose = () => {
+  showDocsFeedbackDlg.value = false;
+  feedbackDocStore.reset();
+}
 
 // -------------------- 回到顶部 --------------------
 // 页面滚动大于一屏时，显示回到顶部悬浮按钮
@@ -257,37 +188,6 @@ onMounted(() => {
 onUnmounted(() => {
   oscrollerDom.value?.removeEventListener('scroll', listenScroll);
 });
-
-// -------------------- 提交文档评分 --------------------
-const submitArticleFeedback = () => {
-  const postData: FeedBackDataT = {
-    feedbackPageUrl: window.location.href,
-    efficiency: multiRate[0].value,
-    accuracy: multiRate[1].value,
-    completeness: multiRate[2].value,
-    usability: multiRate[3].value,
-  };
-
-  postArticleFeedback(postData)
-    .then((res) => {
-      if (res.code === 200) {
-        message.success({
-          content: t('feedback.feedbackSuccess'),
-        });
-        showPopup.value = false;
-        cancelScore();
-      } else {
-        message.danger({
-          content: t('feedback.feedbackSubmitFailed'),
-        });
-      }
-    })
-    .catch(() => {
-      message.danger({
-        content: t('feedback.feedbackSubmitFailed'),
-      });
-    });
-};
 </script>
 
 <template>
@@ -297,50 +197,16 @@ const submitArticleFeedback = () => {
     </div>
     <div class="feedback-container">
       <div id="tour_feedback" class="container" :class="isDark ? 'dark-box' : ''">
-        <div class="score-container" id="score" @mouseenter="onMouseEnter" @mouseleave="useThrottleFn(onMouseLeave, 300)">
-          <div ref="scoreRef" class="item-container">
-            <OIcon class="icon-smile">
-              <component :is="IconSmile"> </component>
-            </OIcon>
-          </div>
-
-          <OPopup
-            :visible="showPopup"
-            position="rb"
-            :target="scoreRef"
-            wrapper="#score"
-            body-class="popup-score"
-            :auto-hide="showPopup ? false : true"
-            :offset="24"
-            trigger="hover"
-          >
-            <OIcon class="icon-close" @click="closePopup">
-              <IconClose />
-            </OIcon>
-
-            <div v-for="(item, i) in multiRate" :key="i" class="railway">
-              <p class="title">{{ item.name[locale] }}</p>
-              <ClientOnly>
-                <el-slider
-                  v-model="item.value"
-                  size="small"
-                  :step="STEP"
-                  :min="0"
-                  :max="10"
-                  :marks="marks"
-                  show-stops
-                  :show-tooltip="true"
-                  tooltip-class="doc-item-tooltip"
-                  @input="updateItemScore"
-                  @change="updateItemScoreAfter(i)"
-                />
-              </ClientOnly>
-            </div>
-            <div class="submit-btn">
-              <OLink color="primary" :disabled="multiRate.every((item) => !item.isChange)" round="pill" @click="submitArticleFeedback">{{ t('feedback.submit') }}</OLink>
-            </div>
-          </OPopup>
-        </div>
+        <OFeedbackDoc
+          v-model:efficiency="feedbackDocStore.efficiency"
+          v-model:accuracy="feedbackDocStore.accuracy"
+          v-model:completeness="feedbackDocStore.completeness"
+          v-model:usability="feedbackDocStore.usability"
+          v-model:feedback="feedbackDocStore.feedback"
+          :submit-data="feedbackDocStore.submitRate"
+          :submit-issue="feedbackDocStore.submitIssue"
+          @close="feedbackDocStore.reset"
+        />
 
         <ODivider :style="{ '--o-divider-gap': '12px' }" />
 
@@ -350,12 +216,15 @@ const submitArticleFeedback = () => {
           </OIcon>
 
           <OPopup
-            position="rb"
+            position="left"
             :target="issuebackRef"
             wrapper="#issueback"
             :body-class="`popup-issueback ${locale === 'en' ? 'popup-issueback-en' : ''}`"
             :offset="24"
             trigger="hover"
+            :style="{
+              top: '22px',
+            }"
           >
             <OLink
               v-analytics="{ properties: { target: item.link, type: 'feedback' } }"
@@ -391,7 +260,7 @@ const submitArticleFeedback = () => {
         <OIcon><IconTips /></OIcon>
       </div>
       <OPopup
-        position="rt"
+        position="lb"
         :target="scoreMbRef"
         wrapper="#feedbackMb"
         :body-class="`popup-feedback-mb ${locale === 'en' ? 'popup-feedback-mb-en' : ''}`"
@@ -404,7 +273,7 @@ const submitArticleFeedback = () => {
           target="_blank"
           class="feedback-item-mb"
           :hover-underline="false"
-          @click="openScoreDlg(item.id)"
+          @click="item.click?.()"
         >
           <OIcon><component :is="item.img"></component> </OIcon>
           <p class="text-name">{{ item.textMb }}</p>
@@ -412,52 +281,22 @@ const submitArticleFeedback = () => {
       </OPopup>
     </div>
   </div>
-  <!-- 移动端评分弹窗 -->
-  <ODialog
-    :visible="scoreVisible"
-    :phone-half-full="true"
-    :style="{ '--dlg-head-padding': '16px 24px 0', '--dlg-body-padding': '24px 24px 16px', '--dlg-padding-body-top': '12px', '--dlg-radius': '4px 4px 0 0' }"
-    class="docs-score-dialog"
-    main-class="disable-scroller"
-    @change="change"
-  >
-    <template #header>
-      <div class="title-header">{{ t('feedback.wantSubmitMark') }}</div>
-    </template>
-    <div class="score-content">
-      <div v-for="(item, i) in multiRate" :key="i" class="railway-mb">
-        <p class="title">{{ item.name[locale] }}</p>
-        <div class="slider-container">
-          <div class="rate-stop">
-            <div v-for="(_, index) in RATE_INDEX" :key="index" class="stop" :style="{ left: `${index * 10}%` }">{{ index }}</div>
-          </div>
-          <div class="score-container-mb">
-            <el-slider
-              v-model="item.value"
-              size="small"
-              :step="STEP_MB"
-              :min="0"
-              :max="10"
-              :marks="marks_mb"
-              show-stops
-              :show-tooltip="false"
-              @change="updateItemScoreAfter(i)"
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="btn">
-      <OButton color="normal" variant="text" size="large" @click="cancelScore">{{ t('feedback.cancel') }}</OButton>
-      <ODivider class="divider-btn" direction="v" />
-      <OButton color="normal" variant="text" size="large" :disabled="multiRate.every((item) => !item.isChange)" @click="submitArticleFeedback">{{
-        t('feedback.confirmTitle')
-      }}</OButton>
-    </div>
-  </ODialog>
 
   <!-- 文档捉虫弹窗 -->
   <DocBugDialog v-model="docBugVisible" />
+
+  <!-- 文档反馈弹窗 -->
+  <OFeedbackDocDialog
+    v-model:visible="showDocsFeedbackDlg"
+    v-model:efficiency="feedbackDocStore.efficiency"
+    v-model:accuracy="feedbackDocStore.accuracy"
+    v-model:completeness="feedbackDocStore.completeness"
+    v-model:usability="feedbackDocStore.usability"
+    v-model:feedback="feedbackDocStore.feedback"
+    :submit-data="feedbackDocStore.submitRate"
+    :submit-issue="feedbackDocStore.submitIssue"
+    @close="onDocsFeedbackDlgClose"
+  />
 </template>
 
 <style lang="scss">
@@ -497,7 +336,7 @@ const submitArticleFeedback = () => {
 }
 .feedback {
   position: fixed;
-  bottom: 200px;
+  bottom: 220px;
   right: max(calc(64px + (var(--vw100) - 1920px) / 2), 64px);
   z-index: 10;
   height: 280px;
@@ -594,36 +433,6 @@ const submitArticleFeedback = () => {
 :deep(.o-popup) {
   cursor: default;
 
-  .o-popup-wrap {
-    box-shadow: none;
-  }
-  .popup-score {
-    padding: 16px 24px;
-    background-color: var(--o-color-fill2);
-    box-shadow: var(--o-shadow-2);
-    border-radius: var(--o-radius-xs);
-    --popup-min-width: 315px;
-    top: 12px;
-    position: relative;
-
-    .icon-close {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      color: var(--o-color-info2);
-      cursor: pointer;
-      font-size: 24px;
-
-      @include h4;
-      transition: all var(--o-duration-m1) var(--o-easing-standard-in);
-
-      @include hover {
-        transform: rotate(180deg);
-        color: var(--o-color-primary1);
-      }
-    }
-  }
-
   .popup-item {
     .o-icon {
       font-size: var(--o-font_size-h1);
@@ -635,7 +444,6 @@ const submitArticleFeedback = () => {
     padding: 24px;
     background-color: var(--o-color-fill2);
     border-radius: var(--o-radius-s);
-    box-shadow: var(--o-shadow-2);
     width: 224px;
     position: relative;
     display: flex;
