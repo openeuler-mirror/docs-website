@@ -194846,6 +194846,11 @@ var ALLOWED_KEYS_MAP = {
             zh: `href \u503C\u4E0D\u80FD\u4E3A\u7A7A\u5B57\u7B26\u4E32`,
             en: `href value cannot be an empty string.`
           };
+        } else if (/https:\/\/(gitcode|atomgit|gitee)\.com\/.+?\/.+?\/tree\/.+?\/.+/i.test(value2)) {
+          return {
+            zh: `\u8FDC\u7A0B git \u5730\u5740\u5FC5\u987B\u662F blob \u5730\u5740\uFF0C\u8BF7\u5C06 tree \u66FF\u6362\u6210 blob`,
+            en: `The remote _toc.yaml address must be a blob address, please replace tree with blob.`
+          };
         } else {
           const status = await getLinkStatus(value2, tocDir, [], proxy, signal);
           if (status === 404) {
@@ -194879,6 +194884,11 @@ var ALLOWED_KEYS_MAP = {
         return {
           zh: `Github\u3001Gitee\u3001GitCode\u3001AtomGit \u94FE\u63A5\u5FC5\u987B\u4EE5 https \u5F00\u5934`,
           en: `Github, Gitee, GitCode, and AtomGit links must start with https.`
+        };
+      } else if (/https:\/\/(gitcode|atomgit|gitee)\.com\/.+?\/.+?\/tree\/.+?\/.+/i.test(value2)) {
+        return {
+          zh: `\u8FDC\u7A0B git \u5730\u5740\u5FC5\u987B\u662F blob \u5730\u5740\uFF0C\u8BF7\u5C06 tree \u66FF\u6362\u6210 blob`,
+          en: `The remote _toc.yaml address must be a blob address, please replace tree with blob.`
         };
       }
       const status = await getLinkStatus(value2, "", [], proxy, signal);
@@ -195643,9 +195653,13 @@ __name(execCheckDeletedFileReferenceCi, "execCheckDeletedFileReferenceCi");
   console.log(`\u8F93\u51FA json: ${outputJson || "\u672A\u4F20\u53C2"}`);
   console.log(`\u8F93\u51FA json \u8DEF\u5F84: ${outputJsonPath || "\u672A\u4F20\u53C2"}`);
   console.log(`\u5E76\u53D1\u6570: ${concurrency || "\u672A\u4F20\u53C2"}`);
-  const ciConfig = await getRemoteCiConfig(ciConfigUrl, proxy);
+  let ciConfig = await getRemoteCiConfig(ciConfigUrl, proxy);
   if (!ciConfig) {
-    console.error("[error]: CI \u914D\u7F6E\u6587\u4EF6\u4E0D\u5B58\u5728");
+    console.error("[error]: CI \u914D\u7F6E\u83B7\u53D6\u5931\u8D25\uFF01\u518D\u6B21\u5C1D\u8BD5\u83B7\u53D6~");
+    ciConfig = await getRemoteCiConfig(ciConfigUrl, proxy);
+  }
+  if (!ciConfig) {
+    console.error("[error]: CI \u914D\u7F6E\u83B7\u53D6\u5931\u8D25\uFF01");
     import_fs4.default.writeFileSync(outputPath, `\u274C \u6587\u6863\u95E8\u7981\u672A\u901A\u8FC7\uFF01\u539F\u56E0\uFF1A\u672A\u80FD\u83B7\u53D6\u6587\u6863 CI \u914D\u7F6E`);
     return;
   }
@@ -195739,6 +195753,20 @@ __name(execCheckDeletedFileReferenceCi, "execCheckDeletedFileReferenceCi");
   console.log("");
   console.log(`\u83B7\u53D6\u7684\u6587\u4EF6\u6570\u91CF\uFF1A${changed.length}`);
   console.log(`\u68C0\u67E5\u7684\u6587\u4EF6\u6570\u91CF\uFF1A${checkFiles.length}`);
+  const doctoolsJsonErrors = [];
+  const doctoolsJsonFiles = changed.map((item) => item.replace(/\\/g, "/")).filter((filePath) => filePath.startsWith(".doctools/") && filePath.endsWith(".json"));
+  for (const filePath of doctoolsJsonFiles) {
+    try {
+      const completeFilePath = import_path13.default.join(repoPath, filePath);
+      const content3 = readFileByAutoDecode(completeFilePath);
+      JSON.parse(content3);
+    } catch (err) {
+      doctoolsJsonErrors.push({
+        filePath,
+        message: "\u274C \u914D\u7F6E\u8F6C\u6362\u9519\u8BEF\uFF0C\u8BF7\u68C0\u67E5\u914D\u7F6E\u4E66\u5199\u662F\u5426\u6B63\u786E"
+      });
+    }
+  }
   if (checkFiles.length > 0 && !checkFiles.every((filePath) => filePath.startsWith(".doctools/"))) {
     console.log(`\u68C0\u67E5\u7684\u6587\u4EF6\uFF1A`);
     console.log(checkFiles.join("\n"));
@@ -195746,12 +195774,13 @@ __name(execCheckDeletedFileReferenceCi, "execCheckDeletedFileReferenceCi");
     console.log(`\u5F00\u59CB\u68C0\u67E5...`);
   } else if (hasDeletedDocFiles && (checkItems[LINK_VALIDITY_CHECK] || checkItems[RESOURCE_EXISTENCE_CHECK])) {
     console.log(`[info]: \u6CA1\u6709\u9700\u8981\u68C0\u67E5\u7684\u53D8\u66F4\u6587\u4EF6\uFF0C\u4EC5\u6267\u884C\u5220\u9664\u6587\u4EF6\u5F15\u7528\u68C0\u67E5`);
-  } else {
+  } else if (doctoolsJsonErrors.length === 0) {
     console.log(`[info]: \u2705 \u8DF3\u8FC7 docs ci \u68C0\u67E5\uFF0C\u6CA1\u6709\u9700\u8981\u68C0\u67E5\u7684\u6587\u6863\u6587\u4EF6`);
     import_fs4.default.writeFileSync(outputPath, `\u2705 \u8DF3\u8FC7 docs ci \u68C0\u67E5\uFF0C\u6CA1\u6709\u9700\u8981\u68C0\u67E5\u7684\u6587\u6863\u6587\u4EF6`);
     return;
   }
   const outputItems = [];
+  outputItems.push(...doctoolsJsonErrors);
   const processFile = /* @__PURE__ */ __name(async (filePath) => {
     const items = [];
     try {
