@@ -130,7 +130,7 @@ const userOptions = computed(() => [
   {
     id: 'center',
     label: t('header.USER_CENTER'),
-    url: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/${lang.value}/my/workspace`,
+    url: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/${lang.value}/my/workbench`,
     target: '_blank',
     total: 0,
     logout: false,
