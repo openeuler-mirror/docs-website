@@ -23,10 +23,10 @@
     }
   },
   "dependencies": {
-    "@opendesign-plus/components": "0.0.1-rc.54",
+    "@opendesign-plus/components": "0.0.1-rc.60",
     "@opendesign-plus/composables": "0.0.1-rc.10",
     "@opendesign-plus/plugins": "0.0.1-rc.1",
-    "@opensig/opendesign": "1.2.3-sp1",
+    "@opensig/opendesign": "1.2.5",
     "@opensig/opendesign-token": "0.0.11",
     "@vueuse/core": "14.3.0",
     "axios": "1.18.0",

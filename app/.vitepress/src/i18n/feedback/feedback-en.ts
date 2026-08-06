@@ -26,8 +26,6 @@ export default {
   submitAs: 'Submit As',
   bugType: 'Bug Type',
   bugDescriptionPlaceholder: 'Describe the bug so that we can quickly locate the problem.',
-  bugPostPrivacyPolicy: 'By submitting your content, you fully understand and agree to the openEuler',
-  privacyPolicy: 'Privacy Statement',
   input: 'Enter here.',
 
   wantSubmitMark: 'Rate Now',

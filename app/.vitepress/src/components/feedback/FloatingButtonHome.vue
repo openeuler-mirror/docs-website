@@ -90,7 +90,7 @@ const floatData = ref([
 
       <OPopup
         :visible="showPopup"
-        position="rb"
+        position="lt"
         :target="feedbackRef"
         :auto-hide="showInput ? false : true"
         wrapper="#feedback"
@@ -110,12 +110,15 @@ const floatData = ref([
       </OIcon>
 
       <OPopup
-        position="rb"
+        position="left"
         :target="issuebackRef"
         wrapper="#issueback"
         :body-class="`popup-issueback ${locale === 'en' ? 'popup-issueback-en' : ''}`"
         :offset="24"
         trigger="hover"
+        :style="{
+          top: '20px',
+        }"
       >
         <OLink v-for="item in floatData" :key="item.link" :href="item.link" target="_blank" :hover-underline="false" class="popup-item">
           <OIcon><component :is="item.img"></component> </OIcon>
@@ -175,7 +178,6 @@ const floatData = ref([
     box-shadow: var(--o-shadow-2);
     border-radius: var(--o-radius-xs);
     width: 360px;
-    top: 12px;
     position: relative;
 
     .icon-close {
