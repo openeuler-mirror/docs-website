@@ -27,7 +27,7 @@ const bodyEn = `
 
 > {link}
 
-2.[Retings]
+2.[Ratings]
 
 >Retrieval efficiency: {efficiency}
 >Accuracy: {accuracy}
@@ -70,21 +70,18 @@ export const useFeedbackDocStore = defineStore('feedback-doc', () => {
   }
 
   async function submitIssue(data: FeedBackDataT) {
-    const result = await submitRate(data);
-    if (result) {
-      const content = (isZh.value ? bodyZh : bodyEn)
-        .replace('{link}', data.feedbackPageUrl)
-        .replace('{efficiency}', String(data.efficiency))
-        .replace('{accuracy}', String(data.accuracy))
-        .replace('{completeness}', String(data.completeness))
-        .replace('{usability}', String(data.usability))
-        .replace('{feedback}', data.feedback || '');
+    const promise = await submitRate(data);
+    const content = (isZh.value ? bodyZh : bodyEn)
+      .replace('{link}', data.feedbackPageUrl)
+      .replace('{efficiency}', String(data.efficiency))
+      .replace('{accuracy}', String(data.accuracy))
+      .replace('{completeness}', String(data.completeness))
+      .replace('{usability}', String(data.usability))
+      .replace('{feedback}', data.feedback || '');
 
-      const issueBaseUrl = nodeStore.pageNode?.upstream ? nodeStore.pageNode.upstream.split('/blob')[0] : 'https://atomgit.com/openeuler/docs';
-      window.open(`${issueBaseUrl}/issues/new?title=${ isZh.value ? '文档评分' : 'Ratings' }&body=${encodeURIComponent(content)}`, '_blank', 'noopener noreferrer');
-    }
-
-    return result;
+    const issueBaseUrl = nodeStore.pageNode?.upstream ? nodeStore.pageNode.upstream.split('/blob')[0] : 'https://atomgit.com/openeuler/docs';
+    window.open(`${issueBaseUrl}/issues/new?title=${ isZh.value ? '文档评分' : 'Ratings' }&body=${encodeURIComponent(content)}`, '_blank', 'noopener noreferrer');
+    return promise;
   }
 
   return {
