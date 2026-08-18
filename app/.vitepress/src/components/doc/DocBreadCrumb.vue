@@ -61,7 +61,7 @@ const goToPage = (href: string) => {
       <!-- 文档聚合页 -->
       <OBreadcrumbItem :href="`/${locale}/`" @click.prevent="goToPage(`/${locale}/`)">{{ t('home.docCenter') }}</OBreadcrumbItem>
       <!-- 模块 -->
-      <OBreadcrumbItem v-if="showModuleItem" :href="nodeStore.moduleNode?.href || ''" @click.prevent="goToPage(nodeStore.moduleNode?.href || '')">{{
+      <OBreadcrumbItem v-if="showModuleItem && nodeStore.moduleNode" :href="nodeStore.moduleNode?.href || ''" @click.prevent="goToPage(nodeStore.moduleNode?.href || '')">{{
         nodeStore.moduleNode?.label
       }}</OBreadcrumbItem>
       <!-- 当前节点 -->

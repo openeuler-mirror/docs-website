@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { PropType } from 'vue';
 import { ODivider } from '@opensig/opendesign';
 
 import { useLocale } from '@/composables/useLocale';
@@ -7,10 +6,6 @@ import { linksData2, filingData } from '@/config/footer';
 import { getYearByOffset } from '@/utils/common';
 
 defineProps({
-  lang: {
-    type: String as PropType<'zh' | 'en'>,
-    default: 'zh',
-  },
   target: {
     type: String,
     default: '_blank',
@@ -18,7 +13,7 @@ defineProps({
 });
 
 const baseUrl = import.meta.env.VITE_MAIN_DOMAIN_URL;
-const { t } = useLocale();
+const { t, locale } = useLocale();
 </script>
 
 <template>
@@ -37,18 +32,18 @@ const { t } = useLocale();
     </div>
 
     <div class="footer-right">
-      <template v-for="(link, index) in linksData2[lang]" :key="link.URL">
+      <template v-for="(link, index) in linksData2[locale]" :key="link.URL">
         <a :target="target" :href="link.URL.includes('http') ? link.URL : `${baseUrl}${link.URL}`" class="link">{{ link.NAME }}</a>
-        <ODivider v-if="index !== linksData2[lang].length - 1" direction="v" />
+        <ODivider v-if="index !== linksData2[locale].length - 1" direction="v" />
       </template>
     </div>
   </div>
 
   <div class="app-footer-mb">
     <div class="links">
-      <template v-for="(link, index) in linksData2[lang]" :key="link.URL">
+      <template v-for="(link, index) in linksData2[locale]" :key="link.URL">
         <a :target="target" :href="link.URL.includes('http') ? link.URL : `${baseUrl}${link.URL}`" class="link">{{ link.NAME }}</a>
-        <ODivider v-if="index !== linksData2[lang].length - 1" direction="v" />
+        <ODivider v-if="index !== linksData2[locale].length - 1" direction="v" />
       </template>
     </div>
 
