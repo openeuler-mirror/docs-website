@@ -9,8 +9,7 @@ import setConfig from './setConfig';
 
 import { isBoolean, useLoading, useMessage, isNull, isUndefined } from '@opensig/opendesign';
 import type { LoadingPropsT } from '@opensig/opendesign/lib/loading/types';
-import { LOGIN_STATUS, clearUserAuth } from '@/shared/login';
-import { useLoginStore } from '@/stores/user';
+import { clearUserAuth } from '@/shared/login';
 
 import i18n from '@/i18n';
 
@@ -175,7 +174,6 @@ const responseInterceptorId = request.interceptors.response.use(
 
     if (err.response?.status === 401) {
       clearUserAuth();
-      useLoginStore().setLoginStatus(LOGIN_STATUS.FAILED);
     }
 
     return Promise.reject(err);

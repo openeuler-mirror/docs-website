@@ -22,12 +22,6 @@ export const useUserInfoStore = defineStore('userInfo', {
     photo: '',
   }),
 });
-
-export const useLoginStore = defineStore('login', {
-  state: () => ({
-    loginStatus: 'NOT_LOGIN' as 'NOT_LOGIN' | 'LOGGED_IN',
-  }),
-});
 ```
 
 新 store 推荐使用 **Setup Store** 风格（Composition API）：
@@ -76,5 +70,5 @@ const { username } = userStore;
 | 类型 | 规范 | 示例 |
 |------|------|------|
 | defineStore ID | camelCase | `'userInfo'`, `'login'` |
-| 使用函数 | `use` + PascalCase + `Store` | `useUserInfoStore`, `useLoginStore` |
+| 使用函数 | `use` + PascalCase + `Store` | `useUserInfoStore` |
 | useState key | camelCase | `'appearance'`, `'cookie'` |
