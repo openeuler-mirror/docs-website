@@ -93755,7 +93755,11 @@ var require_request = __commonJS({
           } else if (typeof val[i] === "object") {
             throw new InvalidArgumentError(`invalid ${key} header`);
           } else {
-            arr.push(`${val[i]}`);
+            const str = `${val[i]}`;
+            if (!isValidHeaderValue(str)) {
+              throw new InvalidArgumentError(`invalid ${key} header`);
+            }
+            arr.push(str);
           }
         }
         val = arr;
@@ -93767,6 +93771,9 @@ var require_request = __commonJS({
         val = "";
       } else {
         val = `${val}`;
+        if (!isValidHeaderValue(val)) {
+          throw new InvalidArgumentError(`invalid ${key} header`);
+        }
       }
       if (headerName === "host") {
         if (request.host !== null) {
@@ -97636,6 +97643,7 @@ var require_client_h1 = __commonJS({
       RequestContentLengthMismatchError,
       ResponseContentLengthMismatchError,
       RequestAbortedError,
+      InvalidArgumentError,
       HeadersTimeoutError,
       HeadersOverflowError,
       SocketError,
@@ -98372,8 +98380,16 @@ var require_client_h1 = __commonJS({
         }
         body = bodyStream.stream;
         contentLength = bodyStream.length;
-      } else if (util.isBlobLike(body) && request.contentType == null && body.type) {
-        headers.push("content-type", body.type);
+      } else if (util.isBlobLike(body) && request.contentType == null) {
+        const contentType = body.type;
+        if (contentType) {
+          const contentTypeValue = `${contentType}`;
+          if (!util.isValidHeaderValue(contentTypeValue)) {
+            util.errorRequest(client, request, new InvalidArgumentError("invalid content-type header"));
+            return false;
+          }
+          headers.push("content-type", contentTypeValue);
+        }
       }
       if (body && typeof body.read === "function") {
         body.read(0);
@@ -101009,6 +101025,25 @@ var require_retry_handler = __commonJS({
       return new Date(retryAfter).getTime() - current2;
     }
     __name(calculateRetryAfterHeader, "calculateRetryAfterHeader");
+    function validatePartialResponseContentLength(headers, range2, statusCode, retryCount) {
+      const contentLength = headers["content-length"];
+      if (contentLength == null) {
+        return null;
+      }
+      if (!Number.isFinite(range2.start) || !Number.isFinite(range2.end)) {
+        return null;
+      }
+      const length = Number(contentLength);
+      const expectedLength = range2.end - range2.start + 1;
+      if (!Number.isFinite(length) || length !== expectedLength) {
+        return new RequestRetryError("Content-Length mismatch", statusCode, {
+          headers,
+          data: { count: retryCount }
+        });
+      }
+      return null;
+    }
+    __name(validatePartialResponseContentLength, "validatePartialResponseContentLength");
     var RetryHandler = class _RetryHandler {
       static {
         __name(this, "RetryHandler");
@@ -101184,6 +101219,11 @@ var require_retry_handler = __commonJS({
             );
             return false;
           }
+          const contentLengthError = validatePartialResponseContentLength(headers, contentRange, statusCode, this.retryCount);
+          if (contentLengthError != null) {
+            this.abort(contentLengthError);
+            return false;
+          }
           const { start: start2, size, end = size - 1 } = contentRange;
           assert18(this.start === start2, "content-range mismatch");
           assert18(this.end == null || this.end === end, "content-range mismatch");
@@ -101200,6 +101240,11 @@ var require_retry_handler = __commonJS({
                 resume,
                 statusMessage
               );
+            }
+            const contentLengthError = validatePartialResponseContentLength(headers, range2, statusCode, this.retryCount);
+            if (contentLengthError != null) {
+              this.abort(contentLengthError);
+              return false;
             }
             const { start: start2, size, end = size - 1 } = range2;
             assert18(
@@ -108231,15 +108276,50 @@ var require_util6 = __commonJS({
       for (let i = 0; i < path27.length; ++i) {
         const code4 = path27.charCodeAt(i);
         if (code4 < 32 || // exclude CTLs (0-31)
-        code4 === 127 || // DEL
+        code4 > 126 || // exclude DEL and non-ascii
         code4 === 59) {
           throw new Error("Invalid cookie path");
         }
       }
     }
     __name(validateCookiePath, "validateCookiePath");
+    function isLetterOrDigit(code4) {
+      return code4 >= 48 && code4 <= 57 || // 0-9
+      code4 >= 65 && code4 <= 90 || // A-Z
+      code4 >= 97 && code4 <= 122;
+    }
+    __name(isLetterOrDigit, "isLetterOrDigit");
     function validateCookieDomain(domain2) {
-      if (domain2.startsWith("-") || domain2.endsWith(".") || domain2.endsWith("-")) {
+      if (domain2 === " ") {
+        return;
+      }
+      if (domain2.length > 255) {
+        throw new Error("Invalid cookie domain");
+      }
+      let labelLength = 0;
+      for (let i = 0; i < domain2.length; ++i) {
+        const code4 = domain2.charCodeAt(i);
+        if (code4 === 46) {
+          if (labelLength === 0) {
+            throw new Error("Invalid cookie domain");
+          }
+          if (domain2.charCodeAt(i - 1) === 45) {
+            throw new Error("Invalid cookie domain");
+          }
+          labelLength = 0;
+          continue;
+        }
+        if (labelLength === 0 && !isLetterOrDigit(code4)) {
+          throw new Error("Invalid cookie domain");
+        }
+        if (!isLetterOrDigit(code4) && code4 !== 45) {
+          throw new Error("Invalid cookie domain");
+        }
+        if (++labelLength > 63) {
+          throw new Error("Invalid cookie domain");
+        }
+      }
+      if (labelLength === 0 || domain2.charCodeAt(domain2.length - 1) === 45) {
         throw new Error("Invalid cookie domain");
       }
     }
@@ -108325,7 +108405,11 @@ var require_util6 = __commonJS({
           throw new Error("Invalid unparsed");
         }
         const [key, ...value2] = part.split("=");
-        out.push(`${key.trim()}=${value2.join("=")}`);
+        const trimmedKey = key.trim();
+        const joinedValue = value2.join("=");
+        validateCookieName(trimmedKey);
+        validateCookieValue(joinedValue);
+        out.push(`${trimmedKey}=${joinedValue}`);
       }
       return out.join("; ");
     }
@@ -194215,8 +194299,46 @@ async function execCheckLinkValidity(depthNodes, opts) {
     }
     return idsMap.get(mdPath);
   }, "getIds");
-  const tasks = [];
+  const excludedRanges = [];
   for (const item of depthNodes) {
+    const start2 = item.node.position?.start?.offset;
+    const end = item.node.position?.end?.offset;
+    if (start2 === void 0 || end === void 0) {
+      continue;
+    }
+    if (item.node.type === "link" || item.node.type === "image" || item.node.type === "code" || item.node.type === "inlineCode" || item.node.type === "html" || item.node.type.startsWith("mdxJsx")) {
+      excludedRanges.push([start2, end]);
+    }
+  }
+  const isExcluded = /* @__PURE__ */ __name((start2, end) => excludedRanges.some(([s, e]) => start2 >= s && end <= e), "isExcluded");
+  const malformedLinkNodes = [];
+  for (const m of content3.matchAll(/\[([^\]\n]+)\]\(([^)\n]*[ \t][^)\n]*)\)/g)) {
+    const url2 = m[2];
+    if (!url2.includes("#")) {
+      continue;
+    }
+    const start2 = m.index;
+    const end = start2 + m[0].length;
+    if (isExcluded(start2, end)) {
+      continue;
+    }
+    malformedLinkNodes.push({
+      depth: 0,
+      node: {
+        type: "link",
+        url: url2,
+        title: null,
+        children: [],
+        position: {
+          start: { line: 0, column: 0, offset: start2 },
+          end: { line: 0, column: 0, offset: end }
+        }
+      }
+    });
+  }
+  const allDepthNodes = malformedLinkNodes.concat(depthNodes);
+  const tasks = [];
+  for (const item of allDepthNodes) {
     if (signal?.aborted) {
       return results;
     }
