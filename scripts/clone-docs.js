@@ -126,7 +126,24 @@ function syncSigDocs(branch) {
 
       // 复制 md
       const sourceMd = path.join(CACHE_PATH, repo, ...locations);
-      const destMd = path.join(currentDir, ...locations.slice(locations.length > 3 ? 2 : locations.length - 1));
+      const originMdName = locations[locations.length - 1];
+      let destMd;
+      let destBaseDir;
+      if (typeof obj.md_path === 'string' && obj.md_path.trim()) {
+        const cp = obj.md_path.trim();
+        if (cp.endsWith('.md')) {
+          // md_path 指定为文件：重命名
+          destMd = path.resolve(currentDir, cp);
+          destBaseDir = path.dirname(destMd);
+        } else {
+          // md_path 指定为目录：保持原文件名放入
+          destBaseDir = path.resolve(currentDir, cp);
+          destMd = path.join(destBaseDir, originMdName);
+        }
+      } else {
+        destMd = path.join(currentDir, ...locations.slice(locations.length > 3 ? 2 : locations.length - 1));
+        destBaseDir = path.dirname(destMd);
+      }
       copyFileSync(sourceMd, destMd);
 
       // 复制 md 可能关联的资源目录
@@ -134,8 +151,7 @@ function syncSigDocs(branch) {
       for (const item of fs.readdirSync(sourceDir)) {
         const completeDir = path.join(sourceDir, item);
         if (fs.statSync(completeDir).isDirectory()) {
-          const destDir = path.join(path.dirname(destMd), item);
-          copyDirectorySync(completeDir, destDir);
+          copyDirectorySync(completeDir, path.join(destBaseDir, item));
         }
       }
     }

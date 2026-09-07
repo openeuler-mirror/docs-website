@@ -28,7 +28,7 @@ const copyRepoFromDiskCache = async (upstream, dir, storagePath) => {
   }
 };
 
-const copyMdFromDiskCache = async (upstream, storagePath) => {
+const copyMdFromDiskCache = async (upstream, dir, customPath) => {
   try {
     const { repo, branch, locations } = getGitUrlInfo(upstream);
     const cachePath = path.join(REPO_PATH, repo);
@@ -41,7 +41,24 @@ const copyMdFromDiskCache = async (upstream, storagePath) => {
 
     // 复制 md
     const sourceMd = path.join(cachePath, ...locations);
-    const destMd = path.join(storagePath, ...locations.slice(locations.length > 3 ? 2 : locations.length - 1));
+    const originMdName = locations[locations.length - 1];
+    let destMd;
+    let destBaseDir;
+    if (customPath && customPath.trim()) {
+      const cp = customPath.trim();
+      if (cp.endsWith('.md')) {
+        // path 指定为文件：重命名
+        destMd = path.resolve(dir, cp);
+        destBaseDir = path.dirname(destMd);
+      } else {
+        // path 指定为目录：保持原文件名放入
+        destBaseDir = path.resolve(dir, cp);
+        destMd = path.join(destBaseDir, originMdName);
+      }
+    } else {
+      destMd = path.join(dir, ...locations.slice(locations.length > 3 ? 2 : locations.length - 1));
+      destBaseDir = path.dirname(destMd);
+    }
     copyFileSync(sourceMd, destMd);
 
     // 复制 md 可能关联的资源目录
@@ -49,8 +66,7 @@ const copyMdFromDiskCache = async (upstream, storagePath) => {
     for (const item of fs.readdirSync(sourceDir)) {
       const completeDir = path.join(sourceDir, item);
       if (fs.statSync(completeDir).isDirectory()) {
-        const destDir = path.join(path.dirname(destMd), item);
-        copyDirectorySync(completeDir, destDir);
+        copyDirectorySync(completeDir, path.join(destBaseDir, item));
       }
     }
 
@@ -81,7 +97,12 @@ const scanTocYaml = async (yamlPath, dir, type) => {
     if (type === 'md') {
       const match = lines[i]?.trim().match(/https?:\/\/(?:gitcode|atomgit|gitee)\.com\/([^\/]+)\/([^\/]+)\/blob\/([^\/]+)\/(.+\.md)/);
       if (match) {
-        copyMdFromDiskCache(lines[i].replace('href:', '').trim(), path.dirname(yamlPath));
+        const upstream = lines[i].replace('href:', '').trim();
+        let customPath = '';
+        if (i + 1 < lines.length && lines[i + 1].includes('md_path:')) {
+          customPath = lines[i + 1].replace('md_path:', '').trim();
+        }
+        await copyMdFromDiskCache(upstream, path.dirname(yamlPath), customPath);
       }
     }
 

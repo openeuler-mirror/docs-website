@@ -366,7 +366,21 @@ function parseHref(toc, tocFilePath, upstream) {
     // 远程 md 文件
     if (/https?:\/\/(?:gitcode|atomgit|gitee)\.com\/([^\/]+)\/([^\/]+)\/blob\/([^\/]+)\/(.+\.md)/.test(toc.href)) {
       const { locations } = getGitUrlInfo(toc.href);
-      const mdPath = path.resolve(currentDir, ...locations.slice(locations.length > 3 ? 2 : locations.length - 1));
+      const originMdName = locations[locations.length - 1];
+      let mdPath;
+      if (typeof toc.md_path === 'string' && toc.md_path.trim()) {
+        const customPath = toc.md_path.trim();
+        if (customPath.endsWith('.md')) {
+          // md_path 指定为文件：直接使用（可能重命名）
+          mdPath = path.resolve(currentDir, customPath);
+        } else {
+          // md_path 指定为目录：保持原文件名放入
+          mdPath = path.resolve(currentDir, customPath, originMdName);
+        }
+        delete toc.md_path;
+      } else {
+        mdPath = path.resolve(currentDir, ...locations.slice(locations.length > 3 ? 2 : locations.length - 1));
+      }
       toc.upstream = toc.href;
       toc.href = getDocsUrl(mdPath, toc.label || '');
       toc.type = 'page';

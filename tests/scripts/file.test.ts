@@ -185,6 +185,16 @@ describe('copyDirectorySync', () => {
     copyDirectorySync(sourceDir, destDir);
     expect(console.log).toHaveBeenCalledWith(expect.stringContaining('成功复制'));
   });
+
+  it('目标文件已存在时输出覆盖日志并覆盖文件', () => {
+    fs.mkdirSync(destDir, { recursive: true });
+    fs.writeFileSync(path.join(destDir, 'file1.txt'), 'old content');
+
+    copyDirectorySync(sourceDir, destDir);
+
+    expect(console.log).toHaveBeenCalledWith(expect.stringContaining('将被覆盖'));
+    expect(fs.readFileSync(path.join(destDir, 'file1.txt'), 'utf-8')).toBe('content1');
+  });
 });
 
 describe('renameSync', () => {
