@@ -195036,8 +195036,79 @@ var ALLOWED_KEYS_MAP = {
         };
       }
     }, "checkValue")
+  },
+  md_path: {
+    checkValue: /* @__PURE__ */ __name(async (value2) => {
+      if (typeof value2 !== "string") {
+        return {
+          zh: `path \u503C\u53EA\u80FD\u4E3A\u5B57\u7B26\u4E32`,
+          en: `path value can only be a string.`
+        };
+      } else if (value2.trim() === "") {
+        return {
+          zh: `path \u503C\u4E0D\u80FD\u4E3A\u7A7A\u5B57\u7B26\u4E32`,
+          en: `path value cannot be an empty string.`
+        };
+      }
+    }, "checkValue")
   }
 };
+function isRemoteMdUrl(value2) {
+  const urlPath = value2.split("#")[0].split("?")[0];
+  return urlPath.startsWith("https://") && /\.(md|mdx)$/i.test(urlPath);
+}
+__name(isRemoteMdUrl, "isRemoteMdUrl");
+function getRemoteMdBasename(value2) {
+  const urlPath = value2.split("#")[0].split("?")[0];
+  return urlPath.split("/").pop().toLowerCase();
+}
+__name(getRemoteMdBasename, "getRemoteMdBasename");
+function getEffectivePath(mdPath, basename5) {
+  if (!mdPath) {
+    return basename5;
+  }
+  const normalized = mdPath.trim().replace(/^\.\/+/, "").replace(/\/+$/, "");
+  return normalized ? normalized.toLowerCase() : basename5;
+}
+__name(getEffectivePath, "getEffectivePath");
+function collectRemoteMdHrefs(node2, remoteMdHrefs) {
+  if (!node2) {
+    return;
+  }
+  if ((0, import_yaml3.isMap)(node2)) {
+    const hrefItem = node2.items.find(({ key }) => key.toString() === "href");
+    if (hrefItem?.value) {
+      const hrefVal = hrefItem.value.toJSON();
+      if (typeof hrefVal === "string" && isRemoteMdUrl(hrefVal)) {
+        const mdPathItem = node2.items.find(({ key }) => key.toString() === "md_path");
+        let mdPath;
+        if (mdPathItem?.value) {
+          const mdPathVal = mdPathItem.value.toJSON();
+          if (typeof mdPathVal === "string") {
+            mdPath = mdPathVal;
+          }
+        }
+        remoteMdHrefs.push({
+          effectivePath: getEffectivePath(mdPath, getRemoteMdBasename(hrefVal)),
+          start: hrefItem.value.range[0],
+          end: hrefItem.value.range[1],
+          value: hrefVal
+        });
+      }
+    }
+    for (const { value: value2 } of node2.items) {
+      collectRemoteMdHrefs(value2, remoteMdHrefs);
+    }
+    return;
+  }
+  if ((0, import_yaml3.isSeq)(node2)) {
+    for (const item of node2.items) {
+      collectRemoteMdHrefs(item, remoteMdHrefs);
+    }
+    return;
+  }
+}
+__name(collectRemoteMdHrefs, "collectRemoteMdHrefs");
 async function visitToc(node2, tocDir, results, proxy, signal, firstCall = false) {
   if ((0, import_yaml3.isMap)(node2)) {
     for (const { key, value: value2 } of node2.items) {
@@ -195215,10 +195286,36 @@ async function visitToc(node2, tocDir, results, proxy, signal, firstCall = false
 __name(visitToc, "visitToc");
 async function execCheckToc(content3, tocDir, proxy, signal) {
   const results = [];
+  const remoteMdHrefs = [];
   try {
     const toc = (0, import_yaml3.parseDocument)(content3);
+    collectRemoteMdHrefs(toc.contents, remoteMdHrefs);
     await visitToc(toc.contents, tocDir, results, proxy, signal, true);
   } catch (err) {
+  }
+  const groups = /* @__PURE__ */ new Map();
+  for (const info of remoteMdHrefs) {
+    if (!groups.has(info.effectivePath)) {
+      groups.set(info.effectivePath, []);
+    }
+    groups.get(info.effectivePath).push(info);
+  }
+  for (const [, group] of groups) {
+    if (group.length > 1) {
+      for (const info of group) {
+        results.push({
+          name: TOC_CHECK,
+          type: "error",
+          content: info.value,
+          start: info.start,
+          end: info.end,
+          message: {
+            zh: `\u5B58\u5728\u76F8\u540C\u7684\u672C\u5730\u8D44\u6E90\u8DEF\u5F84\uFF08${info.effectivePath}\uFF09\uFF0C\u53EF\u80FD\u4F1A\u5B58\u5728\u8D44\u6E90\u88AB\u8986\u76D6\u7684\u95EE\u9898\uFF0C\u8BF7\u901A\u8FC7 md_path \u5B57\u6BB5\u6307\u5B9A\u4E0D\u540C\u7684\u672C\u5730\u8DEF\u5F84\u4EE5\u907F\u514D\u6B64\u95EE\u9898`,
+            en: `There are remote md resources with the same local path (${info.effectivePath}), which may cause resource overwrite issues. Please specify a different local path via the md_path field to avoid this issue.`
+          }
+        });
+      }
+    }
   }
   return results;
 }
