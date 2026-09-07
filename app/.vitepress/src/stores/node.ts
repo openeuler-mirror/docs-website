@@ -51,7 +51,16 @@ export const useNodeStore = defineStore('node', () => {
 
   // 模块节点
   const moduleNode = computed(() => {
-    const node = rootTree.root.children.find((item) => item.href && pathname.value.includes(item.href.replace('index.html', '')));
+    const node = rootTree.root.children.find((item) => {
+      if (item.href) {
+        return pathname.value.includes(item.href.replace('index.html', ''));
+      } else if (item.id.includes('/tools')) {
+        return pathname.value.includes(item.id.replace('index.html', ''));
+      }
+
+      return undefined;
+    });
+    
     if (node && pathname.value.toLocaleLowerCase().includes('/tools/')) {
       return node.children.find((item) => item.href && pathname.value.includes(item.href.replace('index.html', '')));
     }

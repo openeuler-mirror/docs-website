@@ -17,9 +17,10 @@
  * 工作流程：
  * 1. 显示必需构建的文档版本（common分支和其他基础版本）
  * 2. 提供交互式选择界面，让用户选择额外要构建的文档版本
- * 3. 根据用户选择执行以下操作：
- *    a. 克隆选定版本的文档内容
- *    b. 生成文档目录结构
+ * 3. 询问是否拉取文档（默认是）；选择否则跳过拉取，直接启动开发服务器
+ * 4. 根据用户选择执行以下操作：
+ *    a. 克隆选定版本的文档内容（可选）
+ *    b. 生成文档目录结构（可选）
  *    c. 启动本地开发服务器
  *
  * 交互式选项说明：
@@ -34,7 +35,7 @@
  */
 
 import { execSync } from 'child_process';
-import { select } from '@inquirer/prompts';
+import { select, confirm } from '@inquirer/prompts';
 
 import { VITEPRESS_VERSIONS_CONFIG } from './config/version.js';
 
@@ -64,8 +65,18 @@ import { VITEPRESS_VERSIONS_CONFIG } from './config/version.js';
       branches = [...allBranches.slice(0, 2), selectedBranches];
     }
 
-    console.log(`即将拉取文档分支：${branches.join('、')}`);
-    execSync(`pnpm dev:clone --branch=${branches.join(',')}`, { stdio: 'inherit' });
+    const shouldPull = await confirm({
+      message: `是否拉取文档？`,
+      default: true,
+    });
+
+    if (shouldPull) {
+      console.log(`即将拉取文档分支：${branches.join('、')}`);
+      execSync(`pnpm dev:clone --branch=${branches.join(',')}`, { stdio: 'inherit' });
+    } else {
+      console.log(`已跳过文档拉取~`);
+    }
+
     execSync(`pnpm dev:toc ${branches.join(' ')}`, { stdio: 'inherit' });
     execSync(`pnpm dev:app`, { stdio: 'inherit' });
   } catch {
