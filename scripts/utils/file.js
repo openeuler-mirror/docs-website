@@ -31,6 +31,9 @@ export function copyDirectorySync(sourceDir, destDir, clearDestDir = false, slie
     if (item.isDirectory()) {
       copyDirectorySync(sourcePath, targetPath, clearDestDir, true);
     } else {
+      if (fs.existsSync(targetPath)) {
+        console.log(`[copyDirectorySync]：目标文件已存在，将被覆盖 ${targetPath}`);
+      }
       fs.copyFileSync(sourcePath, targetPath);
     }
   });

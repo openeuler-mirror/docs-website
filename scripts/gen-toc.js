@@ -281,6 +281,10 @@ function parseToc(toc, tocFilePath, upstream) {
       toc = parseSections(toc, tocFilePath, upstream);
     }
 
+    if (toc.type !== 'page' && toc.type !== 'anchor') {
+      delete toc.href;
+    }
+
     return toc;
   } catch (err) {
     globalErrors.push({
