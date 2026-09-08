@@ -54,7 +54,7 @@ export const useNodeStore = defineStore('node', () => {
     const node = rootTree.root.children.find((item) => {
       if (item.href) {
         return pathname.value.includes(item.href.replace('index.html', ''));
-      } else if (item.id.includes('/tools')) {
+      } else if (item.id.includes('/tools') || item.id.includes('/docs/common/')) {
         return pathname.value.includes(item.id.replace('index.html', ''));
       }
 
