@@ -281,7 +281,7 @@ function parseToc(toc, tocFilePath, upstream) {
       toc = parseSections(toc, tocFilePath, upstream);
     }
 
-    if (toc.type !== 'page' && toc.type !== 'anchor') {
+    if (toc.type !== 'page' && toc.type !== 'anchor' && !toc.href?.startsWith('http')) {
       delete toc.href;
     }
 
