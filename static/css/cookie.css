@@ -338,3 +338,45 @@ input[is="o-switch"]:active {
 input[is="o-switch"]:checked::before {
   flex: 1;
 }
+
+/* 中文简化提示条（与 openeuler.org cookie-notice 一致） */
+.cookie-notice-simple {
+  padding: 12px 0;
+}
+@media (max-width: 1680px) and (min-width: 841px) {
+  .cookie-notice-simple {
+    padding: 12px 5%;
+  }
+}
+.cookie-notice-simple .cookie-close {
+  position: static;
+}
+.cookie-simple-icon {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  margin-right: 4px;
+}
+.cookie-zh-title {
+  flex: 1;
+  margin: 0 8px 0 0;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  text-align: start;
+  color: var(--o-color-info1);
+}
+.cookie-zh-title a {
+  color: var(--o-color-primary1);
+}
+@media screen and (max-width: 840px) {
+  .cookie-notice-simple {
+    flex-direction: row;
+    align-items: center;
+    padding: 12px 16px;
+  }
+  .cookie-zh-title {
+    font-size: 12px;
+    line-height: 18px;
+  }
+}

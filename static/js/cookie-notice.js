@@ -3,7 +3,8 @@ $(function () {
   const body = $("body");
   const pathname = window.location.pathname;
   const isEn = pathname.includes("/en/");
-  const COOKIE_DOMAIN = ".openeuler.org";
+  const HOME_BASE_URL = location.origin.replace('docs.', 'www.');
+  const COOKIE_DOMAIN = location.hostname.replace('docs', '');
   // 弹窗
   const ODialog = (function () {
     let elemDialog;
@@ -101,14 +102,19 @@ $(function () {
     };
   })();
 
+
   const cookieNotice = {
-    COOKEY_KEY: "agreed-cookiepolicy",
+    // 与 openeuler.org 一致，cookie 按语言区分
+    COOKEY_KEY: `agreed-cookiepolicy-${isEn ? "en" : "zh"}`,
     COOKIE_AGREED_STATUS: {
       NOT_SIGNED: "0", // 未签署
       ALL_AGREED: "1", // 同意所有cookie
       NECCESSARY_AGREED: "2", // 仅同意必要cookie
+      BROWSE_AGREED: "3", // 中文页继续浏览视为同意
     },
     locale: {
+      zhNotice: "我们使用cookie来确保您的高速浏览体验。继续浏览本站，即表示您同意我们使用cookie。 ",
+      zhNoticeBtn: "查看详情",
       title: !isEn
         ? "openEuler社区重视您的隐私"
         : "openEuler Community Respects Your Privacy",
@@ -116,7 +122,7 @@ $(function () {
         ? "我们在本网站上使用Cookie，包括第三方Cookie，以便网站正常运行和提升浏览体验。单击“全部接受”即表示您同意这些目的；单击“全部拒绝”即表示您拒绝非必要的Cookie；单击“管理Cookie”以选择接受或拒绝某些Cookie。需要了解更多信息或随时更改您的 Cookie 首选项，请参阅我们的 "
         : 'This site uses cookies from us and our partners to improve your browsing experience and make the site work properly. By clicking "Accept All", you consent to the use of cookies. By clicking "Reject All", you disable the use of unnecessary cookies. You can manage your cookie settings by clicking "Manage Cookies". For more information or to change your cookie settings, please refer to our',
       cookie: !isEn ? "《关于cookies》。" : "About Cookies.",
-      cookieHref: `https://www.openeuler.org/${isEn ? 'en' : 'zh'}/other/cookies/`,
+      cookieHref: `${HOME_BASE_URL}/${isEn ? 'en' : 'zh'}/other/cookies/`,
       action: [
         {
           btn: "全部接受",
@@ -266,7 +272,10 @@ $(function () {
       const { COOKIE_AGREED_STATUS, COOKEY_KEY } = this;
       const cookieVal = this.getCookieByKey(COOKEY_KEY) ?? "0";
       const cookieStatusVal = cookieVal[0];
-      if (cookieStatusVal === COOKIE_AGREED_STATUS.ALL_AGREED) {
+      if (
+        cookieStatusVal === COOKIE_AGREED_STATUS.ALL_AGREED ||
+        cookieStatusVal === COOKIE_AGREED_STATUS.BROWSE_AGREED
+      ) {
         return COOKIE_AGREED_STATUS.ALL_AGREED;
       } else if (cookieStatusVal === COOKIE_AGREED_STATUS.NECCESSARY_AGREED) {
         return COOKIE_AGREED_STATUS.NECCESSARY_AGREED;
@@ -276,6 +285,30 @@ $(function () {
     },
     // cookie提示内容
     getCookieContent: () => {
+      // 中文页面：与 openeuler.org 一致，仅展示一句话 + 查看详情 + 关闭按钮
+      if (!isEn) {
+        return `
+<div class="cookie-notice">
+  <div class="cookie-notice-content">
+    <div class="content-wrapper cookie-notice-wrap cookie-notice-simple">
+      <span class="cookie-simple-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="transform: rotate(180deg)">
+          <path fill="var(--o-color-primary1)" d="M21 12c0 4.971-4.029 9-9 9s-9-4.029-9-9c0-4.971 4.029-9 9-9s9 4.029 9 9z"></path>
+          <path fill="#fff" d="M12 9.4c0.552 0 1-0.448 1-1s-0.448-1-1-1c-0.552 0-1 0.448-1 1s0.448 1 1 1zM12.492 10.943c-0.042-0.233-0.246-0.41-0.492-0.41-0.276 0-0.5 0.224-0.5 0.5v5.5l0.008 0.090c0.042 0.233 0.246 0.41 0.492 0.41 0.276 0 0.5-0.224 0.5-0.5v-5.5l-0.008-0.090z"></path>
+        </svg>
+      </span>
+      <p class="cookie-zh-title">
+        ${cookieNotice.locale.zhNotice}<a href="${
+          cookieNotice.locale.cookieHref
+        }" target="_blank" rel="noopener noreferrer">${
+          cookieNotice.locale.zhNoticeBtn
+        }</a>
+      </p>
+      <em class="cookie-close"></em>
+    </div>
+  </div>
+</div>`;
+      }
       return `
 <div class="cookie-notice">
   <div class="cookie-notice-content">
@@ -353,6 +386,15 @@ $(function () {
       this.disableOA();
       this.removeHM();
     },
+    // 中文页点击关闭，视为“继续浏览即同意”（与 openeuler.org 中文页一致）
+    agreeByBrowsing() {
+      this.setCustomCookie(
+        this.COOKEY_KEY,
+        this.COOKIE_AGREED_STATUS.BROWSE_AGREED,
+        180
+      );
+      this.removeNotice();
+    },
     removeNotice: () => {
       $(".cookie-notice").remove();
     },
@@ -374,14 +416,14 @@ $(function () {
           // 加载弹窗
           ODialog &&
             ODialog.show({
-              title: this.locale.manageTitle,
+              title: _this.locale.manageTitle,
               content: _this.getManageContent(),
               dlgActions: [
                 {
                   id: "save",
                   label: isEn
-                    ? this.locale.manageAction[0].btnEn
-                    : this.locale.manageAction[0].btn,
+                    ? _this.locale.manageAction[0].btnEn
+                    : _this.locale.manageAction[0].btn,
                   color: "primary",
                   variant: "outline",
                   onClick: () => {
@@ -392,8 +434,8 @@ $(function () {
                 {
                   id: "allow-all",
                   label: isEn
-                    ? this.locale.manageAction[1].btnEn
-                    : this.locale.manageAction[1].btn,
+                    ? _this.locale.manageAction[1].btnEn
+                    : _this.locale.manageAction[1].btn,
                   color: "primary",
                   variant: "outline",
                   onClick: () => {
@@ -407,9 +449,13 @@ $(function () {
         }
       });
 
-      // 隐藏cookie
+      // 关闭按钮：中文页点击关闭即同意cookie；英文页仅隐藏本次提示
       $(".cookie-close").on("click", function () {
-        cookieNotice.toggleNoticeVisible(false);
+        if (isEn) {
+          cookieNotice.toggleNoticeVisible(false);
+        } else {
+          cookieNotice.agreeByBrowsing();
+        }
       });
     },
     init() {
@@ -418,8 +464,15 @@ $(function () {
         this.bindEvents();
         this.toggleNoticeVisible(true);
       }
+      if (!isEn) {
+        this.enableOA();
+        this.enableHM();
+        return;
+      }
       if (this.isAllAgreed()) {
-        this.acceptAll();
+        // 已同意（含中文页“继续浏览即同意”），不再重复写入cookie
+        this.enableOA();
+        this.enableHM();
       } else {
         this.disableOA();
         this.removeHM();
