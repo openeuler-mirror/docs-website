@@ -99,7 +99,9 @@ const onClickMenuItem = (item: DocMenuNodeT, newOpener?: boolean) => {
     searchStore.clearSearch();
     const url = new URL(`${window.location.origin}${href}`);
     if (url.pathname === window.location.pathname && url.hash === window.location.hash) {
-      scrollIntoTitle();
+      nextTick(() => {
+        setTimeout(scrollIntoTitle, 100);
+      });
       return;
     }
 
@@ -397,8 +399,13 @@ const updateObserver = () => {
   }
   if (sections.length === 0) return;
   sections.forEach((section) => {
-    obs!.observe(section.start);
-    obs!.observe(section.end!);
+    if (section.start instanceof Element) {
+      obs!.observe(section.start);
+    }
+    
+    if (section.end instanceof Element) {
+      obs!.observe(section.end!);
+    }
   });
 };
 
