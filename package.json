@@ -8,6 +8,7 @@
     "dev:toc": "node scripts/gen-toc.js",
     "dev:app": "vitepress dev app",
     "build": "node scripts/change-robots-txt-domain.js && node scripts/build.js $VERSION",
+    "postbuild": "node scripts/gen-sitemap-index.js",
     "preview": "vitepress preview app",
     "format": "prettier --write app/.vitepress/src/",
     "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
