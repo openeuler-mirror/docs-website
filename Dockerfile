@@ -24,7 +24,16 @@ COPY ./deploy/nginx.conf /etc/nginx/nginx.conf.template
 RUN mkdir -p /src/
 COPY . /src/website
 
+ARG DOCS_BASE_URL=https://docs.openeuler.org
 RUN cd /src/website && hugo -b / --minify && \
+    docs_version=$(sed -n 's|.*resourceURL = "/docs/\([^/]*\)/".*|\1|p' config.toml) && \
+    if [ -n "$docs_version" ]; then \
+      sed -i "s|<loc>/|<loc>${DOCS_BASE_URL}/docs/${docs_version}/|g" public/sitemap.xml && \
+      sed -i -e "s|<loc>/|<loc>${DOCS_BASE_URL}/|g" \
+             -e "s|href=\"/zh/|href=\"${DOCS_BASE_URL}/zh/|g" \
+             -e "s|href=\"/en/|href=\"${DOCS_BASE_URL}/en/|g" \
+             public/zh/sitemap.xml public/en/sitemap.xml; \
+    fi && \
     mkdir -p /usr/share/nginx/www && \
     cp -rf /src/website/public/* /usr/share/nginx/www/ && \
     rm -rf /src/*
