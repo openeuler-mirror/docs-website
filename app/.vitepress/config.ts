@@ -1,6 +1,5 @@
 import { dirname, join, resolve } from 'node:path';
-import { createWriteStream, existsSync, readFileSync, writeFileSync } from 'node:fs';
-import { execSync } from 'node:child_process';
+import { createWriteStream, existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 import type Markdown from 'markdown-it';
@@ -9,6 +8,7 @@ import llmstxt from 'vitepress-plugin-llms';
 
 import { getDomId } from './src/utils/common';
 import { buildPageJsonLd } from './src/config/jsonld';
+import { VITEPRESS_VERSIONS_CONFIG, HUGO_VERSIONS_CONFIG } from '../../scripts/config/version.js';
 import { defineConfig } from 'vitepress';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -259,43 +259,9 @@ export default defineConfig({
       return;
     }
 
-    let logs = execSync('git ls-remote --heads https://gitcode.com/openeuler/docs.git', { encoding: 'utf-8' });
-    logs += execSync('git ls-remote --heads https://gitcode.com/openeuler/docs-centralized.git', { encoding: 'utf-8' });
-    let branches = logs
-      .split('\n')
-      .map((line) => line.slice(line.indexOf('refs/heads/') + 11))
-      .filter((line) => line.startsWith('stable') && !line.includes('common'))
-      .map((br) => br.split('-')[1]);
-    branches = [...new Set(branches)];
-
-    // ============ write sitemap.xml
-    const sitemapIndex = join(__dirname, 'dist', 'sitemap_index.xml');
-    writeFileSync(
-      sitemapIndex,
-      `<?xml version="1.0" encoding="utf-8"?>
-<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-   <sitemap>
-    <loc>${sitemapHostname}/sitemap.xml</loc>
-  </sitemap>
-${branches
-  .filter((br) => !br.includes('common'))
-  .map((br) => {
-    return `  <sitemap>
-  <loc>${sitemapHostname}/docs/${br}/sitemap.xml</loc>
-</sitemap>`;
-  })
-  .join('\n')}
-</sitemapindex>`
-    );
-
-    // 写robots.txt
-    const robots = join(__dirname, 'dist/robots.txt');
-    if (!existsSync(robots)) {
-      console.log(`❌ robots.txt不存在`);
-    } else {
-      const robotsContent = readFileSync(robots, 'utf-8');
-      writeFileSync(robots, `${robotsContent}\nSitemap:${sitemapHostname}/sitemap_index.xml`);
-    }
+    const branches = [
+      ...new Set([...Object.values(VITEPRESS_VERSIONS_CONFIG), ...Object.values(HUGO_VERSIONS_CONFIG)]),
+    ].filter((br) => !br.includes('common'));
 
     // ============ write llms.txt
     const llmstxtPath = join(__dirname, 'dist', 'llms.txt');
