@@ -143312,6 +143312,18 @@ async function getGitcodeStatus(link3, proxy, signal) {
   if (status !== 404) {
     return status;
   }
+  const branchPrefixes = ["feature", "bugfix", "release", "hotfix"];
+  if (branchPrefixes.includes(blobMatch[4])) {
+    const slashIndex = pathPart.indexOf("/");
+    if (slashIndex > -1) {
+      const fullBranch = encodeURIComponent(`${blobMatch[4]}/${pathPart.slice(0, slashIndex)}`);
+      const rawUrl = `https://raw.${blobMatch[1]}.com/${blobMatch[2]}/${blobMatch[3]}/raw/${fullBranch}/${pathPart.slice(slashIndex + 1)}`;
+      const retryStatus = await getUrlStatus(rawUrl, "HEAD", proxy, signal);
+      if (retryStatus !== 404) {
+        return retryStatus;
+      }
+    }
+  }
   if (hasSuffix) {
     return 404;
   }
