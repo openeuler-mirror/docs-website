@@ -91519,14 +91519,14 @@ var require_parser = __commonJS({
             case "scalar":
             case "single-quoted-scalar":
             case "double-quoted-scalar": {
-              const fs9 = this.flowScalar(this.type);
+              const fs10 = this.flowScalar(this.type);
               if (atNextItem || it.value) {
-                map6.items.push({ start: start2, key: fs9, sep: [] });
+                map6.items.push({ start: start2, key: fs10, sep: [] });
                 this.onKeyLine = true;
               } else if (it.sep) {
-                this.stack.push(fs9);
+                this.stack.push(fs10);
               } else {
-                Object.assign(it, { key: fs9, sep: [] });
+                Object.assign(it, { key: fs10, sep: [] });
                 this.onKeyLine = true;
               }
               return;
@@ -91654,13 +91654,13 @@ var require_parser = __commonJS({
             case "scalar":
             case "single-quoted-scalar":
             case "double-quoted-scalar": {
-              const fs9 = this.flowScalar(this.type);
+              const fs10 = this.flowScalar(this.type);
               if (!it || it.value)
-                fc.items.push({ start: [], key: fs9, sep: [] });
+                fc.items.push({ start: [], key: fs10, sep: [] });
               else if (it.sep)
-                this.stack.push(fs9);
+                this.stack.push(fs10);
               else
-                Object.assign(it, { key: fs9, sep: [] });
+                Object.assign(it, { key: fs10, sep: [] });
               return;
             }
             case "flow-map-end":
@@ -121093,7 +121093,7 @@ var require_resolve_from = __commonJS({
     "use strict";
     var path27 = require("path");
     var Module = require("module");
-    var fs9 = require("fs");
+    var fs10 = require("fs");
     var resolveFrom2 = /* @__PURE__ */ __name((fromDirectory, moduleId, silent) => {
       if (typeof fromDirectory !== "string") {
         throw new TypeError(`Expected \`fromDir\` to be of type \`string\`, got \`${typeof fromDirectory}\``);
@@ -121102,7 +121102,7 @@ var require_resolve_from = __commonJS({
         throw new TypeError(`Expected \`moduleId\` to be of type \`string\`, got \`${typeof moduleId}\``);
       }
       try {
-        fromDirectory = fs9.realpathSync(fromDirectory);
+        fromDirectory = fs10.realpathSync(fromDirectory);
       } catch (error) {
         if (error.code === "ENOENT") {
           fromDirectory = path27.resolve(fromDirectory);
@@ -130795,7 +130795,7 @@ var require_resolve_from2 = __commonJS({
     "use strict";
     var path27 = require("path");
     var Module = require("module");
-    var fs9 = require("fs");
+    var fs10 = require("fs");
     var resolveFrom2 = /* @__PURE__ */ __name((fromDir, moduleId, silent) => {
       if (typeof fromDir !== "string") {
         throw new TypeError(`Expected \`fromDir\` to be of type \`string\`, got \`${typeof fromDir}\``);
@@ -130804,7 +130804,7 @@ var require_resolve_from2 = __commonJS({
         throw new TypeError(`Expected \`moduleId\` to be of type \`string\`, got \`${typeof moduleId}\``);
       }
       try {
-        fromDir = fs9.realpathSync(fromDir);
+        fromDir = fs10.realpathSync(fromDir);
       } catch (err) {
         if (err.code === "ENOENT") {
           fromDir = path27.resolve(fromDir);
@@ -130898,7 +130898,7 @@ var require_import_fresh = __commonJS({
 
 // src/docs-ci-v2.ts
 var import_path13 = __toESM(require("path"));
-var import_fs4 = __toESM(require("fs"));
+var import_fs5 = __toESM(require("fs"));
 
 // ../../node_modules/@isaacs/balanced-match/dist/esm/index.js
 var balanced = /* @__PURE__ */ __name((a, b, str) => {
@@ -135949,8 +135949,8 @@ var PathScurryBase = class {
    *
    * @internal
    */
-  constructor(cwd = process.cwd(), pathImpl, sep3, { nocase, childrenCacheSize = 16 * 1024, fs: fs9 = defaultFS } = {}) {
-    this.#fs = fsFromOption(fs9);
+  constructor(cwd = process.cwd(), pathImpl, sep3, { nocase, childrenCacheSize = 16 * 1024, fs: fs10 = defaultFS } = {}) {
+    this.#fs = fsFromOption(fs10);
     if (cwd instanceof URL || cwd.startsWith("file://")) {
       cwd = (0, import_node_url.fileURLToPath)(cwd);
     }
@@ -136511,8 +136511,8 @@ var PathScurryWin32 = class extends PathScurryBase {
   /**
    * @internal
    */
-  newRoot(fs9) {
-    return new PathWin32(this.rootPath, IFDIR, void 0, this.roots, this.nocase, this.childrenCache(), { fs: fs9 });
+  newRoot(fs10) {
+    return new PathWin32(this.rootPath, IFDIR, void 0, this.roots, this.nocase, this.childrenCache(), { fs: fs10 });
   }
   /**
    * Return true if the provided path string is an absolute path
@@ -136543,8 +136543,8 @@ var PathScurryPosix = class extends PathScurryBase {
   /**
    * @internal
    */
-  newRoot(fs9) {
-    return new PathPosix(this.rootPath, IFDIR, void 0, this.roots, this.nocase, this.childrenCache(), { fs: fs9 });
+  newRoot(fs10) {
+    return new PathPosix(this.rootPath, IFDIR, void 0, this.roots, this.nocase, this.childrenCache(), { fs: fs10 });
   }
   /**
    * Return true if the provided path string is an absolute path
@@ -143268,8 +143268,21 @@ function createRequest(url2, method, opts) {
   const response = fetch(url2, {
     method,
     headers: {
-      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",
-      Accept: "text/html,application/json,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"
+      pragma: "no-cache",
+      "sec-ch-ua": '"Not=A?Brand";v="99", "Google Chrome";v="151", "Chromium";v="151"',
+      "sec-ch-ua-mobile": "?0",
+      "sec-ch-ua-platform": '"Windows"',
+      "sec-fetch-dest": "document",
+      "sec-fetch-mode": "navigate",
+      "sec-fetch-site": "same-origin",
+      "sec-fetch-user": "?1",
+      "upgrade-insecure-requests": "1",
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36",
+      Accept: "text/html,application/json,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+      "accept-encoding": "gzip, deflate, br, zstd",
+      "accept-language": "zh-CN,zh;q=0.9",
+      "cache-control": "no-cache",
+      connection: "keep-alive"
     },
     dispatcher: proxy ? new import_undici.ProxyAgent(proxy) : void 0,
     signal: controller.signal
@@ -143280,6 +143293,32 @@ function createRequest(url2, method, opts) {
   return response;
 }
 __name(createRequest, "createRequest");
+async function getGitcodeStatus(link3, proxy, signal) {
+  const treeMatch = link3.match(/https:\/\/(gitcode|atomgit)\.com\/([^/]+)\/([^/]+)\/tree\/([^/]+)\/(.+)/i);
+  if (treeMatch) {
+    const apiUrl2 = `https://atomgit.com/api/v5/repos/${treeMatch[2]}/${treeMatch[3]}/contents/${treeMatch[5]}?ref=${treeMatch[4]}`;
+    return getUrlStatus(apiUrl2, "HEAD", proxy, signal);
+  }
+  const blobMatch = link3.match(/https:\/\/(gitcode|atomgit)\.com\/([^/]+)\/([^/]+)\/blob\/([^/]+)\/(.+)/i);
+  if (!blobMatch) {
+    return null;
+  }
+  const pathPart = blobMatch[5];
+  const hasSuffix = /\.[\w+.-]+$/.test(pathPart.split("/").pop() || "");
+  const sp = link3.split("/");
+  sp[2] = `raw.${sp[2]}`;
+  sp[5] = "raw";
+  const status = await getUrlStatus(sp.join("/"), "HEAD", proxy, signal);
+  if (status !== 404) {
+    return status;
+  }
+  if (hasSuffix) {
+    return 404;
+  }
+  const apiUrl = `https://atomgit.com/api/v5/repos/${blobMatch[2]}/${blobMatch[3]}/contents/${pathPart}?ref=${blobMatch[4]}`;
+  return getUrlStatus(apiUrl, "HEAD", proxy, signal);
+}
+__name(getGitcodeStatus, "getGitcodeStatus");
 async function getLinkStatus(link3, prefixPath = "", whitelist = [], proxy, signal) {
   if (whitelist.some((item) => {
     try {
@@ -143291,11 +143330,9 @@ async function getLinkStatus(link3, prefixPath = "", whitelist = [], proxy, sign
     return 200;
   }
   if (link3.startsWith("http")) {
-    if (/https:\/\/(gitcode|atomgit)\.com\/.+?\/.+?\/blob\/.+?\/.+/i.test(link3) && /\.[\w+.-]+$/.test(link3)) {
-      const sp = link3.split("/");
-      sp[2] = `raw.${sp[2]}`;
-      sp[5] = "raw";
-      return getUrlStatus(sp.join("/"), "HEAD", proxy, signal);
+    const gitStatus = await getGitcodeStatus(link3, proxy, signal);
+    if (gitStatus !== null) {
+      return gitStatus;
     }
     const status = await getUrlStatus(link3, "HEAD", proxy, signal);
     return status >= 400 ? await getUrlStatus(link3, "GET", proxy, signal) : status;
@@ -165084,7 +165121,7 @@ var MarkdownAst = class _MarkdownAst {
         if (!text6?.trim()) {
           return;
         }
-        const regex = /(?<!\\)<\/?([a-zA-Z]+[a-zA-Z0-9\-]*)([^>]*?)>|(?<!\\)<([a-zA-Z]+[a-zA-Z0-9\-]*)([^>]*?)\/>/g;
+        const regex = /(?<!\\)<\/?([a-zA-Z]+[a-zA-Z0-9-]*)([^>]*?)>|(?<!\\)<([a-zA-Z]+[a-zA-Z0-9-]*)([^>]*?)\/>/g;
         const matches = Array.from(text6.matchAll(regex));
         if (matches.length === 0) {
           return;
@@ -169416,7 +169453,7 @@ function lintContent(ruleList, aliasToRuleNames, name2, content3, markdownItFact
   }
 }
 __name(lintContent, "lintContent");
-function lintFile(ruleList, aliasToRuleNames, file, markdownItFactory, config2, configParsers, frontMatter, handleRuleFailures, noInlineConfig, resultVersion, fs9, synchronous, callback) {
+function lintFile(ruleList, aliasToRuleNames, file, markdownItFactory, config2, configParsers, frontMatter, handleRuleFailures, noInlineConfig, resultVersion, fs10, synchronous, callback) {
   function lintContentWrapper(err, content3) {
     if (err) {
       return callback(err);
@@ -169439,9 +169476,9 @@ function lintFile(ruleList, aliasToRuleNames, file, markdownItFactory, config2, 
   }
   __name(lintContentWrapper, "lintContentWrapper");
   if (synchronous) {
-    lintContentWrapper(null, fs9.readFileSync(file, "utf8"));
+    lintContentWrapper(null, fs10.readFileSync(file, "utf8"));
   } else {
-    fs9.readFile(file, "utf8", lintContentWrapper);
+    fs10.readFile(file, "utf8", lintContentWrapper);
   }
 }
 __name(lintFile, "lintFile");
@@ -169481,7 +169518,7 @@ function lintInput(options, synchronous, callback) {
   const markdownItFactory = options.markdownItFactory || (() => {
     throw new Error("The option 'markdownItFactory' was required (due to the option 'customRules' including a rule requiring the 'markdown-it' parser), but 'markdownItFactory' was not set.");
   });
-  const fs9 = options.fs || fs3;
+  const fs10 = options.fs || fs3;
   const aliasToRuleNames = mapAliasToRuleNames(ruleList);
   const results = newResults(ruleList);
   let done = false;
@@ -169516,7 +169553,7 @@ function lintInput(options, synchronous, callback) {
         handleRuleFailures,
         noInlineConfig,
         resultVersion,
-        fs9,
+        fs10,
         synchronous,
         lintWorkerCallback
       );
@@ -183635,8 +183672,8 @@ var FileResolver = class {
   }
   fs;
   templateReplacements;
-  constructor(fs9, templateReplacements) {
-    this.fs = fs9;
+  constructor(fs10, templateReplacements) {
+    this.fs = fs10;
     this.templateReplacements = templateReplacements;
   }
   /**
@@ -183901,17 +183938,17 @@ function pathFromRelativeTo(relativeTo) {
 }
 __name(pathFromRelativeTo, "pathFromRelativeTo");
 var loaderCache = /* @__PURE__ */ new WeakMap();
-function createFileResolver(fs9, templateVariables = envToTemplateVars(process.env)) {
-  let loader2 = loaderCache.get(fs9);
+function createFileResolver(fs10, templateVariables = envToTemplateVars(process.env)) {
+  let loader2 = loaderCache.get(fs10);
   if (!loader2) {
-    loader2 = new FileResolver(fs9, templateVariables);
-    loaderCache.set(fs9, loader2);
+    loader2 = new FileResolver(fs10, templateVariables);
+    loaderCache.set(fs10, loader2);
   }
   return loader2;
 }
 __name(createFileResolver, "createFileResolver");
-async function resolveFile(filename, relativeTo, fs9 = getFileSystem()) {
-  const resolver2 = createFileResolver(fs9);
+async function resolveFile(filename, relativeTo, fs10 = getFileSystem()) {
+  const resolver2 = createFileResolver(fs10);
   return resolver2.resolveFile(filename, relativeTo);
 }
 __name(resolveFile, "resolveFile");
@@ -184352,9 +184389,9 @@ var DictionaryLoader = class {
   reader;
   /** The keepAliveCache is to hold onto the most recently loaded dictionaries. */
   keepAliveCache;
-  constructor(fs9, keepAliveSize = 10) {
-    this.fs = fs9;
-    this.reader = toReader(fs9);
+  constructor(fs10, keepAliveSize = 10) {
+    this.fs = fs10;
+    this.reader = toReader(fs10);
     this.keepAliveCache = new SimpleCache2(keepAliveSize);
   }
   loadDictionary(def) {
@@ -184472,9 +184509,9 @@ var DictionaryLoader = class {
     return parts.join("|");
   }
 };
-function toReader(fs9) {
+function toReader(fs10) {
   async function readFile5(url2) {
-    return (await fs9.readFile(url2)).getText();
+    return (await fs10.readFile(url2)).getText();
   }
   __name(readFile5, "readFile");
   return {
@@ -189757,8 +189794,8 @@ var import_posix3 = require("node:path/posix");
 
 // ../../node_modules/cspell-lib/dist/lib/util/findUpFromUrl.js
 async function findUpFromUrl2(name2, from, options = {}) {
-  const fs9 = options.fs ?? getVirtualFS().fs;
-  return fs9.findUp(name2, from, options);
+  const fs10 = options.fs ?? getVirtualFS().fs;
+  return fs10.findUp(name2, from, options);
 }
 __name(findUpFromUrl2, "findUpFromUrl");
 
@@ -189780,8 +189817,8 @@ var ConfigSearch = class {
    * @param allowedExtensionsByProtocol - Map of allowed extensions by protocol, '*' is used to match all protocols.
    * @param fs - The file system to use.
    */
-  constructor(searchPlaces2, allowedExtensionsByProtocol, fs9) {
-    this.#scanner = new DirConfigScanner(searchPlaces2, allowedExtensionsByProtocol, fs9);
+  constructor(searchPlaces2, allowedExtensionsByProtocol, fs10) {
+    this.#scanner = new DirConfigScanner(searchPlaces2, allowedExtensionsByProtocol, fs10);
   }
   async searchForConfig(searchFromURL, stopSearchAtURL) {
     const dirUrl = searchFromURL.pathname.endsWith("/") ? searchFromURL : new URL("./", searchFromURL);
@@ -189832,9 +189869,9 @@ var DirConfigScanner = class {
    * @param allowedExtensionsByProtocol - Map of allowed extensions by protocol, '*' is used to match all protocols.
    * @param fs - The file system to use.
    */
-  constructor(searchPlaces2, allowedExtensionsByProtocol, fs9) {
+  constructor(searchPlaces2, allowedExtensionsByProtocol, fs10) {
     this.allowedExtensionsByProtocol = allowedExtensionsByProtocol;
-    this.fs = fs9;
+    this.fs = fs10;
     this.#searchPlacesByProtocol = setupSearchPlacesByProtocol(searchPlaces2, allowedExtensionsByProtocol);
     this.#searchPlaces = this.#searchPlacesByProtocol.get("*") || searchPlaces2;
   }
@@ -189921,9 +189958,9 @@ function setupSearchPlacesByProtocol(searchPlaces2, allowedExtensionsByProtocol)
   return map6;
 }
 __name(setupSearchPlacesByProtocol, "setupSearchPlacesByProtocol");
-async function checkPackageJson(fs9, filename) {
+async function checkPackageJson(fs10, filename) {
   try {
-    const file = await fs9.readFile(filename);
+    const file = await fs10.readFile(filename);
     const pkg = JSON.parse(file.getText());
     return typeof pkg.cspell === "object";
   } catch {
@@ -189980,12 +190017,12 @@ var ConfigLoader = class {
    * Use `createConfigLoader`
    * @param virtualFs - virtual file system to use.
    */
-  constructor(fs9, templateVariables = envToTemplateVars(process.env)) {
-    this.fs = fs9;
+  constructor(fs10, templateVariables = envToTemplateVars(process.env)) {
+    this.fs = fs10;
     this.templateVariables = templateVariables;
-    this.configSearch = new ConfigSearch(searchPlaces, trustedSearch, fs9);
-    this.cspellConfigFileReaderWriter = createReaderWriter(void 0, void 0, createIO(fs9));
-    this.fileResolver = new FileResolver(fs9, this.templateVariables);
+    this.configSearch = new ConfigSearch(searchPlaces, trustedSearch, fs10);
+    this.cspellConfigFileReaderWriter = createReaderWriter(void 0, void 0, createIO(fs10));
+    this.fileResolver = new FileResolver(fs10, this.templateVariables);
     this.onReady = this.init();
     this.subscribeToEvents();
   }
@@ -190368,8 +190405,8 @@ function resolveGlobRoot(settings, urlSettingsFile) {
   return typeof globRoot === "string" ? globRoot : globRoot.protocol === "file:" ? windowsDriveLetterToUpper(import_node_path11.default.resolve((0, import_node_url15.fileURLToPath)(globRoot))) : addTrailingSlash(globRoot).href;
 }
 __name(resolveGlobRoot, "resolveGlobRoot");
-function createConfigLoaderInternal(fs9) {
-  return new ConfigLoaderInternal(fs9 ?? getVirtualFS().fs);
+function createConfigLoaderInternal(fs10) {
+  return new ConfigLoaderInternal(fs10 ?? getVirtualFS().fs);
 }
 __name(createConfigLoaderInternal, "createConfigLoaderInternal");
 function getDefaultConfigLoaderInternal() {
@@ -190378,18 +190415,18 @@ function getDefaultConfigLoaderInternal() {
   return defaultConfigLoader = createConfigLoaderInternal();
 }
 __name(getDefaultConfigLoaderInternal, "getDefaultConfigLoaderInternal");
-function createIO(fs9) {
-  const readFile5 = /* @__PURE__ */ __name((url2) => fs9.readFile(url2).then((file) => ({ url: file.url, content: file.getText() })), "readFile");
-  const writeFile3 = /* @__PURE__ */ __name((file) => fs9.writeFile(file), "writeFile");
+function createIO(fs10) {
+  const readFile5 = /* @__PURE__ */ __name((url2) => fs10.readFile(url2).then((file) => ({ url: file.url, content: file.getText() })), "readFile");
+  const writeFile3 = /* @__PURE__ */ __name((file) => fs10.writeFile(file), "writeFile");
   return {
     readFile: readFile5,
     writeFile: writeFile3
   };
 }
 __name(createIO, "createIO");
-async function isDirectory(fs9, path27) {
+async function isDirectory(fs10, path27) {
   try {
-    return (await fs9.stat(path27)).isDirectory();
+    return (await fs10.stat(path27)).isDirectory();
   } catch {
     return false;
   }
@@ -194273,7 +194310,8 @@ var EN_DESCRIPTION = {
   \u951A\u70B9\u65E0\u6CD5\u8BBF\u95EE: "Invalid anchor.",
   \u672C\u5730\u94FE\u63A5\u65E0\u6CD5\u8BBF\u95EE: "Invalid link.",
   "http \u94FE\u63A5\u65E0\u6CD5\u8BBF\u95EE": "Invalid link.",
-  \u8BBF\u95EE\u8D85\u65F6: "Timeout."
+  \u8BBF\u95EE\u8D85\u65F6: "Timeout.",
+  "\u94FE\u63A5\u663E\u793A\u5F02\u5E38\uFF0C\u8BF7\u5C06\u7A7A\u683C\u8F6C\u6362\u4E3A%20": "Link display is abnormal, please convert spaces to %20."
 };
 async function execCheckLinkValidity(depthNodes, opts) {
   const {
@@ -194306,26 +194344,29 @@ async function execCheckLinkValidity(depthNodes, opts) {
     if (start2 === void 0 || end === void 0) {
       continue;
     }
-    if (item.node.type === "link" || item.node.type === "image" || item.node.type === "code" || item.node.type === "inlineCode" || item.node.type === "html" || item.node.type.startsWith("mdxJsx")) {
+    if (item.node.type === "link" || item.node.type === "image" || item.node.type === "code" || item.node.type === "inlineCode" || item.node.type === "html" || item.node.type === "math" || item.node.type.startsWith("mdxJsx")) {
       excludedRanges.push([start2, end]);
     }
   }
   const isExcluded = /* @__PURE__ */ __name((start2, end) => excludedRanges.some(([s, e]) => start2 >= s && end <= e), "isExcluded");
   const malformedLinkNodes = [];
-  for (const m of content3.matchAll(/\[([^\]\n]+)\]\(([^)\n]*[ \t][^)\n]*)\)/g)) {
-    const url2 = m[2];
-    if (!url2.includes("#")) {
-      continue;
-    }
+  for (const m of content3.matchAll(/(?<!!)\[([^\]\n]*)\]\(([^)\n]*[ \t][^)\n]*)\)/g)) {
+    const url2 = m[2]?.trim();
     const start2 = m.index;
     const end = start2 + m[0].length;
     if (isExcluded(start2, end)) {
       continue;
     }
+    if (/[{}]/.test(url2)) {
+      continue;
+    }
+    if ((url2.match(/, /g) || []).length >= 2) {
+      continue;
+    }
     malformedLinkNodes.push({
       depth: 0,
       node: {
-        type: "link",
+        type: "linkLike",
         url: url2,
         title: null,
         children: [],
@@ -194342,7 +194383,7 @@ async function execCheckLinkValidity(depthNodes, opts) {
     if (signal?.aborted) {
       return results;
     }
-    if (item.node.type !== "link" && item.node.type !== "html:tagstart" && item.node.type !== "mdxJsxFlowElement") {
+    if (item.node.type !== "link" && item.node.type !== "linkLike" && item.node.type !== "html:tagstart" && item.node.type !== "mdxJsxFlowElement") {
       continue;
     }
     if (item.node.type === "html:tagstart" && item.node.tagName !== "a") {
@@ -194352,7 +194393,7 @@ async function execCheckLinkValidity(depthNodes, opts) {
       continue;
     }
     let url2 = "";
-    if (item.node.type === "link") {
+    if (item.node.type === "link" || item.node.type === "linkLike") {
       url2 = item.node.url;
     } else if (item.node.type === "mdxJsxFlowElement") {
       url2 = item.node.attributes.find((attr) => attr.name === "href")?.value;
@@ -194381,45 +194422,41 @@ async function execCheckLinkValidity(depthNodes, opts) {
       }
       const index2 = cursor++;
       const { item, url: url2, link: link3, anchor } = tasks[index2];
-      let status = 0;
-      let zhMsg = "";
+      const errors = [];
+      if (item.node.type === "linkLike" && link3 && /\s/.test(link3)) {
+        errors.push({ status: 404, zhMsg: "\u94FE\u63A5\u663E\u793A\u5F02\u5E38\uFF0C\u8BF7\u5C06\u7A7A\u683C\u8F6C\u6362\u4E3A%20" });
+      }
       if (link3) {
-        status = await getLinkStatus(link3, prefixPath, whiteList, proxy, signal);
-        if (status >= 100 && status < 400) {
+        const linkStatus = await getLinkStatus(link3, prefixPath, whiteList, proxy, signal);
+        if (linkStatus >= 100 && linkStatus < 400) {
           if (!disableCheckAnchor && anchor && !link3.startsWith("http")) {
             if (link3.endsWith(".md/") || link3.endsWith(".html/")) {
-              status = 404;
-              zhMsg = "\u951A\u70B9\u65E0\u6CD5\u8BBF\u95EE\uFF0C#\u524D\u5B58\u5728\u591A\u4F59\u7684/";
+              errors.push({ status: 404, zhMsg: "\u951A\u70B9\u65E0\u6CD5\u8BBF\u95EE\uFF0C#\u524D\u5B58\u5728\u591A\u4F59\u7684/" });
             } else {
               const mdPath = import_path4.default.join(prefixPath, decodeURI(link3.replace(".html", ".md")));
               const ids = await getIds(mdPath);
-              if (ids.has(anchor) || ids.has(anchor.toLowerCase())) {
-                continue;
-              } else {
-                status = 404;
-                zhMsg = "\u951A\u70B9\u65E0\u6CD5\u8BBF\u95EE";
+              if (!ids.has(anchor) && !ids.has(anchor.toLowerCase())) {
+                errors.push({ status: 404, zhMsg: "\u951A\u70B9\u65E0\u6CD5\u8BBF\u95EE" });
               }
             }
-          } else {
-            continue;
           }
-        } else if (status === 499) {
-          zhMsg = "\u8BBF\u95EE\u8D85\u65F6";
+        } else if (linkStatus === 499) {
+          errors.push({ status: 499, zhMsg: "\u8BBF\u95EE\u8D85\u65F6" });
         } else {
-          zhMsg = `${link3.startsWith("http") ? "http " : "\u672C\u5730\u8DEF\u5F84"}\u94FE\u63A5\u65E0\u6CD5\u8BBF\u95EE`;
+          errors.push({ status: linkStatus, zhMsg: `${link3.startsWith("http") ? "http " : "\u672C\u5730\u8DEF\u5F84"}\u94FE\u63A5\u65E0\u6CD5\u8BBF\u95EE` });
         }
       } else if (!disableCheckAnchor && anchor) {
         const ids = await getIds(".");
-        if (ids.has(anchor) || ids.has(anchor.toLowerCase())) {
-          continue;
-        } else {
-          status = 404;
-          zhMsg = "\u951A\u70B9\u65E0\u6CD5\u8BBF\u95EE";
+        if (!ids.has(anchor) && !ids.has(anchor.toLowerCase())) {
+          errors.push({ status: 404, zhMsg: "\u951A\u70B9\u65E0\u6CD5\u8BBF\u95EE" });
         }
+      }
+      if (errors.length === 0) {
+        continue;
       }
       let start2 = 0;
       let end = 0;
-      if (item.node.type === "link") {
+      if (item.node.type === "link" || item.node.type === "linkLike") {
         const node2 = item.node;
         start2 = node2.position?.start.offset || 0;
         end = node2.position?.end.offset || 0;
@@ -194446,24 +194483,24 @@ async function execCheckLinkValidity(depthNodes, opts) {
         start2 = offset2 + attr.index + blankSpaces + quoteLength + 5;
         end = start2 + attr.value.length;
       }
-      taskResults[index2] = {
+      taskResults[index2] = errors.map((err) => ({
         name: LINK_VALIDITY_CHECK,
-        type: status === 404 ? "error" : "warning",
+        type: err.status === 404 ? "error" : "warning",
         content: url2,
         start: start2,
         end,
-        extras: status,
+        extras: err.status,
         message: {
-          zh: zhMsg,
-          en: EN_DESCRIPTION[zhMsg]
+          zh: err.zhMsg,
+          en: EN_DESCRIPTION[err.zhMsg]
         }
-      };
+      }));
     }
   });
   await Promise.all(workers);
-  for (const result of taskResults) {
-    if (result) {
-      results.push(result);
+  for (const items of taskResults) {
+    if (items) {
+      results.push(...items);
     }
   }
   return results;
@@ -194476,7 +194513,7 @@ function isMdInToc(toc, dirPath, mdPath, signal) {
   if (toc && typeof toc.href === "string" && import_path5.default.join(dirPath, toc.href).replace(/\\/g, "/") === mdPath) {
     return true;
   }
-  if (Array.isArray(toc.sections)) {
+  if (Array.isArray(toc?.sections)) {
     for (const item of toc.sections) {
       if (isMdInToc(item, dirPath, mdPath)) {
         return true;
@@ -194593,30 +194630,45 @@ function createResult(params2) {
 }
 __name(createResult, "createResult");
 async function checkImageNode(node2, opts) {
-  const status = await checkUrl(node2.url.trim(), opts);
-  if (status >= 100 && status < 400) {
-    return null;
+  const url2 = node2.url.trim();
+  const start2 = (node2.position?.start.offset || 0) + (node2.alt?.length || 0) + 4;
+  const end = (node2.position?.end.offset || 0) - 1;
+  const results = [];
+  if (node2.type === "imageLike") {
+    const link3 = url2.split("#")[0];
+    if (/\s/.test(link3)) {
+      results.push({
+        name: RESOURCE_EXISTENCE_CHECK,
+        type: "error",
+        content: url2,
+        start: start2,
+        end,
+        extras: 404,
+        message: {
+          zh: "\u94FE\u63A5\u663E\u793A\u5F02\u5E38\uFF0C\u8BF7\u5C06\u7A7A\u683C\u8F6C\u6362\u4E3A%20",
+          en: "Link display is abnormal, please convert spaces to %20."
+        }
+      });
+    }
   }
-  const startOffset = (node2.alt?.length || 0) + 4;
-  return createResult({
-    content: node2.url.trim(),
-    status,
-    start: (node2.position?.start.offset || 0) + startOffset,
-    end: (node2.position?.end.offset || 0) - 1
-  });
+  const status = await checkUrl(url2, opts);
+  if (status >= 400) {
+    results.push(createResult({ content: url2, status, start: start2, end }));
+  }
+  return results;
 }
 __name(checkImageNode, "checkImageNode");
 async function checkHtmlTagNode(node2, opts) {
   if (!SOURCE_TAG.has(node2.tagName)) {
-    return null;
+    return [];
   }
   const attr = node2.attrs.find((item) => item.name === "src");
   if (!attr) {
-    return null;
+    return [];
   }
   const status = await checkUrl(attr.value?.trim(), opts);
   if (status >= 100 && status < 400) {
-    return null;
+    return [];
   }
   const offset2 = node2.tagName.length + (node2.position?.start.offset || 0) + 1;
   const raw = attr.raw.trim();
@@ -194624,38 +194676,38 @@ async function checkHtmlTagNode(node2, opts) {
   const quoteLength = attr.quote.length;
   const start2 = offset2 + attr.index + blankSpaces + quoteLength + 4;
   const end = start2 + attr.value.length;
-  return createResult({
+  return [createResult({
     content: attr.value?.trim(),
     status,
     start: start2,
     end
-  });
+  })];
 }
 __name(checkHtmlTagNode, "checkHtmlTagNode");
 async function checkMdxJsxFlowElementNode(node2, opts) {
   if (!SOURCE_TAG.has(node2.name || "")) {
-    return null;
+    return [];
   }
   const attr = node2.attributes.find((item) => item.name === "src");
   if (!attr || !attr.value) {
-    return null;
+    return [];
   }
   const status = await checkUrl(attr.value.trim(), opts);
   if (status >= 100 && status < 400) {
-    return null;
+    return [];
   }
-  return createResult({
+  return [createResult({
     content: attr.value.trim(),
     status,
     start: (attr.position?.start.offset || 0) + 5,
     end: (attr.position?.end.offset || 0) - 1
-  });
+  })];
 }
 __name(checkMdxJsxFlowElementNode, "checkMdxJsxFlowElementNode");
 async function checkTextNode(node2, currentIndex, depthNodes, opts) {
   const text6 = node2.value.trim();
   if (!text6.startsWith("<<<")) {
-    return null;
+    return [];
   }
   let parentNode;
   let j = currentIndex - 1;
@@ -194667,26 +194719,68 @@ async function checkTextNode(node2, currentIndex, depthNodes, opts) {
     j--;
   }
   if (parentNode && parentNode.type !== "paragraph") {
-    return null;
+    return [];
   }
   const rawPathRegexp = /^(.+?(?:(?:\.([a-z0-9]+))?))(?:(#[\w-]+))?(?: ?(?:{(\d+(?:[,-]\d+)*)? ?(\S+)? ?(\S+)?}))? ?(?:\[(.+)\])?$/;
   const [filepath = ""] = (rawPathRegexp.exec(text6.replace("<<<", "")) || []).slice(1);
   const status = await checkUrl(filepath.trim(), opts);
   if (status >= 100 && status < 400) {
-    return null;
+    return [];
   }
-  return createResult({
+  return [createResult({
     content: filepath.trim(),
     status,
     start: node2.position?.start.offset || 0,
     end: node2.position?.end.offset || 0
-  });
+  })];
 }
 __name(checkTextNode, "checkTextNode");
 async function execCheckResourceExistence(depthNodes, opts) {
   const { concurrency = 5, signal } = opts;
   const results = [];
+  const excludedRanges = [];
+  for (const item of depthNodes) {
+    const start2 = item.node.position?.start?.offset;
+    const end = item.node.position?.end?.offset;
+    if (start2 === void 0 || end === void 0) {
+      continue;
+    }
+    if (item.node.type === "image" || item.node.type === "link" || item.node.type === "code" || item.node.type === "inlineCode" || item.node.type === "html" || item.node.type === "math" || item.node.type.startsWith("mdxJsx")) {
+      excludedRanges.push([start2, end]);
+    }
+  }
+  const isExcluded = /* @__PURE__ */ __name((start2, end) => excludedRanges.some(([s, e]) => start2 >= s && end <= e), "isExcluded");
+  const malformedImageNodes = [];
+  if (opts.content) {
+    for (const m of opts.content.matchAll(/!\[([^\]\n]*)\]\(([^)\n]*[ \t][^)\n]*)\)/g)) {
+      const url2 = m[2]?.trim();
+      const start2 = m.index;
+      const end = start2 + m[0].length;
+      if (isExcluded(start2, end)) {
+        continue;
+      }
+      if (/[{}]/.test(url2)) {
+        continue;
+      }
+      if ((url2.match(/, /g) || []).length >= 2) {
+        continue;
+      }
+      malformedImageNodes.push({
+        type: "imageLike",
+        url: url2,
+        alt: m[1],
+        title: null,
+        position: {
+          start: { line: 0, column: 0, offset: start2 },
+          end: { line: 0, column: 0, offset: end }
+        }
+      });
+    }
+  }
   const tasks = [];
+  for (const node2 of malformedImageNodes) {
+    tasks.push(() => checkImageNode(node2, opts));
+  }
   for (let i = 0; i < depthNodes.length; i++) {
     if (signal?.aborted) {
       return results;
@@ -194722,9 +194816,9 @@ async function execCheckResourceExistence(depthNodes, opts) {
     }
   });
   await Promise.all(workers);
-  for (const result of taskResults) {
-    if (result) {
-      results.push(result);
+  for (const items of taskResults) {
+    if (items) {
+      results.push(...items);
     }
   }
   return results;
@@ -195291,7 +195385,7 @@ async function execCheckToc(content3, tocDir, proxy, signal) {
     const toc = (0, import_yaml3.parseDocument)(content3);
     collectRemoteMdHrefs(toc.contents, remoteMdHrefs);
     await visitToc(toc.contents, tocDir, results, proxy, signal, true);
-  } catch (err) {
+  } catch {
   }
   const groups = /* @__PURE__ */ new Map();
   for (const info of remoteMdHrefs) {
@@ -195745,6 +195839,7 @@ var import_path11 = __toESM(require("path"));
 async function execCheckResourceExistenceCi(depthNodes, content3, basePath, filePath, tempWhiteList, remoteConfigUrl, disableCheckExternalUrl, disableCheckInternalUrl, disableCheckOnly404Status, proxy) {
   const whiteList = await getWhitelistUrlsConfig(remoteConfigUrl, proxy);
   const results = await execCheckResourceExistence(depthNodes, {
+    content: content3,
     prefixPath: import_path11.default.dirname(import_path11.default.join(basePath, filePath)),
     whiteList: [...tempWhiteList, ...whiteList],
     disableCheckExternalUrl,
@@ -195791,28 +195886,119 @@ __name(execCheckCodespellCi, "execCheckCodespellCi");
 
 // src/ci/check-deleted-file-reference.ts
 var import_path12 = __toESM(require("path"));
-async function execCheckDeletedFileReferenceCi(depthNodes, content3, basePath, filePath, deletedFiles, enableLinkCheck, enableResourceCheck, remoteDeletedPatterns) {
-  const results = execCheckDeletedFileReference(depthNodes, {
-    content: content3,
-    prefixPath: import_path12.default.dirname(import_path12.default.join(basePath, filePath)),
-    deletedFiles: deletedFiles.map((f) => import_path12.default.join(basePath, f)),
+var import_fs4 = __toESM(require("fs"));
+function collectDeletedDocDirs(deletedDocFiles, repoPath) {
+  const root2 = import_path12.default.normalize(repoPath).replace(/\\/g, "/");
+  const dirs = /* @__PURE__ */ new Set();
+  for (const deletedFile of deletedDocFiles) {
+    let dir = import_path12.default.posix.dirname(deletedFile.replace(/\\/g, "/"));
+    while (dir && dir !== "." && dir !== "/") {
+      const abs = `${root2}/${dir}`;
+      const isEmptyDir = !import_fs4.default.existsSync(abs) || import_fs4.default.readdirSync(abs).length === 0;
+      if (!isEmptyDir) {
+        break;
+      }
+      dirs.add(dir);
+      const parent = import_path12.default.posix.dirname(dir);
+      if (parent === dir) {
+        break;
+      }
+      dir = parent;
+    }
+  }
+  return Array.from(dirs);
+}
+__name(collectDeletedDocDirs, "collectDeletedDocDirs");
+var escapeRegExp = /* @__PURE__ */ __name((s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "escapeRegExp");
+async function execCheckDeletedFileReferenceCi(opts) {
+  const {
+    repoPath,
+    targetOwnerRepo,
+    targetBranch,
+    docsPathRegex,
+    deletedDocFiles,
     enableLinkCheck,
     enableResourceCheck,
-    remoteDeletedPatterns
+    concurrency
+  } = opts;
+  const regexOwnerRepo = escapeRegExp(targetOwnerRepo);
+  const regexBranch = escapeRegExp(targetBranch);
+  const deletedTargets = Array.from(/* @__PURE__ */ new Set([...deletedDocFiles, ...collectDeletedDocDirs(deletedDocFiles, repoPath)]));
+  const remoteDeletedPatterns = [];
+  for (const deletedFile of deletedTargets) {
+    const relPath = deletedFile.startsWith("/") ? deletedFile.slice(1) : deletedFile;
+    const regexFp = escapeRegExp(relPath);
+    remoteDeletedPatterns.push(new RegExp(`^https:\\/\\/(gitcode|atomgit)\\.com\\/${regexOwnerRepo}\\/blob\\/${regexBranch}\\/${regexFp}([?#]|$)`));
+    remoteDeletedPatterns.push(new RegExp(`^https:\\/\\/raw\\.(gitcode|atomgit)\\.com\\/${regexOwnerRepo}\\/raw\\/${regexBranch}\\/${regexFp}([?#]|$)`));
+  }
+  console.log("");
+  console.log(`\u5F00\u59CB\u68C0\u67E5\u5220\u9664\u6587\u4EF6\u5F15\u7528...`);
+  const allMdFiles = await glob(["**/*.md", "**/*.mdx"], {
+    cwd: repoPath
   });
-  return results.map((item) => {
-    const output = createOutputItem({
-      fileContent: content3,
-      filePath,
-      checkType: item.name,
-      message: item.message.zh,
-      errorContent: item.content,
-      errorContentStartIndex: item.start,
-      errorContentEndIndex: item.end
-    });
-    formatLog(output);
-    return output;
+  const deletedRefFiles = [];
+  for (const f of allMdFiles) {
+    const filePath = f.replace(/\\/g, "/");
+    if (docsPathRegex.test(filePath)) {
+      deletedRefFiles.push(filePath);
+    }
+  }
+  console.log(`\u5F85\u68C0\u67E5\u5220\u9664\u5F15\u7528\u7684\u6587\u4EF6\u6570\u91CF\uFF1A${deletedRefFiles.length}`);
+  const processDeletedRefFile = /* @__PURE__ */ __name(async (filePath) => {
+    const items2 = [];
+    try {
+      const completeFilePath = import_path12.default.join(repoPath, filePath);
+      const content3 = readFileByAutoDecode(completeFilePath);
+      if (completeFilePath.endsWith(".md") || completeFilePath.endsWith(".mdx")) {
+        const [tree, error] = MarkdownAst.createAstTree(content3, {
+          isMdx: completeFilePath.endsWith(".mdx")
+        });
+        if (error) {
+          return items2;
+        }
+        const depthNodes = MarkdownAst.createFlatDepthNodes(tree);
+        const results = execCheckDeletedFileReference(depthNodes, {
+          content: content3,
+          prefixPath: import_path12.default.dirname(import_path12.default.join(repoPath, filePath)),
+          deletedFiles: deletedTargets.map((f) => import_path12.default.join(repoPath, f)),
+          enableLinkCheck,
+          enableResourceCheck,
+          remoteDeletedPatterns
+        });
+        for (const item of results) {
+          const output = createOutputItem({
+            fileContent: content3,
+            filePath,
+            checkType: item.name,
+            message: item.message.zh,
+            errorContent: item.content,
+            errorContentStartIndex: item.start,
+            errorContentEndIndex: item.end
+          });
+          formatLog(output);
+          items2.push(output);
+        }
+      }
+    } catch (err) {
+      console.error(`[error]\uFF1Acheck deleted reference ${filePath} failed\uFF01`);
+      console.error(err);
+    }
+    return items2;
+  }, "processDeletedRefFile");
+  const deletedTargetResults = new Array(deletedRefFiles.length).fill([]);
+  let deletedCursor = 0;
+  const deletedWorkers = Array.from({ length: Math.min(concurrency, deletedRefFiles.length) }, async () => {
+    while (deletedCursor < deletedRefFiles.length) {
+      const idx2 = deletedCursor++;
+      deletedTargetResults[idx2] = await processDeletedRefFile(deletedRefFiles[idx2]);
+    }
   });
+  await Promise.all(deletedWorkers);
+  const items = [];
+  for (const result of deletedTargetResults) {
+    items.push(...result);
+  }
+  return items;
 }
 __name(execCheckDeletedFileReferenceCi, "execCheckDeletedFileReferenceCi");
 
@@ -195842,23 +196028,23 @@ __name(execCheckDeletedFileReferenceCi, "execCheckDeletedFileReferenceCi");
   }
   if (!ciConfigUrl) {
     console.error("[error]: \u8BF7\u63D0\u4F9B CI \u914D\u7F6E\u6587\u4EF6\u8DEF\u5F84");
-    import_fs4.default.writeFileSync(outputPath, `\u274C \u6587\u6863\u95E8\u7981\u672A\u901A\u8FC7\uFF01\u539F\u56E0\uFF1A\u672A\u63D0\u4F9B CI \u914D\u7F6E\u6587\u4EF6\u8DEF\u5F84`);
+    import_fs5.default.writeFileSync(outputPath, `\u274C \u6587\u6863\u95E8\u7981\u672A\u901A\u8FC7\uFF01\u539F\u56E0\uFF1A\u672A\u63D0\u4F9B CI \u914D\u7F6E\u6587\u4EF6\u8DEF\u5F84`);
     return;
   }
   if (!outputPath.endsWith(".md")) {
     outputPath = import_path13.default.join(outputPath, "output.md");
   }
   const outputDir = import_path13.default.dirname(outputPath);
-  if (!import_fs4.default.existsSync(outputDir)) {
-    import_fs4.default.mkdirSync(outputDir, { recursive: true });
+  if (!import_fs5.default.existsSync(outputDir)) {
+    import_fs5.default.mkdirSync(outputDir, { recursive: true });
   }
   if (outputJson) {
     if (!outputJsonPath.endsWith(".json")) {
       outputJsonPath = import_path13.default.join(outputJsonPath, "result.json");
     }
     const outputJsonDir = import_path13.default.dirname(outputJsonPath);
-    if (!import_fs4.default.existsSync(outputJsonDir)) {
-      import_fs4.default.mkdirSync(outputJsonDir, { recursive: true });
+    if (!import_fs5.default.existsSync(outputJsonDir)) {
+      import_fs5.default.mkdirSync(outputJsonDir, { recursive: true });
     }
   }
   console.log(`\u68C0\u67E5\u76EE\u5F55: ${repoPath}`);
@@ -195879,7 +196065,7 @@ __name(execCheckDeletedFileReferenceCi, "execCheckDeletedFileReferenceCi");
   }
   if (!ciConfig) {
     console.error("[error]: CI \u914D\u7F6E\u83B7\u53D6\u5931\u8D25\uFF01");
-    import_fs4.default.writeFileSync(outputPath, `\u274C \u6587\u6863\u95E8\u7981\u672A\u901A\u8FC7\uFF01\u539F\u56E0\uFF1A\u672A\u80FD\u83B7\u53D6\u6587\u6863 CI \u914D\u7F6E`);
+    import_fs5.default.writeFileSync(outputPath, `\u274C \u6587\u6863\u95E8\u7981\u672A\u901A\u8FC7\uFF01\u539F\u56E0\uFF1A\u672A\u80FD\u83B7\u53D6\u6587\u6863 CI \u914D\u7F6E`);
     return;
   }
   let repoConfig = getRepoConfig(ciConfig, targetOwnerRepo, targetBranch);
@@ -195891,7 +196077,7 @@ __name(execCheckDeletedFileReferenceCi, "execCheckDeletedFileReferenceCi");
   }
   if (!repoConfig) {
     console.error(`[info]: \u2705 \u8DF3\u8FC7 docs ci \u68C0\u67E5\uFF0C\u4ED3\u5E93 ${targetOwnerRepo} \u672A\u914D\u7F6E\u6587\u6863\u95E8\u7981`);
-    import_fs4.default.writeFileSync(outputPath, `\u2705 \u8DF3\u8FC7 docs ci \u68C0\u67E5\uFF0C\u4ED3\u5E93 ${targetOwnerRepo} \u672A\u914D\u7F6E\u6587\u6863\u95E8\u7981\uFF0C`);
+    import_fs5.default.writeFileSync(outputPath, `\u2705 \u8DF3\u8FC7 docs ci \u68C0\u67E5\uFF0C\u4ED3\u5E93 ${targetOwnerRepo} \u672A\u914D\u7F6E\u6587\u6863\u95E8\u7981\uFF0C`);
     return;
   }
   console.log("");
@@ -195939,16 +196125,16 @@ __name(execCheckDeletedFileReferenceCi, "execCheckDeletedFileReferenceCi");
   const checkFiles = [];
   const tempLinkWhiteList = [];
   const docsPathRegex = new RegExp(repoConfig.docPath);
-  const escapeRegExp = /* @__PURE__ */ __name((s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "escapeRegExp");
-  const regexOwnerRepo = escapeRegExp(targetOwnerRepo);
-  const regexBranch = escapeRegExp(targetBranch);
+  const escapeRegExp2 = /* @__PURE__ */ __name((s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "escapeRegExp");
+  const regexOwnerRepo = escapeRegExp2(targetOwnerRepo);
+  const regexBranch = escapeRegExp2(targetBranch);
   for (const item of changed) {
     const filePath = item.replace(/\\/g, "/");
     if (docsPathRegex.test(filePath) && (filePath.endsWith(".md") || filePath.endsWith(".mdx") || filePath.endsWith("_toc.yaml"))) {
       checkFiles.push(filePath);
     }
     const tempFilePath = filePath.startsWith("/") ? filePath.substring(1) : filePath;
-    const regexFp = escapeRegExp(tempFilePath);
+    const regexFp = escapeRegExp2(tempFilePath);
     tempLinkWhiteList.push(`https:\\/\\/(gitcode|atomgit|github|gitee)\\.com\\/${regexOwnerRepo}\\/blob\\/${regexBranch}\\/${regexFp}`);
     tempLinkWhiteList.push(`https:\\/\\/(raw\\.)?(gitcode|atomgit|gitee)\\.com\\/${regexOwnerRepo}\\/raw\\/${regexBranch}\\/${regexFp}`);
   }
@@ -195979,7 +196165,7 @@ __name(execCheckDeletedFileReferenceCi, "execCheckDeletedFileReferenceCi");
       const completeFilePath = import_path13.default.join(repoPath, filePath);
       const content3 = readFileByAutoDecode(completeFilePath);
       JSON.parse(content3);
-    } catch (err) {
+    } catch {
       doctoolsJsonErrors.push({
         filePath,
         message: "\u274C \u914D\u7F6E\u8F6C\u6362\u9519\u8BEF\uFF0C\u8BF7\u68C0\u67E5\u914D\u7F6E\u4E66\u5199\u662F\u5426\u6B63\u786E"
@@ -195995,7 +196181,7 @@ __name(execCheckDeletedFileReferenceCi, "execCheckDeletedFileReferenceCi");
     console.log(`[info]: \u6CA1\u6709\u9700\u8981\u68C0\u67E5\u7684\u53D8\u66F4\u6587\u4EF6\uFF0C\u4EC5\u6267\u884C\u5220\u9664\u6587\u4EF6\u5F15\u7528\u68C0\u67E5`);
   } else if (doctoolsJsonErrors.length === 0) {
     console.log(`[info]: \u2705 \u8DF3\u8FC7 docs ci \u68C0\u67E5\uFF0C\u6CA1\u6709\u9700\u8981\u68C0\u67E5\u7684\u6587\u6863\u6587\u4EF6`);
-    import_fs4.default.writeFileSync(outputPath, `\u2705 \u8DF3\u8FC7 docs ci \u68C0\u67E5\uFF0C\u6CA1\u6709\u9700\u8981\u68C0\u67E5\u7684\u6587\u6863\u6587\u4EF6`);
+    import_fs5.default.writeFileSync(outputPath, `\u2705 \u8DF3\u8FC7 docs ci \u68C0\u67E5\uFF0C\u6CA1\u6709\u9700\u8981\u68C0\u67E5\u7684\u6587\u6863\u6587\u4EF6`);
     return;
   }
   const outputItems = [];
@@ -196115,72 +196301,18 @@ __name(execCheckDeletedFileReferenceCi, "execCheckDeletedFileReferenceCi");
     }
   }
   if (!checkAll && hasDeletedDocFiles && (checkItems[LINK_VALIDITY_CHECK] || checkItems[RESOURCE_EXISTENCE_CHECK])) {
-    const enableLinkCheck = !!checkItems[LINK_VALIDITY_CHECK];
-    const enableResourceCheck = !!checkItems[RESOURCE_EXISTENCE_CHECK];
-    const remoteDeletedPatterns = [];
-    for (const deletedFile of deletedDocFiles) {
-      const relPath = deletedFile.startsWith("/") ? deletedFile.slice(1) : deletedFile;
-      const regexFp = escapeRegExp(relPath);
-      remoteDeletedPatterns.push(new RegExp(`^https:\\/\\/(gitcode|atomgit)\\.com\\/${regexOwnerRepo}\\/blob\\/${regexBranch}\\/${regexFp}([?#]|$)`));
-      remoteDeletedPatterns.push(new RegExp(`^https:\\/\\/raw\\.(gitcode|atomgit)\\.com\\/${regexOwnerRepo}\\/raw\\/${regexBranch}\\/${regexFp}([?#]|$)`));
-    }
-    console.log("");
-    console.log(`\u5F00\u59CB\u68C0\u67E5\u5220\u9664\u6587\u4EF6\u5F15\u7528...`);
-    const allMdFiles = await glob(["**/*.md", "**/*.mdx"], {
-      cwd: repoPath
-    });
-    const deletedRefFiles = [];
-    for (const f of allMdFiles) {
-      const filePath = f.replace(/\\/g, "/");
-      if (docsPathRegex.test(filePath)) {
-        deletedRefFiles.push(filePath);
-      }
-    }
-    console.log(`\u5F85\u68C0\u67E5\u5220\u9664\u5F15\u7528\u7684\u6587\u4EF6\u6570\u91CF\uFF1A${deletedRefFiles.length}`);
-    const processDeletedRefFile = /* @__PURE__ */ __name(async (filePath) => {
-      const items = [];
-      try {
-        const completeFilePath = import_path13.default.join(repoPath, filePath);
-        const content3 = readFileByAutoDecode(completeFilePath);
-        if (completeFilePath.endsWith(".md") || completeFilePath.endsWith(".mdx")) {
-          const [tree, error] = MarkdownAst.createAstTree(content3, {
-            isMdx: completeFilePath.endsWith(".mdx")
-          });
-          if (error) {
-            return items;
-          }
-          const depthNodes = MarkdownAst.createFlatDepthNodes(tree);
-          items.push(
-            ...await execCheckDeletedFileReferenceCi(
-              depthNodes,
-              content3,
-              repoPath,
-              filePath,
-              deletedDocFiles,
-              enableLinkCheck,
-              enableResourceCheck,
-              remoteDeletedPatterns
-            )
-          );
-        }
-      } catch (err) {
-        console.error(`[error]\uFF1Acheck deleted reference ${filePath} failed\uFF01`);
-        console.error(err);
-      }
-      return items;
-    }, "processDeletedRefFile");
-    const deletedTaskResults = new Array(deletedRefFiles.length).fill([]);
-    let deletedCursor = 0;
-    const deletedWorkers = Array.from({ length: Math.min(concurrency, deletedRefFiles.length) }, async () => {
-      while (deletedCursor < deletedRefFiles.length) {
-        const idx2 = deletedCursor++;
-        deletedTaskResults[idx2] = await processDeletedRefFile(deletedRefFiles[idx2]);
-      }
-    });
-    await Promise.all(deletedWorkers);
-    for (const items of deletedTaskResults) {
-      outputItems.push(...items);
-    }
+    outputItems.push(
+      ...await execCheckDeletedFileReferenceCi({
+        repoPath,
+        targetOwnerRepo,
+        targetBranch,
+        docsPathRegex,
+        deletedDocFiles,
+        enableLinkCheck: !!checkItems[LINK_VALIDITY_CHECK],
+        enableResourceCheck: !!checkItems[RESOURCE_EXISTENCE_CHECK],
+        concurrency
+      })
+    );
   }
   if (outputItems.length === 0) {
     const outputCheckItemsTable2 = detailUrl ? ["| \u68C0\u67E5\u9879 | \u68C0\u67E5\u7ED3\u679C | \u8BE6\u60C5 |", "| --- | --- | --- |"] : ["| \u68C0\u67E5\u9879 | \u68C0\u67E5\u7ED3\u679C |", "| --- | --- |"];
@@ -196188,11 +196320,11 @@ __name(execCheckDeletedFileReferenceCi, "execCheckDeletedFileReferenceCi");
       outputCheckItemsTable2.push(`| ${item} | \u2705 \u5DF2\u901A\u8FC7 | ${detailUrl ? `[\u67E5\u770B\u8BE6\u60C5](${detailUrl}) |` : ""}`);
     });
     console.log("\u2705 \u6587\u6863\u95E8\u7981\u901A\u8FC7\uFF01");
-    import_fs4.default.writeFileSync(outputPath, `\u2705 \u6587\u6863\u95E8\u7981\u901A\u8FC7\uFF01
+    import_fs5.default.writeFileSync(outputPath, `\u2705 \u6587\u6863\u95E8\u7981\u901A\u8FC7\uFF01
 
 ${Object.keys(checkItems).length ? outputCheckItemsTable2.join("\n") : ""}`);
     if (outputJson) {
-      import_fs4.default.writeFileSync(outputJsonPath, "[]");
+      import_fs5.default.writeFileSync(outputJsonPath, "[]");
     }
     return;
   }
@@ -196232,7 +196364,7 @@ ${outputCheckItemsTable.join("\n")}
  ${outputItems.length > outputCount ? `\u{1F4A1} \u672C\u6B21\u68C0\u67E5\u51FA ${outputItems.length} \u9879\u9519\u8BEF\uFF0C\u4EC5\u5C55\u793A\u524D ${outputCount} \u6761${detailUrl ? "\uFF0C\u8BF7\u901A\u8FC7\u4E0A\u65B9\u8868\u683C\u7684 \u201C\u67E5\u770B\u8BE6\u60C5\u201D \u83B7\u53D6\u66F4\u591A\u4FE1\u606F~" : ""}` : `\u{1F4A1} \u672C\u6B21\u68C0\u67E5\u51FA ${outputItems.length} \u9879\u9519\u8BEF\uFF0C\u8BE6\u60C5\u5185\u5BB9\u5982\u4E0B\uFF1A`} 
 
 ${outputErrorsTable.join("\n")}`;
-  import_fs4.default.writeFileSync(outputPath, output);
+  import_fs5.default.writeFileSync(outputPath, output);
   console.log("\u274C \u6587\u6863\u95E8\u7981\u672A\u901A\u8FC7\uFF01");
   console.log("");
   if (errorWords.size > 0) {
@@ -196240,7 +196372,7 @@ ${outputErrorsTable.join("\n")}`;
     console.log(Array.from(errorWords).join("\n"));
   }
   if (outputJson) {
-    import_fs4.default.writeFileSync(outputJsonPath, JSON.stringify(outputItems));
+    import_fs5.default.writeFileSync(outputJsonPath, JSON.stringify(outputItems));
   }
   console.log("\u68C0\u6D4B\u7ED3\u675F");
 })();
