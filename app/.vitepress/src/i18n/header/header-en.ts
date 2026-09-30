@@ -81,12 +81,12 @@ export default {
           href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/other/lifecycle/`,
         },
         {
-          label: 'openEuler 24.03 LTS SP4 Installation Guide',
-          href: `${import.meta.env.VITE_SERVICE_DOCS_URL}/en/docs/24.03_LTS_SP4/server/installation_upgrade/installation/installation_preparations.html`,
+          label: 'openEuler 26.09 Installation Guide',
+          href: `${import.meta.env.VITE_SERVICE_DOCS_URL}/en/docs/26.09/server/installation_upgrade/installation/installation_preparations.html`,
         },
         {
-          label: 'openEuler 25.09 Installation Guide',
-          href: `${import.meta.env.VITE_SERVICE_DOCS_URL}/en/docs/25.09/server/installation_upgrade/installation/installation_preparations.html`,
+          label: 'openEuler 24.03 LTS SP4 Installation Guide',
+          href: `${import.meta.env.VITE_SERVICE_DOCS_URL}/en/docs/24.03_LTS_SP4/server/installation_upgrade/installation/installation_preparations.html`,
         },
         {
           label: 'Technical White Papers',

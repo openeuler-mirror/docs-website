@@ -27,7 +27,7 @@ export default {
             {
               label: 'openEuler 26.09',
               description:
-                '2026年9月30日，发布openEuler 26.09，基于6.6+ 6.18的双内核创新版本，面向AI等场景基于6.6内核持续提供更多新特性和功能扩展，包括Agent可观测、SkillHub、上下文管理、KV Cache协同加速、模型加载优化等，同时基于6.18内核增强DevStation智能开发者桌面能力，给开发者和用户带来全新的体验，服务更多的领域和更多的用户。',
+                'openEuler 26.09是基于6.6+ 6.18的双内核创新版本，面向AI等场景基于6.6内核持续提供更多新特性和功能扩展，包括Agent可观测、SkillHub、上下文管理、KV Cache协同加速、模型加载优化等，同时基于6.18内核增强DevStation智能开发者桌面能力，给开发者和用户带来全新的体验，服务更多的领域和更多的用户。',
               tag: TAG_TYPE.NEW,
               href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/zh/download/#openEuler 26.09`,
             },
@@ -91,12 +91,12 @@ export default {
           href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/zh/zh/other/lifecycle/`,
         },
         {
-          label: '24.03 LTS SP4安装指南',
-          href: `${import.meta.env.VITE_SERVICE_DOCS_URL}/zh/docs/24.03_LTS_SP4/server/installation_upgrade/installation/installation_preparations.html`,
+          label: '26.09安装指南',
+          href: `${import.meta.env.VITE_SERVICE_DOCS_URL}/zh/docs/26.09/server/installation_upgrade/installation/installation_preparations.html`,
         },
         {
-          label: '25.09安装指南',
-          href: `${import.meta.env.VITE_SERVICE_DOCS_URL}/zh/docs/25.09/server/installation_upgrade/installation/installation_preparations.html`,
+          label: '24.03 LTS SP4安装指南',
+          href: `${import.meta.env.VITE_SERVICE_DOCS_URL}/zh/docs/24.03_LTS_SP4/server/installation_upgrade/installation/installation_preparations.html`,
         },
         {
           label: '技术白皮书',
