@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
-import { useRouter } from 'vitepress';
+import { useRoute, useRouter } from 'vitepress';
 import { OBreadcrumb, OBreadcrumbItem, OIcon } from '@opensig/opendesign';
 
 import { useLocale } from '@/composables/useLocale';
@@ -9,11 +9,14 @@ import { useNodeStore } from '@/stores/node';
 import { useSearchingStore } from '@/stores/common';
 
 import IconChevronRight from '~icons/app/icon-chevron-right.svg';
+import { useVersionStore } from '@/stores/version';
 
+const route = useRoute();
 const { t, locale } = useLocale();
 const viewStore = useViewStore();
 const nodeStore = useNodeStore();
 const searchStore = useSearchingStore();
+const versionStore = useVersionStore();
 
 const noMenuLabel = ref('');
 
@@ -27,6 +30,11 @@ onMounted(() => {
 
 // -------------------- 是否需要显示模块节点 --------------------
 const showModuleItem = computed(() => {
+  const pathname = route.path.split(versionStore.version)?.[1] || '';
+  if (pathname.startsWith('/getting_start/')) {
+    return false;
+  }
+  
   return (!viewStore.isOverview && !viewStore.isCommonView) || (viewStore.isOverview && searchStore.isSearching);
 });
 
@@ -35,7 +43,7 @@ const currentTitle = computed(() => {
   if (!nodeStore.currentNode) {
     return noMenuLabel.value;
   }
-  
+
   return viewStore.isOverview ? nodeStore.moduleNode?.label : nodeStore.pageNode?.label;
 });
 
@@ -61,9 +69,12 @@ const goToPage = (href: string) => {
       <!-- 文档聚合页 -->
       <OBreadcrumbItem :href="`/${locale}/`" @click.prevent="goToPage(`/${locale}/`)">{{ t('home.docCenter') }}</OBreadcrumbItem>
       <!-- 模块 -->
-      <OBreadcrumbItem v-if="showModuleItem && nodeStore.moduleNode" :href="nodeStore.moduleNode?.href || ''" @click.prevent="goToPage(nodeStore.moduleNode?.href || '')">{{
-        nodeStore.moduleNode?.label
-      }}</OBreadcrumbItem>
+      <OBreadcrumbItem
+        v-if="showModuleItem && nodeStore.moduleNode"
+        :href="nodeStore.moduleNode?.href || ''"
+        @click.prevent="goToPage(nodeStore.moduleNode?.href || '')"
+        >{{ nodeStore.moduleNode?.label }}</OBreadcrumbItem
+      >
       <!-- 当前节点 -->
       <OBreadcrumbItem>{{ searchStore.isSearching ? t('docs.searchResult') : currentTitle }}</OBreadcrumbItem>
     </OBreadcrumb>
