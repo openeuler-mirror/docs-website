@@ -4,8 +4,11 @@
  * 按照发布时间排序
  */
 const versionObjZh = {
+  '26.09': {
+    homePath: '/26.09/server/releasenotes/introduction.html',
+  },
   '24.03 LTS SP4': {
-    homePath: '/24.03_LTS_SP4/server/releasenotes/releasenotes/introduction.html',
+    homePath: '/24.03_LTS_SP4/server/releasenotes/introduction.html',
   },
   '24.03 LTS SP3': {
     homePath: '/24.03_LTS_SP3/server/releasenotes/releasenotes/introduction.html',
@@ -113,8 +116,11 @@ const versionObjZh = {
 };
 
 const versionObjEn = {
+  '26.09': {
+    homePath: '/26.09/server/releasenotes/introduction.html',
+  },
   '24.03 LTS SP4': {
-    homePath: '/24.03_LTS_SP4/server/releasenotes/releasenotes/introduction.html',
+    homePath: '/24.03_LTS_SP4/server/releasenotes/introduction.html',
   },
   '24.03 LTS SP3': {
     homePath: '/24.03_LTS_SP3/server/releasenotes/releasenotes/introduction.html',
