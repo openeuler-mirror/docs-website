@@ -63,6 +63,10 @@
     margin-top: 0 !important;
   }
 
+  > div > h1:nth-child(2) {
+    margin-top: 0;
+  }
+
   div[class*='language-'] {
     position: relative;
     margin-top: var(--o-gap-2);

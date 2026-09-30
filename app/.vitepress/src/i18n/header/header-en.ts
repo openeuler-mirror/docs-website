@@ -23,20 +23,20 @@ export default {
           label: 'Get openEuler',
           children: [
             {
+              label: 'openEuler 26.09',
+              description: 'Discover a new dual-kernel experience for AI and intelligent development.',
+              tag: TAG_TYPE.NEW,
+              href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/download/#openEuler 26.09/`,
+            },
+            {
               label: 'openEuler 24.03 LTS SP4',
               description: 'Enhance server, cloud, and AI workloads with upgraded reliability, inference, O&M, and security.',
-              tag: TAG_TYPE.NEW,
               href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/download/#openEuler 24.03 LTS SP4/`,
             },
             {
               label: 'openEuler 24.03 LTS SP3',
               description: 'Explore the UnifiedBus SuperPoD architecture on openEuler.',
               href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/download/#openEuler 24.03 LTS SP3/`,
-            },
-            {
-              label: 'openEuler 24.03 LTS SP1',
-              description: 'Enhanced 24.03 LTS SP1 on kernel 6.6. Better experience for users and devs.',
-              href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/download/#openEuler 24.03 LTS SP1/`,
             },
             {
               label: 'More',
@@ -206,12 +206,12 @@ export default {
               label: 'Quick Start',
               description: 'Learn the community essentials in 10 minutes, build and grow quickly.',
               tag: TAG_TYPE.HOT,
-              href: `${import.meta.env.VITE_SERVICE_DOCS_URL}/en/docs/24.03_LTS_SP4/getting_start/quick_start.html`,
+              href: `${import.meta.env.VITE_SERVICE_DOCS_URL}/en/docs/26.09/getting_start/quick_start.html`,
             },
             {
               label: 'Installation Guide',
               description: 'Step-by-step instructions for installing openEuler.',
-              href: `${import.meta.env.VITE_SERVICE_DOCS_URL}/en/docs/24.03_LTS_SP4/server/installation_upgrade/installation/installation_preparations.html`,
+              href: `${import.meta.env.VITE_SERVICE_DOCS_URL}/en/docs/26.09/server/installation_upgrade/installation/installation_preparations.html`,
             },
             {
               label: 'Frequently Asked Questions',

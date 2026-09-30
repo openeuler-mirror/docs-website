@@ -7,6 +7,7 @@ import { versions } from '@/config/version';
 import { useLocale } from '@/composables/useLocale';
 import { isPageExist } from '@/api/api-common';
 import { useNodeStore } from '@/stores/node';
+import { useVersionStore } from '@/stores/version';
 
 defineProps({
   version: {
@@ -18,7 +19,7 @@ defineProps({
 const { t, locale } = useLocale();
 const message = useMessage(null);
 const nodeStore = useNodeStore();
-
+const versionStore = useVersionStore();
 
 const changeVersion = async (item: { value: string; href?: string }) => {
   if (item.href) {
@@ -26,6 +27,17 @@ const changeVersion = async (item: { value: string; href?: string }) => {
     return;
   }
 
+  if (typeof nodeStore.pageNode?.href === 'string') {
+    const pathname = window.location.pathname.split(versionStore.version)?.[1] || '';
+    if (pathname.startsWith('/getting_start/')) {
+      const newHref = window.location.pathname.replace(versionStore.version, item.value);
+      if (await isPageExist(newHref)) {
+        window.open(newHref, '_blank', 'noopener noreferrer');
+        return;
+      }
+    }
+  }
+  
   if (!nodeStore.moduleNode) {
     return;
   }

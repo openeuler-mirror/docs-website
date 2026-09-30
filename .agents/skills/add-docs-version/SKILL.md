@@ -1,13 +1,13 @@
 ---
 name: add-docs-version
-description: 为 openGauss 文档网站添加新的文档版本，自动更新相关配置文件
+description: 为 openEuler 文档网站添加新的文档版本，自动更新相关配置文件
 ---
 
 # add-docs-version
 
 ## 使用场景
 
-当需要为 openGauss 文档网站添加新的文档版本时触发
+当需要为 openEuler 文档网站添加新的文档版本时触发
 
 - 添加文档版本
 - 更新版本配置
@@ -62,16 +62,17 @@ export const VITEPRESS_VERSIONS_CONFIG = {
 
 1. 在函数内的 `map` 对象中添加新的版本映射关系
 2. 格式为：`'新版本号': 'stable-新版本号',`
+3. 在 `common` 后添加新版本信息
 
 示例：
 
 ```typescript
 const map: Record<string, string> = {
   common: 'stable-common',
+  '新版本号': 'stable-新版本号',  // 添加此行
   '25.09': 'stable-25.09',
   '25.03': 'stable-25.03',
   // ...其它版本
-  '新版本号': 'stable-新版本号',  // 添加此行
 };
 ```
 
