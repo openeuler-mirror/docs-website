@@ -1,5 +1,8 @@
-overrides: 
+overrides:
   "js-cookie": "3.0.7"
+  "axios": "1.20.0"
+  "ua-parser-js": "1.0.34"
+  "gray-matter>js-yaml": "3.15.2"
 allowBuilds:
   '@parcel/watcher': true
   esbuild: true

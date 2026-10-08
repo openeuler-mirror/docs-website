@@ -7,6 +7,7 @@ import type Token from 'markdown-it/lib/token.mjs';
 import llmstxt from 'vitepress-plugin-llms';
 
 import { getDomId } from './src/utils/common';
+import { applySitemapLastmod } from './src/utils/sitemap-lastmod';
 import { buildPageJsonLd } from './src/config/jsonld';
 import { VITEPRESS_VERSIONS_CONFIG, HUGO_VERSIONS_CONFIG } from '../../scripts/config/version.js';
 import { defineConfig } from 'vitepress';
@@ -38,13 +39,7 @@ export default defineConfig({
   srcExclude: ['**/_menu.md'],
   sitemap: {
     hostname: sitemapHostname,
-    transformItems: (items: any[]) => {
-      items.forEach((item) => {
-        item.lastmod = new Date().toISOString();
-      });
-
-      return items;
-    },
+    transformItems: (items: any[]) => applySitemapLastmod(items),
   },
   head: [
     [

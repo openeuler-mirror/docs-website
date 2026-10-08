@@ -11,6 +11,8 @@ import {
   checkoutBranch,
   pullRemoteBranch,
   gitCloneAndCheckout,
+  getFileLastCommitIso,
+  getDirectoryLastCommitMap,
 } from '../../scripts/utils/git.js';
 import * as fileModule from '../../scripts/utils/file.js';
 import {
@@ -501,5 +503,113 @@ describe('file.js 工具函数', () => {
       expect(fs.existsSync(path.join(tmpDir, 'new.txt'))).toBe(true);
       expect(console.log).not.toHaveBeenCalled();
     });
+  });
+});
+
+describe('getFileLastCommitIso', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('将 git log 返回的 unix 秒转换为 ISO 时间', () => {
+    vi.mocked(execFileSync).mockReturnValue('1700000000');
+    expect(getFileLastCommitIso('/repo', 'docs/zh/a.md')).toBe('2023-11-14T22:13:20.000Z');
+    expect(execFileSync).toHaveBeenCalledWith(
+      'git',
+      ['-c', 'core.quotePath=false', 'log', '-1', '--format=%ct', '--', 'docs/zh/a.md'],
+      expect.objectContaining({ cwd: '/repo' }),
+    );
+  });
+
+  it('git 输出为空时返回空串', () => {
+    vi.mocked(execFileSync).mockReturnValue('');
+    expect(getFileLastCommitIso('/repo', 'missing.md')).toBe('');
+  });
+
+  it('git 输出非法时返回空串', () => {
+    vi.mocked(execFileSync).mockReturnValue('not-a-number');
+    expect(getFileLastCommitIso('/repo', 'bad.md')).toBe('');
+  });
+
+  it('git 查询失败时返回空串并告警', () => {
+    vi.mocked(execFileSync).mockImplementation(() => {
+      throw new Error('git failed');
+    });
+    expect(getFileLastCommitIso('/repo', 'bad.md')).toBe('');
+    expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('git failed'));
+  });
+});
+
+describe('getDirectoryLastCommitMap', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('解析 git log --name-only 输出并保留每个文件第一次出现的时间', () => {
+    vi.mocked(execFileSync).mockImplementation((...args: unknown[]) => {
+      const gitArgs = Array.isArray(args[1]) ? (args[1] as string[]) : [];
+      if (gitArgs[0] === 'rev-parse') return 'HEAD-A\n';
+      if (gitArgs.includes('--name-only')) {
+        return '\x011700000001\ndocs/zh/a.md\n\x011700000000\ndocs/zh/b.md\ndocs/zh/a.md\n';
+      }
+      return '';
+    });
+
+    const map = getDirectoryLastCommitMap('/repo-dir-a', 'docs/zh');
+
+    expect(map.get('docs/zh/a.md')).toBe('2023-11-14T22:13:21.000Z');
+    expect(map.get('docs/zh/b.md')).toBe('2023-11-14T22:13:20.000Z');
+    expect(execFileSync).toHaveBeenCalledWith(
+      'git',
+      ['-c', 'core.quotePath=false', 'log', '--format=%x01%ct', '--name-only', '--', 'docs/zh'],
+      expect.objectContaining({ cwd: '/repo-dir-a' }),
+    );
+  });
+
+  it('同一仓库同一 HEAD 同一路径复用缓存', () => {
+    const callArgs = { rev: 0, log: 0 };
+    vi.mocked(execFileSync).mockImplementation((...args: unknown[]) => {
+      const gitArgs = Array.isArray(args[1]) ? (args[1] as string[]) : [];
+      if (gitArgs[0] === 'rev-parse') {
+        callArgs.rev += 1;
+        return 'HEAD-B\n';
+      }
+      if (gitArgs.includes('--name-only')) {
+        callArgs.log += 1;
+        return '\x011700000002\ndocs/zh/c.md\n';
+      }
+      return '';
+    });
+
+    const first = getDirectoryLastCommitMap('/repo-dir-b', 'docs/zh');
+    const second = getDirectoryLastCommitMap('/repo-dir-b', 'docs/zh');
+
+    expect(first).toBe(second);
+    expect(callArgs.rev).toBe(2);
+    expect(callArgs.log).toBe(1);
+    expect(first.get('docs/zh/c.md')).toBe('2023-11-14T22:13:22.000Z');
+  });
+
+  it('git log 失败时返回空 Map 并告警', () => {
+    vi.mocked(execFileSync).mockImplementation((...args: unknown[]) => {
+      const gitArgs = Array.isArray(args[1]) ? (args[1] as string[]) : [];
+      if (gitArgs[0] === 'rev-parse') return 'HEAD-C\n';
+      if (gitArgs.includes('--name-only')) throw new Error('log failed');
+      return '';
+    });
+
+    const map = getDirectoryLastCommitMap('/repo-dir-c', 'docs');
+    expect(map.size).toBe(0);
+    expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('log failed'));
   });
 });

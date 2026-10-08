@@ -44,6 +44,7 @@ import { VITEPRESS_VERSIONS_CONFIG } from './config/version.js';
 import { parseNamedArgs, sleep } from './utils/common.js';
 import { getGitUrlInfo, gitCloneAndCheckout } from './utils/git.js';
 import { copyDirectorySync, copyFileSync, removeSync } from './utils/file.js';
+import { createLastmodCollector } from './utils/lastmod.js';
 
 // ============================================ 脚本执行逻辑 ============================================
 const args = parseNamedArgs();
@@ -57,10 +58,14 @@ if (branches.length === 0) {
   process.exit(1);
 }
 
+const lastmodCollector = createLastmodCollector(BUILD_PATH);
 syncDsl();
 for (const branch of branches) {
-  syncDocs(branch);
-  syncSigDocs(branch);
+  const versionName = VITEPRESS_VERSIONS_CONFIG[branch];
+  lastmodCollector.clearVersion(versionName);
+  syncDocs(branch, lastmodCollector);
+  syncSigDocs(branch, lastmodCollector);
+  lastmodCollector.save();
   await sleep(8000);
 }
 
@@ -81,7 +86,7 @@ function syncDsl() {
  * 同步文档内容到对应的目录
  * @param {string} branch 分支名
  */
-function syncDocs(branch) {
+function syncDocs(branch, collector) {
   const branchName = VITEPRESS_VERSIONS_CONFIG[branch];
   const zhSourcePath = `${CACHE_PATH}/docs/docs/zh`;
   const zhTargetPath = `${BUILD_PATH}/app/zh/docs/${branchName}/`;
@@ -93,13 +98,17 @@ function syncDocs(branch) {
   removeSync(enTargetPath);
   copyDirectorySync(zhSourcePath, zhTargetPath);
   copyDirectorySync(enSourcePath, enTargetPath);
+
+  const repoDir = path.join(CACHE_PATH, 'docs');
+  collector?.recordDirectory({ repoDir, sourceDir: zhSourcePath, targetDir: zhTargetPath });
+  collector?.recordDirectory({ repoDir, sourceDir: enSourcePath, targetDir: enTargetPath });
 }
 
 /**
  * 同步 sig 文档内容到对应的目录
  * @param {string} branch 分支名
  */
-function syncSigDocs(branch) {
+function syncSigDocs(branch, collector) {
   const handledPath = {};
 
   const scanYaml = (obj, currentDir) => {
@@ -108,8 +117,10 @@ function syncSigDocs(branch) {
       console.log(`[syncSigDocs]: 检测到远程地址 - ${obj.href.upstream}`);
       const sourcePath = path.join(CACHE_PATH, repo, ...locations.slice(0, -1));
       const destPath = typeof obj.href.path === 'string' ? path.join(currentDir, obj.href.path) : path.join(currentDir, repo, ...locations.slice(2, -1));
+      const repoDir = path.join(CACHE_PATH, repo);
       gitCloneAndCheckout(url, branch, CACHE_PATH);
       copyDirectorySync(sourcePath, destPath);
+      collector?.recordDirectory({ repoDir, sourceDir: sourcePath, targetDir: destPath });
 
       if (!handledPath[destPath]) {
         handledPath[destPath] = true;
@@ -122,6 +133,7 @@ function syncSigDocs(branch) {
     if (typeof obj?.href === 'string' && /https?:\/\/(?:gitcode|atomgit|gitee)\.com\/([^\/]+)\/([^\/]+)\/blob\/([^\/]+)\/(.+\.md)/.test(obj.href)) {
       const { url, repo, branch, locations } = getGitUrlInfo(obj.href);
       console.log(`[syncSigDocs]: 检测到远程 md 地址 - ${obj.href}`);
+      const repoDir = path.join(CACHE_PATH, repo);
       gitCloneAndCheckout(url, branch, CACHE_PATH);
 
       // 复制 md
@@ -145,6 +157,7 @@ function syncSigDocs(branch) {
         destBaseDir = path.dirname(destMd);
       }
       copyFileSync(sourceMd, destMd);
+      collector?.recordFile({ repoDir, sourceFile: sourceMd, targetFile: destMd });
 
       // 复制 md 可能关联的资源目录
       const sourceDir = path.join(CACHE_PATH, repo, ...locations.slice(0, -1));
