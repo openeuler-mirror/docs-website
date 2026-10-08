@@ -42,6 +42,7 @@ import { VITEPRESS_VERSIONS_CONFIG } from './config/version.js';
 import { getBranchName } from './utils/common.js';
 import { checkoutBranch, isGitRepo, pullRemoteBranch } from './utils/git.js';
 import { copyDirectorySync, removeSync, renameSync, copyFileSync, ensureDirSync } from './utils/file.js';
+import { createLastmodCollector } from './utils/lastmod.js';
 
 // ============================================ 脚本执行逻辑 ============================================
 const REPO_PATH = path.join(process.cwd(), '../../'); // repo 路径
@@ -122,6 +123,11 @@ function normalizeVitepressDocsContent(buildPath, branch, source) {
   // 复制website-vitepress内容到build目录
   copyDirectorySync(path.join(REPO_PATH, 'website-vitepress'), buildPath);
 
+  // 清理 website-vitepress 可能带入的旧 lastmod 侧车，避免跨版本残留
+  removeSync(path.join(buildPath, '.cache'));
+  const lastmodCollector = createLastmodCollector(buildPath);
+  lastmodCollector.clearVersion(branchName);
+
   const nginxPortalConfPath = path.join(buildPath, 'deploy/nginx/nginx.portal.conf');
   if (branchName == `common`) {
     // 如果是公共分支，删掉nginx.conf并将nginx.portal.conf重命名为nginx.conf
@@ -155,12 +161,18 @@ function normalizeVitepressDocsContent(buildPath, branch, source) {
 
   // 存在 zh 内容进行复制
   if (fs.existsSync(`${DOCS_VITEPRESS_PATH}/docs/zh/`) && (fs.existsSync(`${DOCS_VITEPRESS_PATH}/docs/zh/_toc.yaml`) || branchName === 'common')) {
-    copyDirectorySync(`${DOCS_VITEPRESS_PATH}/docs/zh/`, `${buildPath}/app/zh/docs/${branchName}/`);
+    const zhSourcePath = `${DOCS_VITEPRESS_PATH}/docs/zh/`;
+    const zhTargetPath = `${buildPath}/app/zh/docs/${branchName}/`;
+    copyDirectorySync(zhSourcePath, zhTargetPath);
+    lastmodCollector.recordDirectory({ repoDir: DOCS_VITEPRESS_PATH, sourceDir: zhSourcePath, targetDir: zhTargetPath });
   }
 
   // 存在 en 内容进行复制
   if (fs.existsSync(`${DOCS_VITEPRESS_PATH}/docs/en/`) && (fs.existsSync(`${DOCS_VITEPRESS_PATH}/docs/en/_toc.yaml`) || branchName === 'common')) {
-    copyDirectorySync(`${DOCS_VITEPRESS_PATH}/docs/en/`, `${buildPath}/app/en/docs/${branchName}/`);
+    const enSourcePath = `${DOCS_VITEPRESS_PATH}/docs/en/`;
+    const enTargetPath = `${buildPath}/app/en/docs/${branchName}/`;
+    copyDirectorySync(enSourcePath, enTargetPath);
+    lastmodCollector.recordDirectory({ repoDir: DOCS_VITEPRESS_PATH, sourceDir: enSourcePath, targetDir: enTargetPath });
   }
 
   // 复制 redirect.yaml
@@ -189,6 +201,8 @@ function normalizeVitepressDocsContent(buildPath, branch, source) {
 
     console.log(`已将 dsl 复制到 public 目录下`);
   }
+
+  lastmodCollector.save();
 }
 
 /**
