@@ -15,6 +15,11 @@ execSync(`node gen-toc.js ${args.join(' ')}`, {
   cwd: SCRIPTS_PATH,
 });
 
+execSync(`node fetch-footer-json.js`, {
+  stdio: 'inherit',
+  cwd: SCRIPTS_PATH,
+});
+
 execSync(`node merge-redirect.js ${args.join(' ')}`, {
   stdio: 'inherit',
   cwd: SCRIPTS_PATH,

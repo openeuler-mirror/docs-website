@@ -6,7 +6,7 @@
     "dev": "node scripts/dev.js",
     "dev:clone": "node scripts/clone-docs.js",
     "dev:toc": "node scripts/gen-toc.js",
-    "dev:app": "vitepress dev app",
+    "dev:app": "node scripts/fetch-footer-json.js && vitepress dev app",
     "build": "node scripts/change-robots-txt-domain.js && node scripts/build.js $VERSION",
     "postbuild": "node scripts/gen-sitemap-index.js",
     "preview": "vitepress preview app",
@@ -25,7 +25,7 @@
     }
   },
   "dependencies": {
-    "@opendesign-plus/components": "0.0.1-rc.60",
+    "@opendesign-plus/components": "0.0.1-rc.67",
     "@opendesign-plus/composables": "0.0.1-rc.10",
     "@opendesign-plus/plugins": "0.0.1-rc.1",
     "@opendesign-plus/utils": "0.0.1-rc.8",

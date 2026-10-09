@@ -15,8 +15,8 @@ import { defineConfig } from 'vitepress';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-function readEnvVar(key: string): string | undefined {
-  const envFile = resolve(process.cwd(), '.env.production');
+function readEnvVar(key: string, file = '.env.production'): string | undefined {
+  const envFile = resolve(__dirname, '..', file);
   if (!existsSync(envFile)) {
     return undefined;
   }
@@ -263,9 +263,7 @@ export default defineConfig({
 
     const schema = buildPageJsonLd(pageData, { docsUrl: sitemapHostname, mainDomainUrl, srcDir });
     if (schema) {
-      (pageData.frontmatter.head ??= []).push(
-        ['script', { type: 'application/ld+json' }, JSON.stringify(schema)]
-      );
+      (pageData.frontmatter.head ??= []).push(['script', { type: 'application/ld+json' }, JSON.stringify(schema)]);
     }
   },
   async buildEnd() {
@@ -274,9 +272,7 @@ export default defineConfig({
       return;
     }
 
-    const branches = [
-      ...new Set([...Object.values(VITEPRESS_VERSIONS_CONFIG), ...Object.values(HUGO_VERSIONS_CONFIG)]),
-    ].filter((br) => !br.includes('common'));
+    const branches = [...new Set([...Object.values(VITEPRESS_VERSIONS_CONFIG), ...Object.values(HUGO_VERSIONS_CONFIG)])].filter((br) => !br.includes('common'));
 
     // ============ write llms.txt
     const llmstxtPath = join(__dirname, 'dist', 'llms.txt');
