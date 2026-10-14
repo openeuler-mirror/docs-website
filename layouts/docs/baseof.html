@@ -74,11 +74,13 @@
         </div>
       </div>
        <div id="content">
-        {{ $versionArr := split $.File.Path "docs\\" }}
-        {{ $version := index $versionArr 1}}
-        {{ $version := split $version "\\" }}
-        {{ $version := index $version 0}}
-        {{ $lang := .Site.LanguageCode}}
+        {{/* 从页面路径解析当前文档版本目录名，兼容 Windows / Linux 分隔符 */}}
+        {{ $path := replace $.File.Path "\\" "/" }}
+        {{ $versionArr := split $path "docs/" }}
+        {{ $version := "" }}
+        {{ if gt (len $versionArr) 1 }}{{ $version = index (split (index $versionArr 1) "/") 0 }}{{ end }}
+        {{/* 命中 data/eolVersions.yaml 的归档版本时，展示"停止维护"提示横幅 */}}
+        {{ $isEOL := and $version (in site.Data.eolVersions $version) }}
           <main class="docscontainer">
             {{ partial "nav.html" . }}
             {{ partial "version.html" . }}
@@ -97,6 +99,12 @@
             <div class="h5-mask"></div>
             <div class="book-page container" id="page">
               <div class="page-content">
+                {{ if $isEOL }}
+                <div style="padding: 16px; border-radius: 4px; background-color: rgba(255, 204, 204, 0.48); margin-bottom: 20px; font-size: 14px;">
+                  <span style="display: inline-block; color: #fff; padding: 1px 8px; border-radius: 4px; background-color: #e60012; margin-right: 8px; font-size: 12px;">{{ i18n "eol_tag" }}</span>
+                  <span>{{ i18n "eol_notice" }}</span>
+                </div>
+                {{ end }}
                 <div class="docs-a h5-docs-a">
                   <a class="home-bread">{{ i18n "document_home"}}</a>
                 </div>
