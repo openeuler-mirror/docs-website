@@ -60,7 +60,7 @@ onMounted(() => {
       <div class="section-title" :class="{ 'section-no-icon': !icon }">{{ title }}</div>
     </template>
 
-    <img v-if="bg" :src="bg" class="section-bg-icon" />
+    <img v-if="bg" :src="bg" class="section-bg-icon" alt="" />
   </OCard>
 </template>
 

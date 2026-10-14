@@ -5,7 +5,6 @@ import axios, { type Canceler } from 'axios';
 import { OInput, OIcon, ORow, OCol, OLink, OPopup, ODropdownItem, OScroller } from '@opensig/opendesign';
 
 import ContentWrapper from '@/components/ContentWrapper.vue';
-import AppFooter from '@/components/AppFooter.vue';
 import FloatingButton from '@/components/FloatingButton.vue';
 import HomeBannerCard from './components/HomeBannerCard.vue';
 
@@ -191,7 +190,7 @@ const getBannerCardBg = (item: HomeBannerItemT) => {
   <div class="home" :class="[{ dark: appearanceStore.theme === 'dark' }]">
     <ContentWrapper :vertical-padding="[lePadV ? '24px' : '32px', lePadV ? '24px' : '72px']">
       <!-- banner -->
-      <p class="banner-title">{{ t('home.docCenter') }}</p>
+      <h1 class="banner-title">{{ t('home.docCenter') }}</h1>
       <div class="banner-search">
         <OInput
           ref="inputRef"
@@ -251,7 +250,7 @@ const getBannerCardBg = (item: HomeBannerItemT) => {
 
       <!-- 业务场景/工具 -->
       <template v-for="item in config.sections" :key="item.title">
-        <p class="main-title">{{ item.title }}</p>
+        <h2 class="main-title">{{ item.title }}</h2>
         <div class="business-list" :style="{ 'grid-template-columns': `repeat(${lePadV ? item.columns_mb : item.columns}, 1fr)` }">
           <HomeSectionCard
             v-for="subItem in item.items"
@@ -267,8 +266,6 @@ const getBannerCardBg = (item: HomeBannerItemT) => {
     </ContentWrapper>
 
     <FloatingButton />
-
-    <AppFooter :lang="locale" />
   </div>
 </template>
 

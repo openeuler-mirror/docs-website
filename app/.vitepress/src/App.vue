@@ -6,13 +6,16 @@ import { OScroller } from '@opensig/opendesign';
 import { OCookieNotice, OPlusConfigProvider } from '@opendesign-plus/components';
 
 import AppHeader from '@/components/AppHeader.vue';
+import AppFooter from '@/components/AppFooter.vue';
 import LayoutDoc from '@/layouts/LayoutDoc.vue';
 
 import { scrollToTop } from '@/utils/common';
 import { useViewStore } from '@/stores/view';
+import { useLocale } from './composables/useLocale';
 
 const { lang } = useData();
 const viewStore = useViewStore();
+const { locale } = useLocale();
 
 const router = useRouter();
 router.onBeforePageLoad = () => {
@@ -91,6 +94,7 @@ if (inBrowser) {
         <Content v-if="viewStore.isHomeView || viewStore.isCustomView" />
         <LayoutDoc v-else />
       </main>
+      <AppFooter :lang="locale" />
     </OScroller>
 
     <OCookieNotice
