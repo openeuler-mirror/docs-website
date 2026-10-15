@@ -144,7 +144,7 @@ const RATE_INDEX = Array(RATE_MAX_MB + 1)
       <OTextarea v-model="inputText" :placeholder="placeholder" resize="none" :max-length="500" :input-on-outlimit="false" />
       <p class="more-info">
         <span>{{ t('feedback.moreInfo') }}</span>
-        <a :href="forumLink" target="_blank">{{ t('feedback.moreInfo2') }}</a>
+        <a :href="forumLink" target="_blank" rel="noopener noreferrer">{{ t('feedback.moreInfo2') }}</a>
         <span>{{ t('feedback.moreInfo3') }}</span>
       </p>
       <div v-if="gtPhone" class="submit-btn">

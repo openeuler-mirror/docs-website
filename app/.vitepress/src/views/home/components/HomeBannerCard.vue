@@ -23,7 +23,7 @@ defineProps({
 
 <template>
   <OCard hoverable :href="href" class="banner-card-item" target="_blank" rel="noopener noreferrer">
-    <OFigure :src="bg">
+    <OFigure :src="bg" alt="">
       <div class="banner-card-title">{{ title }}</div>
       <div class="banner-card-desc">{{ desc }}</div>
     </OFigure>
