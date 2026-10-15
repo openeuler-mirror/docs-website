@@ -2,6 +2,8 @@ import { markRaw } from 'vue';
 
 import Summit from '@/assets/category/header/summit.jpg';
 import SummitDark from '@/assets/category/header/summit-dark.jpg';
+import Summit2026 from '@/assets/category/header/summit2026.jpg';
+import Summit2026Dark from '@/assets/category/header/summit2026-dark.jpg';
 
 import IconOutLink from '~icons/app/icon-out-link.svg';
 import IconChevronRight from '~icons/app/icon-chevron-right.svg';
@@ -392,7 +394,7 @@ export default {
             {
               label: 'Events',
               description: 'Meet openEuler and connect with the community at every key event.',
-              href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/interaction/summit-list/summit2025/`,
+              href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/interaction/summit-list/summit2026/`,
             },
             {
               label: 'Call for X Program',
@@ -423,6 +425,16 @@ export default {
         },
       ],
       shortcut: [
+        {
+          label: 'Agentic Infra OS Conference & openEuler Summit 2026',
+          picture: Summit2026,
+          pictureDark: Summit2026Dark,
+          description:
+            'A shared vision brings us together, across mountains and seas. We look forward to seeing you in Beijing, as we chart the next chapter of agentic AI together.',
+          remark: 'November 13-14, 2026 | Beijing',
+          type: 'PICTURE',
+          href: '/en/interaction/summit-list/summit2026/',
+        },
         {
           label: 'Operating System Conference & openEuler Summit 2025',
           picture: Summit,
