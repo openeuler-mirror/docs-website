@@ -1,169 +1,35 @@
 <script setup lang="ts">
-import { ODivider } from '@opensig/opendesign';
+import { computed } from 'vue';
 
-import { useLocale } from '@/composables/useLocale';
-import { linksData2, filingData } from '@/config/footer';
+import { OFooter } from '@opendesign-plus/components';
+
+import { useFooterData } from '@/composables/useFooterData';
 import { getYearByOffset } from '@/utils/common';
 
-defineProps({
-  target: {
-    type: String,
-    default: '_blank',
-  },
-});
+const { footerData } = useFooterData();
 
 const baseUrl = import.meta.env.VITE_MAIN_DOMAIN_URL;
-const { t, locale } = useLocale();
+
+// 官网 JSON 中链接为完整 URL（env 烙死）或官网站内相对路径，相对路径补官网域名
+const toUrl = (href: string) => (href.includes('http') ? href : `${baseUrl}${href}`);
+
+const footerOption = computed(() => ({
+  ...footerData.value.footerOption,
+  copyright: footerData.value.footerOption.copyright.replace(
+    '{year}',
+    String(getYearByOffset())
+  ),
+  children: footerData.value.footerOption.children.map((item) => ({
+    title: item.title,
+    href: toUrl(item.href),
+  })),
+}));
 </script>
 
 <template>
-  <div class="app-footer-pc">
-    <div class="footer-left">
-      <p class="license">
-        <span>{{ t('footer.license_1') }}</span>
-        {{ t('footer.license_2') }}
-      </p>
-      <div class="second-line">
-        <span>{{ t('footer.copyRight', [getYearByOffset()]) }}</span>
-        <a class="approval" :href="filingData.link" target="_blank" rel="noopener noreferrer">{{ t('footer.filingText1') }}</a>
-        <img class="police-img" :src="filingData.icon" />
-        <span>{{ t('footer.filingText2') }}</span>
-      </div>
-    </div>
-
-    <div class="footer-right">
-      <template v-for="(link, index) in linksData2[locale]" :key="link.URL">
-        <a :target="target" :href="link.URL.includes('http') ? link.URL : `${baseUrl}${link.URL}`" class="link">{{ link.NAME }}</a>
-        <ODivider v-if="index !== linksData2[locale].length - 1" direction="v" />
-      </template>
-    </div>
-  </div>
-
-  <div class="app-footer-mb">
-    <div class="links">
-      <template v-for="(link, index) in linksData2[locale]" :key="link.URL">
-        <a :target="target" :href="link.URL.includes('http') ? link.URL : `${baseUrl}${link.URL}`" class="link">{{ link.NAME }}</a>
-        <ODivider v-if="index !== linksData2[locale].length - 1" direction="v" />
-      </template>
-    </div>
-
-    <div class="license">{{ t('footer.license_1') }}{{ t('footer.license_2') }}</div>
-    <div class="copyright">{{ t('footer.copyRight', [getYearByOffset()]) }}</div>
-    <div class="approval">
-      <a :href="filingData.link" target="_blank" rel="noopener noreferrer">{{ t('footer.filingText1') }}</a>
-      <img class="police-img" :src="filingData.icon" />
-      <span>{{ t('footer.filingText2') }}</span>
-    </div>
-  </div>
+  <OFooter simple :footer-option="footerOption" />
 </template>
 
 <style lang="scss" scoped>
-.app-footer-pc {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 40px;
-  margin-top: 12px;
-  color: var(--o-color-info3);
-  @include tip1;
 
-  @include respond('<=pad') {
-    display: none;
-  }
-
-  @include respond('<=laptop') {
-    padding: 0 24px;
-  }
-
-  @media screen and (max-width: 1600px) {
-    font-size: 12px;
-    line-height: 18px;
-  }
-
-  @media screen and (max-width: 1300px) {
-    font-size: 10px;
-    line-height: 18px;
-  }
-
-  .footer-left {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .second-line {
-    display: flex;
-    align-items: center;
-    margin-top: 2px;
-  }
-
-  .approval {
-    margin-left: 8px;
-  }
-
-  :deep(.o-divider) {
-    --o-divider-bd-color: rgba(var(--o-black), 0.1);
-  }
-
-  a {
-    color: var(--o-color-info3);
-
-    @include hover {
-      color: var(--o-color-link1);
-    }
-  }
-}
-
-.app-footer-mb {
-  display: none;
-  margin-top: 16px;
-  text-align: center;
-  font-size: 10px;
-  color: var(--o-color-info4);
-  @include tip1;
-
-  @include respond('<=pad') {
-    display: block;
-  }
-
-  @include respond('phone') {
-    font-size: 10px;
-  }
-
-  .license {
-    margin-top: 12px;
-  }
-
-  .copyright {
-    margin-top: 4px;
-  }
-
-  .approval {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 4px;
-  }
-
-  a {
-    color: var(--o-color-info4);
-
-    @include hover {
-      color: var(--o-color-link1);
-    }
-  }
-}
-
-.police-img {
-  width: 16px;
-  height: 16px;
-  margin: 0 8px;
-}
-
-@include in-dark {
-  .app-footer {
-    :deep(.o-divider) {
-      --o-divider-bd-color: rgba(var(--o-white), 0.1);
-    }
-  }
-}
 </style>

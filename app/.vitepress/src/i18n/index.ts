@@ -4,7 +4,6 @@ import { getCurrentLocale } from '@/utils/locale';
 // 公共
 import common from './common';
 import header from './header';
-import footer from './footer';
 import cookie from './cookie';
 import response from './response';
 
@@ -17,7 +16,6 @@ const messages = {
     // 公共
     common: common.zh,
     header: header.zh,
-    footer: footer.zh,
     cookie: cookie.zh,
     response: response.zh,
 
@@ -30,7 +28,6 @@ const messages = {
     // 公共
     common: common.en,
     header: header.en,
-    footer: footer.en,
     cookie: cookie.en,
     response: response.en,
 
