@@ -8,6 +8,12 @@ other = "Innovation Versions"
 [archive_version]
 other = "Archived Versions (No Longer Maintained)"
 
+[eol_tag]
+other = "Outdated"
+
+[eol_notice]
+other = "This document is no longer maintained. Refer to the latest version."
+
 [document_home]
 other = "Documentation"
 

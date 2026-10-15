@@ -8,6 +8,12 @@ other = "社区创新版本"
 [archive_version]
 other = "归档版本（停止维护）"
 
+[eol_tag]
+other = "停止维护"
+
+[eol_notice]
+other = "本文档已停止维护，建议查阅最新版本文档。"
+
 [document_home]
 other = "文档首页"
 
