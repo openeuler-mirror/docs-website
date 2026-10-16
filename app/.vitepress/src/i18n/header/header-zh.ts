@@ -579,7 +579,7 @@ export default {
             '志合者，不以山海为远。 我们期待与您相聚北京，共话Agentic AI时代的技术演进之道，携手谱写Agentic Infra的创新篇章！',
           remark: '时间：2026/11/13 - 2026/11/14 | 北京',
           type: 'PICTURE',
-          href: '/zh/interaction/summit-list/summit2026/',
+          href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/zh/interaction/summit-list/summit2026/`,
         },
         {
           label: 'openEuler Developer Day 2026',
