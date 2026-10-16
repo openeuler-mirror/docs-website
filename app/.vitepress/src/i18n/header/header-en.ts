@@ -433,7 +433,7 @@ export default {
             'A shared vision brings us together, across mountains and seas. We look forward to seeing you in Beijing, as we chart the next chapter of agentic AI together.',
           remark: 'November 13-14, 2026 | Beijing',
           type: 'PICTURE',
-          href: '/en/interaction/summit-list/summit2026/',
+          href: `${import.meta.env.VITE_MAIN_DOMAIN_URL}/en/interaction/summit-list/summit2026/`,
         },
         {
           label: 'Operating System Conference & openEuler Summit 2025',
