@@ -173,6 +173,13 @@
     }
   }
 
+  video {
+    display: block;
+    max-width: 100%;
+    margin: var(--o-gap-2) 0;
+    border-radius: var(--o-radius-xs);
+  }
+
   code {
     border-radius: var(--layout-pkg-radius);
     background-color: var(--o-color-fill1);
