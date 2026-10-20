@@ -216,7 +216,8 @@ export default defineConfig({
       md.renderer.rules.html_block = (tokens, idx, options, env, self) => {
         tokens[idx].content = tokens[idx].content
           .replace(/\s+(width|height)=['|"](.*?)['|"]/g, '')
-          .replace(/<a([^>]*?)href\s*=\s*['"](?!(?:https?:)?\/\/)([^'"]+)\.md(#.*?)?['"]([^>]*?)>/gi, '<a$1href="$2.html$3"$4>');
+          .replace(/<a([^>]*?)href\s*=\s*['"](?!(?:https?:)?\/\/)([^'"]+)\.md(#.*?)?['"]([^>]*?)>/gi, '<a$1href="$2.html$3"$4>')
+          .replace(/<video(?![^>]*\bcontrols\b)([^>]*)>/gi, '<video$1 controls>');
 
         const renderContent = defaultHtmlBlockRender!!(tokens, idx, options, env, self);
         if (renderContent.includes('<img')) {
@@ -230,7 +231,8 @@ export default defineConfig({
       md.renderer.rules.html_inline = function (tokens, idx, options, env, self) {
         tokens[idx].content = tokens[idx].content
           .replace(/\s+(width|height)=['|"](.*?)['|"]/g, '')
-          .replace(/<a([^>]*?)href\s*=\s*['"](?!(?:https?:)?\/\/)([^'"]+)\.md(#.*?)?['"]([^>]*?)>/gi, '<a$1href="$2.html$3"$4>');
+          .replace(/<a([^>]*?)href\s*=\s*['"](?!(?:https?:)?\/\/)([^'"]+)\.md(#.*?)?['"]([^>]*?)>/gi, '<a$1href="$2.html$3"$4>')
+          .replace(/<video(?![^>]*\bcontrols\b)([^>]*)>/gi, '<video$1 controls>');
 
         const renderContent = defaultHtmlInlineRender!!(tokens, idx, options, env, self);
         if (renderContent.includes('<img')) {
