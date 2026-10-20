@@ -54,5 +54,5 @@ if (!existsSync(robots)) {
   console.log(`❌ robots.txt不存在`);
 } else {
   const robotsContent = readFileSync(robots, 'utf-8');
-  writeFileSync(robots, `${robotsContent}\nSitemap:${sitemapHostname}/sitemap_index.xml`);
+  writeFileSync(robots, `${robotsContent}\nSitemap: ${sitemapHostname}/sitemap_index.xml`);
 }
