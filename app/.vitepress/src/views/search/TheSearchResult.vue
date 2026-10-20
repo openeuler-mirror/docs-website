@@ -68,7 +68,7 @@ const searchResult = async () => {
       lang: locale.value,
       page: currentPage.value,
       version: route.path.split('/')?.[3],
-      path: url.replace(`/${locale.value}/`, '').replace('/index.html', ''),
+      path: url.replace(`/${locale.value}/`, '').replace('/index.html', '').replace('.html', ''),
     });
 
     let records: SearchDocItemT[] = [];
