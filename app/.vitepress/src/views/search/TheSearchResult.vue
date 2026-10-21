@@ -63,12 +63,26 @@ const searchResult = async () => {
   try {
     searchStore.setIsLoading(true);
     const url = (viewStore.isOverview ? nodeStore.moduleNode?.href : nodeStore.manualNode?.href) || route.path;
+
+    // 去掉语言前缀，得到文档路径
+    let searchPath = url.replace(`/${locale.value}/`, '');
+
+    // 目录首页（xxx/index.html）直接取目录路径
+    searchPath = searchPath.replace(/\/index\.html$/, '');
+
+    // url 以 .html 结尾时去掉页面文件名，仅保留目录路径：aaa/bbb/ccc.html -> aaa/bbb
+    if (searchPath.endsWith('.html')) {
+      const lastSlashIndex = searchPath.lastIndexOf('/');
+
+      searchPath = lastSlashIndex > -1 ? searchPath.slice(0, lastSlashIndex) : '';
+    }
+
     const res = await getSearchDocs({
       keyword: searchStore.keyword,
       lang: locale.value,
       page: currentPage.value,
       version: route.path.split('/')?.[3],
-      path: url.replace(`/${locale.value}/`, '').replace('/index.html', '').replace('.html', ''),
+      path: searchPath,
     });
 
     let records: SearchDocItemT[] = [];
