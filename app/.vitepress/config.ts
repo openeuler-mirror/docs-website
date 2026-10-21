@@ -1,5 +1,5 @@
-import { dirname, join, resolve } from 'node:path';
-import { createWriteStream, existsSync, readFileSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
+import { existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 import type Markdown from 'markdown-it';
@@ -10,7 +10,6 @@ import { getDomId } from './src/utils/common';
 import { applySitemapLastmod } from './src/utils/sitemap-lastmod';
 import { extractFirstParagraph } from './src/utils/md-description';
 import { buildPageJsonLd } from './src/config/jsonld';
-import { VITEPRESS_VERSIONS_CONFIG, HUGO_VERSIONS_CONFIG } from '../../scripts/config/version.js';
 import { defineConfig } from 'vitepress';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -265,82 +264,6 @@ export default defineConfig({
     if (schema) {
       (pageData.frontmatter.head ??= []).push(['script', { type: 'application/ld+json' }, JSON.stringify(schema)]);
     }
-  },
-  async buildEnd() {
-    const packageConfig = JSON.parse(readFileSync(join(__dirname, '../../package.json'), 'utf-8'));
-    if (!packageConfig.scripts.build.includes('common')) {
-      return;
-    }
-
-    const branches = [...new Set([...Object.values(VITEPRESS_VERSIONS_CONFIG), ...Object.values(HUGO_VERSIONS_CONFIG)])].filter((br) => !br.includes('common'));
-
-    // ============ write llms.txt
-    const llmstxtPath = join(__dirname, 'dist', 'llms.txt');
-    if (!existsSync(llmstxtPath)) {
-      console.log(`❌ llms.txt不存在`);
-      return;
-    }
-    const llmsWriteStream = createWriteStream(llmstxtPath, { flags: 'a' });
-    for (const br of branches) {
-      try {
-        const resp = await fetch(`https://docs.openeuler.org/docs/${br}/llms.txt`);
-        if (!resp.ok || !resp.body) {
-          console.log(`❌ ${br} llms.txt无法访问！！`);
-          continue;
-        }
-        console.log(`开始拼接 ${br} llms.txt`);
-        llmsWriteStream.write('\n');
-
-        let isFirstChunk = true;
-        for await (let chunk of resp.body.pipeThrough(new TextDecoderStream())) {
-          if (isFirstChunk) {
-            isFirstChunk = false;
-            const index = chunk.indexOf('## Table of Contents');
-            if (index >= 0) {
-              chunk = chunk.slice(index).replace('Table of Contents', `${br} documents`);
-            }
-          }
-          const ok = llmsWriteStream.write(chunk);
-          if (!ok) {
-            await new Promise<void>((resolve) => llmsWriteStream.once('drain', () => resolve()));
-          }
-        }
-        console.log(`✅ ${br} llms.txt 拼接完成`);
-      } catch {
-        console.log(`❌ ${br} llms.txt 拼接失败`);
-      }
-    }
-    llmsWriteStream.end(() => console.log('llms.txt拼接完成'));
-
-    // ============ write llms-full.txt
-    const llmsfulltxtPath = join(__dirname, 'dist', 'llms-full.txt');
-    if (!existsSync(llmsfulltxtPath)) {
-      console.log(`❌ llms-full.txt不存在`);
-      return;
-    }
-    const llmsFullWriteStream = createWriteStream(llmsfulltxtPath, { flags: 'a' });
-    for (const br of branches) {
-      try {
-        const resp = await fetch(`https://docs.openeuler.org/docs/${br}/llms-full.txt`);
-        if (!resp.ok || !resp.body) {
-          console.log(`❌ ${br} llms-full.txt无法访问！！`);
-          continue;
-        }
-        console.log(`开始拼接 ${br} llms-full.txt`);
-        llmsFullWriteStream.write('\n');
-
-        for await (const chunk of resp.body) {
-          const ok = llmsFullWriteStream.write(chunk);
-          if (!ok) {
-            await new Promise<void>((resolve) => llmsFullWriteStream.once('drain', () => resolve()));
-          }
-        }
-        console.log(`✅ ${br} llms-full.txt 拼接完成`);
-      } catch {
-        console.log(`❌ ${br} llms-full.txt 拼接失败`);
-      }
-    }
-    llmsFullWriteStream.end(() => console.log('llms-full.txt拼接完成'));
   },
   vite: {
     plugins: [
