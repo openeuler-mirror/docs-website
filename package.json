@@ -28,7 +28,7 @@
     "@opendesign-plus/components": "0.0.1-rc.67",
     "@opendesign-plus/composables": "0.0.1-rc.10",
     "@opendesign-plus/plugins": "0.0.1-rc.1",
-    "@opendesign-plus/utils": "0.0.1-rc.8",
+    "@opendesign-plus/utils": "0.0.1-rc.9",
     "@opensig/opendesign": "1.2.5",
     "@opensig/opendesign-token": "0.0.11",
     "@vueuse/core": "14.3.0",
