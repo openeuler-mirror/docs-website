@@ -194339,16 +194339,38 @@ async function execCheckLinkValidity(depthNodes, opts) {
   } = opts;
   const results = [];
   const idsMap = /* @__PURE__ */ new Map();
+  const lineCountMap = /* @__PURE__ */ new Map();
+  const contentsMap = /* @__PURE__ */ new Map();
+  const getContent = /* @__PURE__ */ __name((mdPath) => {
+    if (!contentsMap.has(mdPath)) {
+      contentsMap.set(mdPath, mdPath === "." ? Promise.resolve(content3) : getFileContentAsync(mdPath));
+    }
+    return contentsMap.get(mdPath);
+  }, "getContent");
   const getIds = /* @__PURE__ */ __name((mdPath) => {
     if (!idsMap.has(mdPath)) {
-      const contentPromise = mdPath === "." ? Promise.resolve(content3) : getFileContentAsync(mdPath);
       idsMap.set(
         mdPath,
-        contentPromise.then((c) => getMarkdownIds(c))
+        getContent(mdPath).then((c) => getMarkdownIds(c))
       );
     }
     return idsMap.get(mdPath);
   }, "getIds");
+  const getLineCount = /* @__PURE__ */ __name((mdPath) => {
+    if (!lineCountMap.has(mdPath)) {
+      lineCountMap.set(mdPath, getContent(mdPath).then((c) => c.split(/\r?\n/).length));
+    }
+    return lineCountMap.get(mdPath);
+  }, "getLineCount");
+  const isValidAnchor = /* @__PURE__ */ __name(async (mdPath, anchor) => {
+    const lineMatch = /^[Ll](\d+)$/.exec(anchor);
+    if (lineMatch) {
+      const lineNo = parseInt(lineMatch[1], 10);
+      return lineNo >= 1 && await getLineCount(mdPath) >= lineNo;
+    }
+    const ids = await getIds(mdPath);
+    return ids.has(anchor) || ids.has(anchor.toLowerCase());
+  }, "isValidAnchor");
   const excludedRanges = [];
   for (const item of depthNodes) {
     const start2 = item.node.position?.start?.offset;
@@ -194446,8 +194468,7 @@ async function execCheckLinkValidity(depthNodes, opts) {
               errors.push({ status: 404, zhMsg: "\u951A\u70B9\u65E0\u6CD5\u8BBF\u95EE\uFF0C#\u524D\u5B58\u5728\u591A\u4F59\u7684/" });
             } else {
               const mdPath = import_path4.default.join(prefixPath, decodeURI(link3.replace(".html", ".md")));
-              const ids = await getIds(mdPath);
-              if (!ids.has(anchor) && !ids.has(anchor.toLowerCase())) {
+              if (!await isValidAnchor(mdPath, anchor)) {
                 errors.push({ status: 404, zhMsg: "\u951A\u70B9\u65E0\u6CD5\u8BBF\u95EE" });
               }
             }
@@ -194458,8 +194479,7 @@ async function execCheckLinkValidity(depthNodes, opts) {
           errors.push({ status: linkStatus, zhMsg: `${link3.startsWith("http") ? "http " : "\u672C\u5730\u8DEF\u5F84"}\u94FE\u63A5\u65E0\u6CD5\u8BBF\u95EE` });
         }
       } else if (!disableCheckAnchor && anchor) {
-        const ids = await getIds(".");
-        if (!ids.has(anchor) && !ids.has(anchor.toLowerCase())) {
+        if (!await isValidAnchor(".", anchor)) {
           errors.push({ status: 404, zhMsg: "\u951A\u70B9\u65E0\u6CD5\u8BBF\u95EE" });
         }
       }
@@ -194961,7 +194981,7 @@ function checkAttrs(depthNodes, signal) {
       const blankSpaces = attr.raw.length - raw.length;
       if (attr.quote === "" && attr.value !== "") {
         results.push({
-          name: `attrs-check`,
+          name: `tag-closed-check`,
           type: "error",
           content: raw,
           start: startOffset + attr.index + blankSpaces,
@@ -194974,7 +194994,7 @@ function checkAttrs(depthNodes, signal) {
       }
       if (set2.has(attr.name)) {
         results.push({
-          name: `attrs-check`,
+          name: `tag-closed-check`,
           type: "error",
           content: attr.raw,
           start: startOffset + attr.index + blankSpaces,
