@@ -26,7 +26,6 @@ const copyRepoFromDiskCache = async (upstream, dir, storagePath, collector) => {
     console.log('复制完成');
   } catch (err) {
     console.error(`copyRepoFromDiskCache error: ${err?.message}, upstream: ${upstream}`);
-    process.exit(1);
   }
 };
 
@@ -76,7 +75,6 @@ const copyMdFromDiskCache = async (upstream, dir, customPath, collector) => {
     console.log('复制完成');
   } catch (err) {
     console.error(`copyRepoFromDiskCache error: ${err?.message}, upstream: ${upstream}`);
-    process.exit(1);
   }
 };
 
