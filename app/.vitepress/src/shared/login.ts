@@ -47,10 +47,15 @@ export function clearUserAuth() {
  * 尝试登录
  * @returns 登录结果
  */
-export async function tryToLogin() {
+export async function tryToLogin(): Promise<boolean> {
   const userInfoStore = useUserInfoStore();
   const userInfo = await tryLogin(queryUserInfo as any);
+
+  // 登录成功时写入用户信息并返回登录成功
   if (userInfo) {
     userInfoStore.$patch(userInfo);
+    return true;
   }
+
+  return false;
 }

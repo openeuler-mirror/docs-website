@@ -164,8 +164,11 @@ const getMsgCount = async () => {
 };
 
 onMounted(async () => {
-  await tryToLogin();
-  getMsgCount();
+  // 已登录时才请求未读消息数量
+  const isLogin = await tryToLogin();
+  if (isLogin) {
+    getMsgCount();
+  }
 });
 
 // 搜索
