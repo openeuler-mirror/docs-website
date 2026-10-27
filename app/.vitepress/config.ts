@@ -8,7 +8,7 @@ import type { HeadConfig } from 'vitepress';
 import llmstxt from 'vitepress-plugin-llms';
 
 import { getDomId } from './src/utils/common';
-import { applySitemapLastmod } from './src/utils/sitemap-lastmod';
+import { applySitemapMetadata } from './src/utils/sitemap-metadata';
 import { extractFirstParagraph } from './src/utils/md-description';
 import { normalizeKeywords } from './src/utils/md-keywords';
 import { buildPageJsonLd } from './src/config/jsonld';
@@ -41,7 +41,8 @@ export default defineConfig({
   srcExclude: ['**/_menu.md'],
   sitemap: {
     hostname: sitemapHostname,
-    transformItems: (items: any[]) => applySitemapLastmod(items),
+    // lastmod 取构建期侧车的提交时间；changefreq / priority 直接取源 md 文件 frontmatter 声明值
+    transformItems: (items: any[]) => applySitemapMetadata(items, srcDir),
   },
   head: [
     [
