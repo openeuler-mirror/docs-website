@@ -5,10 +5,12 @@ import { OFooter } from '@opendesign-plus/components';
 
 import { useFooterData } from '@/composables/useFooterData';
 import { useScreen } from '@/composables/useScreen';
+import { useViewStore } from '@/stores/view';
 import { getYearByOffset } from '@/utils/common';
 
 const { lePadV } = useScreen();
 const { footerData } = useFooterData();
+const viewStore = useViewStore();
 
 const baseUrl = import.meta.env.VITE_MAIN_DOMAIN_URL;
 
@@ -43,7 +45,8 @@ const footerBg = computed(() => {
 </script>
 
 <template>
-  <footer id="tour_footer" class="footer">
+  <!-- 仅首页渲染：App.vue 中为全局挂载，文档详情页由 LayoutDoc 的 DocFooter 负责 -->
+  <footer v-if="viewStore.isHomeView || viewStore.isCustomView" id="tour_footer" class="footer">
     <OFooter
       :info="footerData.info"
       :quick-nav="quickNav"

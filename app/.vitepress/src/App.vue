@@ -141,6 +141,7 @@ if (inBrowser) {
     --layout-header-max-width: 100%;
     --layout-header-padding: 5%;
 
+    --layout-doc-padding-bottom: 56px;
     --layout-content-max-width: 100%;
     --layout-content-padding: 5%;
 
@@ -151,6 +152,7 @@ if (inBrowser) {
     --layout-header-height: 56px;
     --layout-header-padding: 32px;
 
+    --layout-doc-padding-bottom: 40px;
     --layout-content-padding: 32px;
 
     --layout-footer-height: 434px;
