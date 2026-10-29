@@ -163,6 +163,31 @@ function flattenHeaders(headers: Header[], acc: Header[] = []): Header[] {
   return acc;
 }
 
+type PersonAuthor = { '@type': 'Person'; name: string; url?: string };
+
+function normalizeAuthor(raw: unknown): PersonAuthor | PersonAuthor[] | null {
+  if (typeof raw === 'string') {
+    const name = raw.trim();
+    return name ? { '@type': 'Person', name } : null;
+  }
+  if (Array.isArray(raw)) {
+    const list = raw
+      .map((item) => normalizeAuthor(item))
+      .filter((item): item is PersonAuthor | PersonAuthor[] => item !== null)
+      .flat();
+    return list.length ? (list as PersonAuthor[]) : null;
+  }
+  if (raw && typeof raw === 'object') {
+    const obj = raw as Record<string, unknown>;
+    const name = typeof obj.name === 'string' ? obj.name.trim() : '';
+    if (name) {
+      const url = typeof obj.url === 'string' ? obj.url.trim() : '';
+      return url ? { '@type': 'Person', name, url } : { '@type': 'Person', name };
+    }
+  }
+  return null;
+}
+
 function stripFrontmatter(raw: string): string {
   return raw.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, '');
 }
@@ -293,6 +318,7 @@ export function buildPageJsonLd(pageData: PageData, ctx: JsonLdCtx): object[] | 
 
   const title = pageData.title;
   const description = pageData.description;
+  const fmAuthor = normalizeAuthor(pageData.frontmatter?.author);
   const overviewVal = pageData.frontmatter?.overview;
   const isOverview = overviewVal === true || String(overviewVal).toLowerCase() === 'true';
   const relAfterChapter = parts.slice(4).join('/');
@@ -329,7 +355,7 @@ export function buildPageJsonLd(pageData: PageData, ctx: JsonLdCtx): object[] | 
     about: aboutText,
     isPartOf: { '@type': 'CreativeWork', name: isPartOfName, url: chapterIndexUrl },
     mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
-    author: { '@type': 'Organization', name: ORG_NAME },
+    author: fmAuthor ?? { '@type': 'Organization', name: ORG_NAME },
     publisher: publisherRef,
     license: LICENSE_URL,
     ...(pageData.lastUpdated ? { dateModified: new Date(pageData.lastUpdated).toISOString() } : {})
@@ -349,6 +375,7 @@ export function buildPageJsonLd(pageData: PageData, ctx: JsonLdCtx): object[] | 
         '@type': 'FAQPage',
         url: canonicalUrl,
         inLanguage: lang,
+        ...(fmAuthor ? { author: fmAuthor } : {}),
         isPartOf: { '@type': 'CreativeWork', name: isPartOfName, url: chapterIndexUrl },
         publisher: publisherRef,
         mainEntity: qa.map((q) => ({
@@ -369,6 +396,7 @@ export function buildPageJsonLd(pageData: PageData, ctx: JsonLdCtx): object[] | 
       name: title,
       url: canonicalUrl,
       inLanguage: lang,
+      ...(fmAuthor ? { author: fmAuthor } : {}),
       about: aboutText,
       isPartOf: { '@type': 'CreativeWork', name: isPartOfName, url: chapterIndexUrl },
       publisher: publisherRef,

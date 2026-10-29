@@ -4,11 +4,13 @@ import { fileURLToPath } from 'node:url';
 
 import type Markdown from 'markdown-it';
 import type Token from 'markdown-it/lib/token.mjs';
+import type { HeadConfig } from 'vitepress';
 import llmstxt from 'vitepress-plugin-llms';
 
 import { getDomId } from './src/utils/common';
-import { applySitemapLastmod } from './src/utils/sitemap-lastmod';
+import { applySitemapMetadata } from './src/utils/sitemap-metadata';
 import { extractFirstParagraph } from './src/utils/md-description';
+import { normalizeKeywords } from './src/utils/md-keywords';
 import { buildPageJsonLd } from './src/config/jsonld';
 import { defineConfig } from 'vitepress';
 
@@ -39,7 +41,8 @@ export default defineConfig({
   srcExclude: ['**/_menu.md'],
   sitemap: {
     hostname: sitemapHostname,
-    transformItems: (items: any[]) => applySitemapLastmod(items),
+    // lastmod 取构建期侧车的提交时间；changefreq / priority 直接取源 md 文件 frontmatter 声明值
+    transformItems: (items: any[]) => applySitemapMetadata(items, srcDir),
   },
   head: [
     [
@@ -243,8 +246,13 @@ export default defineConfig({
     },
   },
   transformPageData(pageData) {
-    // frontmatter 未声明 description 时，截取正文第一段作为页面 description
-    if (!pageData.frontmatter?.description && pageData.relativePath?.endsWith('.md')) {
+    const fmDescription = pageData.frontmatter?.description;
+
+    // frontmatter 已声明非空 description 时直接沿用（VitePress 会自动写入页面），不存在才截取正文第一段
+    if (
+      !(typeof fmDescription === 'string' && fmDescription.trim() !== '') &&
+      pageData.relativePath?.endsWith('.md')
+    ) {
       try {
         const srcPath = resolve(srcDir, pageData.relativePath);
 
@@ -260,6 +268,13 @@ export default defineConfig({
       } catch {
         // 读取失败时保留站点默认 description
       }
+    }
+
+    // frontmatter 声明了 keywords 时输出 <meta name="keywords"> 到 head，frontmatter.head 已手工声明同标签时不重复注入
+    const keywords = normalizeKeywords(pageData.frontmatter?.keywords);
+    const hasKeywordsMeta = (pageData.frontmatter?.head ?? []).some((entry: HeadConfig) => entry[0] === 'meta' && entry[1]?.name === 'keywords');
+    if (keywords && !hasKeywordsMeta) {
+      (pageData.frontmatter.head ??= []).push(['meta', { name: 'keywords', content: keywords }]);
     }
 
     const schema = buildPageJsonLd(pageData, { docsUrl: sitemapHostname, mainDomainUrl, srcDir });
