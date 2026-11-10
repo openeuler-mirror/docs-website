@@ -121,15 +121,6 @@ dist
 temp-docs
 .cache
 
-app/zh/docs/**/*
-app/en/docs/**/*
-
-app/.vitepress/.temp
-app/.vitepress/.cache
-app/.vitepress/dist
-app/.vitepress/cache
-app/.vitepress/public/menu/**/*
-app/.vitepress/public/toc/**/*
-app/.vitepress/public/dsl/**/*
+app/**/*
 
 .env.development

@@ -191977,6 +191977,29 @@ async function checkUrl(url2, opts) {
   return getLinkStatus(url2, prefixPath, whiteList, proxy, signal, tempWhitelist);
 }
 __name(checkUrl, "checkUrl");
+function isCrossDirectoryLink(url2, opts) {
+  if (!opts.inSameLevel) {
+    return false;
+  }
+  return url2 && !url2.startsWith("http") && url2.includes("../");
+}
+__name(isCrossDirectoryLink, "isCrossDirectoryLink");
+function createCrossDirectoryResult(params2) {
+  const { content: content3, start: start2, end } = params2;
+  return {
+    name: RESOURCE_EXISTENCE_CHECK,
+    type: "error",
+    content: content3,
+    start: start2,
+    end,
+    extras: 404,
+    message: {
+      zh: "\u8D44\u6E90\u94FE\u63A5\u5B58\u5728\u8DE8\u76EE\u5F55\u5F15\u7528\uFF08../\uFF09\uFF0C\u8BF7\u5728 md \u540C\u4E00\u5C42\u6587\u4EF6\u5939\u4E0B\u521B\u5EFA\u8D44\u6E90\u76EE\u5F55\u5E76\u5B58\u653E",
+      en: "Resource link crosses directories (../). Please create the resource directory at the same level as the markdown file."
+    }
+  };
+}
+__name(createCrossDirectoryResult, "createCrossDirectoryResult");
 function createResult(params2) {
   const { content: content3, status, start: start2, end } = params2;
   return {
@@ -191998,6 +192021,9 @@ async function checkImageNode(node2, opts) {
   const start2 = (node2.position?.start.offset || 0) + (node2.alt?.length || 0) + 4;
   const end = (node2.position?.end.offset || 0) - 1;
   const results = [];
+  if (isCrossDirectoryLink(url2, opts)) {
+    return [createCrossDirectoryResult({ content: url2, start: start2, end })];
+  }
   if (node2.type === "imageLike") {
     const link3 = url2.split("#")[0];
     if (/\s/.test(link3)) {
@@ -192030,7 +192056,17 @@ async function checkHtmlTagNode(node2, opts) {
   if (!attr) {
     return [];
   }
-  const status = await checkUrl(attr.value?.trim(), opts);
+  const url2 = attr.value?.trim();
+  if (isCrossDirectoryLink(url2, opts)) {
+    const offset3 = node2.tagName.length + (node2.position?.start.offset || 0) + 1;
+    const raw2 = attr.raw.trim();
+    const blankSpaces2 = attr.raw.length - raw2.length;
+    const quoteLength2 = attr.quote.length;
+    const start3 = offset3 + attr.index + blankSpaces2 + quoteLength2 + 4;
+    const end2 = start3 + attr.value.length;
+    return [createCrossDirectoryResult({ content: url2, start: start3, end: end2 })];
+  }
+  const status = await checkUrl(url2, opts);
   if (status >= 100 && status < 400) {
     return [];
   }
@@ -192056,12 +192092,20 @@ async function checkMdxJsxFlowElementNode(node2, opts) {
   if (!attr || !attr.value) {
     return [];
   }
-  const status = await checkUrl(attr.value.trim(), opts);
+  const url2 = attr.value.trim();
+  if (isCrossDirectoryLink(url2, opts)) {
+    return [createCrossDirectoryResult({
+      content: url2,
+      start: (attr.position?.start.offset || 0) + 5,
+      end: (attr.position?.end.offset || 0) - 1
+    })];
+  }
+  const status = await checkUrl(url2, opts);
   if (status >= 100 && status < 400) {
     return [];
   }
   return [createResult({
-    content: attr.value.trim(),
+    content: url2,
     status,
     start: (attr.position?.start.offset || 0) + 5,
     end: (attr.position?.end.offset || 0) - 1
@@ -192087,12 +192131,20 @@ async function checkTextNode(node2, currentIndex, depthNodes, opts) {
   }
   const rawPathRegexp = /^(.+?(?:(?:\.([a-z0-9]+))?))(?:(#[\w-]+))?(?: ?(?:{(\d+(?:[,-]\d+)*)? ?(\S+)? ?(\S+)?}))? ?(?:\[(.+)\])?$/;
   const [filepath = ""] = (rawPathRegexp.exec(text6.replace("<<<", "")) || []).slice(1);
-  const status = await checkUrl(filepath.trim(), opts);
+  const url2 = filepath.trim();
+  if (isCrossDirectoryLink(url2, opts)) {
+    return [createCrossDirectoryResult({
+      content: url2,
+      start: node2.position?.start.offset || 0,
+      end: node2.position?.end.offset || 0
+    })];
+  }
+  const status = await checkUrl(url2, opts);
   if (status >= 100 && status < 400) {
     return [];
   }
   return [createResult({
-    content: filepath.trim(),
+    content: url2,
     status,
     start: node2.position?.start.offset || 0,
     end: node2.position?.end.offset || 0
@@ -193201,7 +193253,7 @@ __name(execCheckLinkValidityCi, "execCheckLinkValidityCi");
 
 // src/ci/check-resource-existence.ts
 var import_path11 = __toESM(require("path"));
-async function execCheckResourceExistenceCi(depthNodes, content3, basePath, filePath, tempWhitelist, remoteConfigUrl, disableCheckExternalUrl, disableCheckInternalUrl, disableCheckOnly404Status, proxy) {
+async function execCheckResourceExistenceCi(depthNodes, content3, basePath, filePath, tempWhitelist, remoteConfigUrl, disableCheckExternalUrl, disableCheckInternalUrl, disableCheckOnly404Status, inSameLevel, proxy) {
   const whiteList = await getWhitelistUrlsConfig(remoteConfigUrl, proxy);
   const results = await execCheckResourceExistence(depthNodes, {
     content: content3,
@@ -193210,6 +193262,7 @@ async function execCheckResourceExistenceCi(depthNodes, content3, basePath, file
     tempWhitelist,
     disableCheckExternalUrl,
     disableCheckInternalUrl,
+    inSameLevel,
     proxy
   });
   return results.filter((item) => {
@@ -193460,6 +193513,7 @@ __name(execCheckDeletedFileReferenceCi, "execCheckDeletedFileReferenceCi");
   console.log("[resource-existence-check\uFF1A\u7981\u7528\u5916\u90E8\u94FE\u63A5\u68C0\u67E5]: ", repoConfig.resourceExistenceCheckDisableExternalUrl || "\u672A\u4F20\u53C2");
   console.log("[resource-existence-check\uFF1A\u7981\u7528\u5185\u90E8\u94FE\u63A5\u68C0\u67E5]: ", repoConfig.resourceExistenceCheckDisableInternalUrl || "\u672A\u4F20\u53C2");
   console.log("[resource-existence-check\uFF1A\u7981\u7528\u4EC5\u68C0\u67E5 404 \u8D44\u6E90\u94FE\u63A5]: ", repoConfig.resourceExistenceCheckDisableOnly404Status || "\u672A\u4F20\u53C2");
+  console.log("[resource-existence-check\uFF1A\u542F\u7528\u540C\u5C42\u68C0\u67E5\uFF08\u7981\u6B62 ../ \u8DE8\u76EE\u5F55\u5F15\u7528\uFF09]: ", repoConfig.resourceExistenceCheckInSameLevel || "\u672A\u4F20\u53C2");
   console.log("[toc-check\uFF1A\u7981\u7528 markdown \u6587\u4EF6\u662F\u5426\u52A0\u5165toc\u68C0\u67E5]: ", repoConfig.tocCheckDisableMdInToc || "\u672A\u4F20\u53C2");
   const checkItems = {};
   const allCis = [
@@ -193614,6 +193668,7 @@ __name(execCheckDeletedFileReferenceCi, "execCheckDeletedFileReferenceCi");
               repoConfig.resourceExistenceCheckDisableExternalUrl,
               repoConfig.resourceExistenceCheckDisableInternalUrl,
               repoConfig.resourceExistenceCheckDisableOnly404Status,
+              repoConfig.resourceExistenceCheckInSameLevel,
               proxy
             )
           );
