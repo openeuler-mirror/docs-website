@@ -3,17 +3,18 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import matter from 'gray-matter';
+import type { UserConfig } from 'vitepress';
 
 /** sitemap lastmod 侧车文件：`版本::locale/页面路径.md -> ISO 时间` */
 type LastmodStore = Record<string, string>;
 
-/** sitemap 条目最小结构（兼容 VitePress SitemapItem） */
-interface SitemapLikeItem {
+/**
   url: string;
   lastmod?: string;
   changefreq?: string;
   priority?: number;
-}
+*/
+type SitemapItem = Parameters<Required<Required<UserConfig>['sitemap']>['transformItems']>[0][number]
 
 /** 文档页 sitemap URL 解析结果 */
 interface SitemapDocsUrl {
@@ -270,7 +271,7 @@ function readFrontmatterMetadata(filePath: string, url: string): { changefreq?: 
  * @param srcDir VitePress srcDir（app 目录）
  * @returns 处理后的条目列表（原地修改并返回同一数组）
  */
-export function applySitemapMetadata<T extends SitemapLikeItem>(items: T[], srcDir: string): T[] {
+export function applySitemapMetadata<T extends SitemapItem>(items: T[], srcDir: string): T[] {
   const lookup = loadLastmodLookup();
   const buildTime = new Date().toISOString();
 
