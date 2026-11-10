@@ -27,6 +27,10 @@ execSync(`node merge-redirect.js ${args.join(' ')}`, {
 
 execSync(`pnpm vitepress build app`, {
   stdio: 'inherit',
+  env: {
+    ...process.env,
+    NODE_OPTIONS: `${process.env.NODE_OPTIONS || ''} --max-old-space-size=8192`.trim(),
+  },
 });
 
 execSync(`node gen-docs-version.js`, {
