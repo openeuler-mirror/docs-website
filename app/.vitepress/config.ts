@@ -42,7 +42,13 @@ export default defineConfig({
   sitemap: {
     hostname: sitemapHostname,
     // lastmod 取构建期侧车的提交时间；changefreq / priority 直接取源 md 文件 frontmatter 声明值
-    transformItems: (items: any[]) => applySitemapMetadata(items, srcDir),
+    transformItems: (items) => {
+      const index = items.findIndex(item => item.url === '');
+      if (index >= 0) {
+        items.splice(index, 1);
+      }
+      return applySitemapMetadata(items, srcDir);
+    },
   },
   head: [
     [
